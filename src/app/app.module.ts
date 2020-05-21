@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavModule } from './nav/nav.module';
+import { TaskManagerModule } from './task-manager/task-manager.module';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { NavModule } from './nav/nav.module';
     AppRoutingModule,
     NgbModule,
     NavModule,
+    TaskManagerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

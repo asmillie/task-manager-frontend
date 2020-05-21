@@ -8,6 +8,7 @@ import { TaskManagerComponent } from './task-manager.component';
   declarations: [TaskManagerComponent],
   imports: [
     CommonModule
-  ]
+  ],
+  exports: [TaskManagerComponent],
 })
 export class TaskManagerModule { }
