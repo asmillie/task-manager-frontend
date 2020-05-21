@@ -1,1 +1,11 @@
-<p>signup works!</p>
+<form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Email" formControlName="email">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Password" formControlName="password">
+        </div>
+        <button class="btn btn-primary" type="submit" *ngIf="!isLoading">Signup</button>
+    </div>
+</form>

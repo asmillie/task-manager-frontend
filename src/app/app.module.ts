@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavModule } from './nav/nav.module';
 import { TaskManagerModule } from './task-manager/task-manager.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,7 @@ import { TaskManagerModule } from './task-manager/task-manager.module';
     NgbModule,
     NavModule,
     TaskManagerModule,
+    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
