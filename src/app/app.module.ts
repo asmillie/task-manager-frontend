@@ -8,6 +8,7 @@ import { NavComponent } from './nav/nav.component';
 import { UserModule } from './user/user.module';
 import { SignupComponent } from './signup/signup.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     NgbModule,
+    HttpClientModule,
     ReactiveFormsModule,
     UserModule,
   ],
