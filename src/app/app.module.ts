@@ -4,22 +4,23 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NavModule } from './nav/nav.module';
-import { TaskManagerModule } from './task-manager/task-manager.module';
+import { NavComponent } from './nav/nav.component';
+import { UserModule } from './user/user.module';
+import { SignupComponent } from './signup/signup.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NavComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    NavModule,
-    TaskManagerModule,
-    SharedModule,
+    ReactiveFormsModule,
+    UserModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
