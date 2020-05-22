@@ -1,9 +1,11 @@
 import { Url } from 'url';
 
 export interface IUser {
-    id?: string;
+    _id?: string;
     name: string;
-    email: string;
+    email: {
+        address: string;
+    };
     avatarUrl?: Url;
     token?: string;
 }
