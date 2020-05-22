@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor() { }
+  private USER_URL = '';
+
+  constructor(private http: HttpClient) { }
 }
