@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { User, IUser } from './user';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +12,12 @@ import { map } from 'rxjs/operators';
 export class UserService {
 
   private API_URL = environment.taskApi.url;
-  private USER_SIGNUP = environment.taskApi.endpoint.user.signup;
+  private USER_SIGNUP = environment.taskApi.endpoint.signup;
+  private EMAIL_EXISTS = environment.taskApi.endpoint.emailExists;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  signup(name: string, email: string, password: string): Observable<User> {
+  signup$(name: string, email: string, password: string): Observable<User> {
     return this.http.post<IUser>(
       this.API_URL + this.USER_SIGNUP,
       {
@@ -35,5 +36,29 @@ export class UserService {
         return null;
       })
     );
+  }
+
+  checkEmailExists$(email: string): Observable<boolean> {
+    return this.http.post<{ emailExists: boolean }>(
+      this.API_URL + this.EMAIL_EXISTS,
+      {
+        email,
+      }
+    ).pipe(
+      map(({emailExists}) => {
+        return emailExists;
+      }),
+    );
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    if (error.error instanceof ErrorEvent) {
+      // TODO: Handle client / network error
+      console.error(`An error occurred: ${error.error.message}`);
+    } else {
+      // TODO: backend returned error
+    }
+
+    return throwError(`An error occurred`);
   }
 }

@@ -2,10 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
-
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    LoadingSpinnerComponent,
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -13,6 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   exports: [
     CommonModule,
     ReactiveFormsModule,
+    LoadingSpinnerComponent,
   ],
 })
 export class SharedModule { }

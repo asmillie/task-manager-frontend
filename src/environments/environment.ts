@@ -7,9 +7,8 @@ export const environment = {
   taskApi: {
       url: 'http://localhost:3000',
       endpoint: {
-          user: {
-              signup: '/signup',
-          }
+            signup: '/signup',
+            emailExists: '/signup/emailExists',
       }
   }
 };

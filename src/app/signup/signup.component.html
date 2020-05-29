@@ -1,14 +1,51 @@
-<form class="form-inline my-2 my-lg-0" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-    <div class="form-row">
-        <div class="col">
-            <input type="text" class="form-control" placeholder="Name" formControlName="name" required>
+<form class="my-2 w-75" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input
+            type="text"
+            class="form-control"
+            id="name" 
+            formControlName="name"
+            required
+            [class.is-valid]="name.valid && name.touched"
+            [class.is-invalid]="name.invalid && name.touched">
+        <div class="invalid-feedback" *ngIf="name.touched && name.invalid && name.errors.required">
+            Name is required
         </div>
-        <div class="col">
-            <input type="text" class="form-control" placeholder="Email" formControlName="email" required>
-        </div>
-        <div class="col">
-            <input type="password" class="form-control" placeholder="Password" formControlName="password" required>
-        </div>
-        <button class="btn btn-primary" type="submit" *ngIf="!isLoading">Signup</button>
     </div>
+    <div class="form-group">
+        <label for="email">Email Address</label>
+        <input
+            type="email"
+            class="form-control"
+            id="email"
+            formControlName="email"
+            required
+            [class.is-valid]="email.valid && email.touched"
+            [class.is-invalid]="email.invalid && email.touched">
+        <div class="invalid-feedback" *ngIf="email.touched && email.invalid && email.errors">
+            <p *ngIf="email.errors.required">Email Address is required</p>
+            <p *ngIf="email.errors.emailExists">Email Address is already in use</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input
+            type="password"
+            class="form-control"
+            id="password"
+            formControlName="password"
+            required
+            minlength="7"
+            aria-describedby="passwordHelp"
+            [class.is-valid]="password.valid && password.touched"
+            [class.is-invalid]="password.invalid && password.touched">
+        <small id="passwordHelp" class="form-text text-muted">Password must be at least 7 characters</small>
+        <div class="invalid-feedback" *ngIf="password.touched && password.invalid && password.errors">
+            <p *ngIf="password.errors.required">Password is required</p>
+            <p *ngIf="password.errors.min">Password must be at least 7 characters</p>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit" [attr.disabled]="signupForm.status === 'INVALID' ? 'disabled' : null">Signup</button>
+    <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 </form>

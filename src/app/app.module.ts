@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { SignupComponent } from './signup/signup.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
     NgbModule,
     HttpClientModule,
     ReactiveFormsModule,
+    SharedModule,
     UserModule,
   ],
   providers: [],
