@@ -4,7 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { User, IUser } from './user';
 import { Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -57,6 +57,7 @@ export class UserService {
       console.error(`An error occurred: ${error.error.message}`);
     } else {
       // TODO: backend returned error
+      console.error(`API Error: ${error.error}`);
     }
 
     return throwError(`An error occurred`);
