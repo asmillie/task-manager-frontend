@@ -18,7 +18,6 @@ export class EmailExistsValidator {
                 switchMap(_ => this.userService.checkEmailExists$(ctrl.value).pipe(
                     map(emailExists => emailExists ? { emailExists: true } : null),
                     catchError((e: any) => {
-                        console.log(`EmailExistsValidator: Error -> ${e}`);
                         return of(null);
                     }),
                 )),

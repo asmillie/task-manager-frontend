@@ -39,21 +39,13 @@ export class SignupComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.signupForm.status === 'PENDING') {
-      console.log(`Pending`);
-      return;
-    }
-
     const name = this.signupForm.get('name').value;
     const email = this.signupForm.get('email').value;
     const password = this.signupForm.get('password').value;
 
-
-    console.log(`Form Submitted: Email => ${email}, Password => ${password}`);
     this.signupSub = this.userService.signup$(name, email, password)
       .subscribe((user: User) => {
         this.isLoading = false;
-        console.log(`User Signup Success: ${JSON.stringify(user)}`);
       });
   }
 
