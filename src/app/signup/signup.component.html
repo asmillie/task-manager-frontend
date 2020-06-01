@@ -43,7 +43,7 @@
         <small id="passwordHelp" class="form-text text-muted">Password must be at least 7 characters</small>
         <div class="invalid-feedback" *ngIf="password.touched && password.invalid && password.errors">
             <p *ngIf="password.errors.required">Password is required</p>
-            <p *ngIf="password.errors.min">Password must be at least 7 characters</p>
+            <p *ngIf="password.errors.minlength">Password must be at least 7 characters</p>
         </div>
     </div>
     <button class="btn btn-primary" type="submit" [attr.disabled]="signupForm.status === 'INVALID' ? 'disabled' : null">Signup</button>
