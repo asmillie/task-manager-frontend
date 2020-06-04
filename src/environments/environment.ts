@@ -9,6 +9,8 @@ export const environment = {
       endpoint: {
             signup: '/signup',
             emailExists: '/signup/emailExists',
+            login: '/auth/login',
+            logout: '/auth/logout'
       }
   }
 };
