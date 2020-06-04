@@ -6,9 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "jest",
+    "test:watch": "jest --watch",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "test:watch": "jest --watch"
+    "e2e": "ng e2e"    
   },
   "private": true,
   "dependencies": {
