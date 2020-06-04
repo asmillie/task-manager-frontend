@@ -1,6 +1,6 @@
 import { UserService } from '../app/user/user.service';
 
-export const UserServiceStub: Partial<UserService> = {
+export const mockUserService: any = {
     signup$: jest.fn(),
     checkEmailExists$: jest.fn(),
 };
