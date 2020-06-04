@@ -15,6 +15,8 @@ export class SignupComponent implements OnInit, OnDestroy {
   signupForm;
   isLoading = false;
   signupSub: Subscription;
+  signupSuccess = false;
+  errorMessage = '';
 
   constructor(
     private fb: FormBuilder,
@@ -27,13 +29,14 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.signupSub.unsubscribe();
+    if (this.signupSub) {
+      this.signupSub.unsubscribe();
+    }
   }
 
   onSubmit() {
     this.isLoading = true;
 
-    console.log(this.signupForm);
     if (this.signupForm.status === 'INVALID') {
       this.isLoading = false;
       return;
@@ -46,6 +49,11 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.signupSub = this.userService.signup$(name, email, password)
       .subscribe((user: User) => {
         this.isLoading = false;
+        this.signupSuccess = true;
+      }, (err) => {
+        this.isLoading = false;
+        this.signupSuccess = false;
+        this.errorMessage = err;
       });
   }
 
