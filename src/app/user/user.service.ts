@@ -4,7 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { User, IUser } from './user';
 import { Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  signup$(name: string, email: string, password: string): Observable<User> {
+  signup$(name: string, email: string, password: string): Observable<User | string> {
     return this.http.post<IUser>(
       this.API_URL + this.USER_SIGNUP,
       {
@@ -28,6 +28,7 @@ export class UserService {
         password,
       }
     ).pipe(
+      catchError(this.handleError),
       map((user) => {
         if (user) {
           return new User(user.name, user.email.address, user._id);
@@ -38,13 +39,14 @@ export class UserService {
     );
   }
 
-  checkEmailExists$(email: string): Observable<boolean> {
+  checkEmailExists$(email: string): Observable<boolean | string> {
     return this.http.post<{ emailExists: boolean }>(
       this.API_URL + this.EMAIL_EXISTS,
       {
         email,
       }
     ).pipe(
+      catchError(this.handleError),
       map(({emailExists}) => {
         return emailExists;
       }),
@@ -52,14 +54,15 @@ export class UserService {
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
+    let err = '';
     if (error.error instanceof ErrorEvent) {
       // TODO: Handle client / network error
-      console.error(`An error occurred: ${error.error.message}`);
+      err = `An error occurred: ${error.error.message}`;
     } else {
       // TODO: backend returned error
-      console.error(`API Error: ${error.error}`);
+      err = `API Error: ${error.error}, Status Code: ${error.status}`;
     }
 
-    return throwError(`An error occurred`);
+    return throwError(err);
   }
 }
