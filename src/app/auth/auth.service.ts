@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { User, IUser } from '../user/user';
 import { environment } from '../../environments/environment';
-import { map } from 'rxjs/operators';
+import { map, catchError, tap } from 'rxjs/operators';
+
+interface ILoginResponse {
+  readonly auth_token: string;
+  readonly updatedUser: IUser;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -14,19 +19,38 @@ export class AuthService {
   private LOGIN = environment.taskApi.endpoint.login;
   private LOGOUT = environment.taskApi.endpoint.logout;
 
+  userSubject: BehaviorSubject<User>;
+
   constructor(private http: HttpClient) { }
 
   login$(email: string, password: string): Observable<User> {
-    return this.http.post<IUser>(
+    return this.http.post<ILoginResponse>(
       this.API_URL + this.LOGIN,
       {
-        email: { address: email },
+        email,
         password,
       }
     ).pipe(
-      map((res: IUser) => {
-        return new User(res.name, res.email.address, res._id);
-      })
+      catchError(this.handleError),
+      map((res: ILoginResponse) => {
+        return new User(res.updatedUser.name, res.updatedUser.email.address, res.updatedUser._id, res.auth_token);
+      }),
+      tap((user: User) => {
+        this.userSubject.next(user);
+      }),
     );
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    let err = '';
+    if (error.error instanceof ErrorEvent) {
+      // TODO: Handle client / network error
+      err = `An error occurred: ${error.error.message}`;
+    } else {
+      // TODO: backend returned error
+      err = `API Error: ${error.error}, Status Code: ${error.status}`;
+    }
+
+    return throwError(err);
   }
 }
