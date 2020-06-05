@@ -1,1 +1,30 @@
-<p>login works!</p>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+        <div class="col">
+            <input
+                type="text"
+                class="form-control"
+                placeholder="Email"
+                formControlName="email"
+                email
+                required
+                [class.is-valid]="email.valid && email.touched"
+                [class.is-invalid]="email.invalid && email.touched">
+        </div>
+        <div class="col">
+            <input
+                type="password"
+                class="form-control"
+                placeholder="Password"
+                formControlName="password"
+                required
+                minlength="7"
+                [class.is-valid]="password.valid && password.touched"
+                [class.is-invalid]="password.invalid && password.touched">
+        </div>
+        <button class="btn btn-primary" type="submit" *ngIf="!isLoading">Login</button>
+        <div class="col" *ngIf="isLoading">
+            <app-loading-spinner></app-loading-spinner>
+        </div>
+    </div>
+</form>
