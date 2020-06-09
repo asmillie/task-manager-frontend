@@ -3,6 +3,7 @@ import { AuthService } from '../auth.service';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { User } from '../../user/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -45,11 +47,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       .login$(email, password)
       .subscribe((user: User) => {
         this.isLoading = false;
-        console.log(`User Logged In -> ${JSON.stringify(user)}`);
+        this.router.navigate(['/user']);
       }, (err) => {
         this.isLoading = false;
         this.errMessage = err;
-        console.log(`Error Logging in: ${err}`);
       });
   }
 
