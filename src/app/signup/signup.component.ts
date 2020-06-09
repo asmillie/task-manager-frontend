@@ -4,6 +4,7 @@ import { UserService } from '../user/user.service';
 import { Subscription } from 'rxjs';
 import { User } from '../user/user';
 import { EmailExistsValidator } from '../user/email-exists.validator';
+import { passwordMatchesValidator } from '../user/password-matches.validator';
 
 @Component({
   selector: 'app-signup',
@@ -88,6 +89,17 @@ export class SignupComponent implements OnInit, OnDestroy {
           validators: [ Validators.required, Validators.min(7) ],
         },
       ],
+      password2: [
+        {
+          value: '',
+          disabled: this.isLoading,
+        },
+        {
+          validators: [ Validators.required, Validators.min(7) ],
+        },
+      ],
+    }, {
+      validators: passwordMatchesValidator
     });
   }
 
@@ -101,6 +113,10 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   get password() {
     return this.signupForm.get('password');
+  }
+
+  get password2() {
+    return this.signupForm.get('password2');
   }
 
 }
