@@ -3,14 +3,16 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { UserComponent } from './user.component';
 import { AuthGuard } from '../auth/auth.guard';
+import { UserResolverService } from './user-resolver.service';
 
 const routes: Routes = [
   {
     path: '',
     component: UserComponent,
     canActivate: [AuthGuard],
-    // children: [
-    // ]
+    resolve: {
+      user: UserResolverService,
+    }
   }
 ];
 
