@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { User, IUser } from '../user/user';
 import { environment } from '../../environments/environment';
-import { map, catchError, tap } from 'rxjs/operators';
+import { map, catchError, tap, take } from 'rxjs/operators';
 
 interface ILoginResponse {
   readonly auth_token: string;
@@ -21,7 +21,9 @@ export class AuthService {
 
   userSubject: BehaviorSubject<User>;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.initUserSubject();
+  }
 
   login$(email: string, password: string): Observable<User> {
     return this.http.post<ILoginResponse>(
@@ -41,6 +43,24 @@ export class AuthService {
     );
   }
 
+  logout$(): Observable<boolean> {
+    return this.http.post<IUser>(
+      this.API_URL + this.LOGOUT,
+      {}
+    ).pipe(
+      take(1),
+      catchError(this.handleError),
+      map(_ => {
+        this.userSubject.next(null);
+        return true;
+      }),
+    );
+  }
+
+  private initUserSubject(): void {
+    this.userSubject = new BehaviorSubject<User>(null);
+  }
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     let err = '';
     if (error.error instanceof ErrorEvent) {
@@ -48,7 +68,7 @@ export class AuthService {
       err = `An error occurred: ${error.error.message}`;
     } else {
       // TODO: backend returned error
-      err = `API Error: ${error.error}, Status Code: ${error.status}`;
+      err = `API Error: ${error.error.message}, Status Code: ${error.status}`;
     }
 
     return throwError(err);

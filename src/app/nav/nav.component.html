@@ -1,19 +1,20 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Navbar</a>
+  <a class="navbar-brand" href="#">Task Manager</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      <li class="nav-item active" routerLinkActive="active" *ngIf="isLoggedIn">
+        <a class="nav-link" routerLink="/users">Profile</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Tasks</a>
+      <li class="nav-item" routerLinkActive="active" *ngIf="isLoggedIn">
+        <a class="nav-link" routerLink="/tasks">Tasks</a>
       </li>
     </ul>
-    <app-login></app-login>
-    <button class="btn btn-light ml-2" routerLink="/signup">Signup</button>
+    <app-login *ngIf="!isLoggedIn"></app-login>
+    <button class="btn btn-secondary" *ngIf="isLoggedIn" (click)="logout()">Logout</button>
+    <button class="btn btn-light ml-2" *ngIf="!isLoggedIn" routerLink="/signup">Signup</button>
   </div>
 </nav>

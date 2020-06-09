@@ -46,12 +46,15 @@ export class LoginComponent implements OnInit, OnDestroy {
       .subscribe((user: User) => {
         this.isLoading = false;
         console.log(`User Logged In -> ${JSON.stringify(user)}`);
-        // TODO: Redirect to logged in state
       }, (err) => {
         this.isLoading = false;
         this.errMessage = err;
         console.log(`Error Logging in: ${err}`);
       });
+  }
+
+  dismissAlert(): void {
+    this.errMessage = '';
   }
 
   private initForm(): void {

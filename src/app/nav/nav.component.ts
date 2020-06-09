@@ -1,15 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AuthService } from '../auth/auth.service';
+import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.css']
 })
-export class NavComponent implements OnInit {
+export class NavComponent implements OnInit, OnDestroy {
 
-  constructor() { }
+  isLoggedIn: boolean;
+  userSub: Subscription;
+
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.initAuth();
+  }
+
+  ngOnDestroy(): void {
+    if (this.userSub) {
+      this.userSub.unsubscribe();
+    }
+  }
+
+  logout(): void {
+    const logoutSub = this.authService.logout$().subscribe(success => {
+      if (success) {
+        this.isLoggedIn = false;
+      }
+    });
+
+    this.userSub.add(logoutSub);
+  }
+
+  private initAuth(): void {
+    this.userSub = this.authService.userSubject.subscribe(user => {
+      if (user && user.token) {
+        return this.isLoggedIn = true;
+      }
+
+      this.isLoggedIn = false;
+    });
   }
 
 }

@@ -1,5 +1,6 @@
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <div class="form-row">
+        <app-alert *ngIf="errMessage !== ''" [alertMessage]="errMessage" (dismissEvent)="dismissAlert()"></app-alert>
         <div class="col">
             <input
                 type="text"
