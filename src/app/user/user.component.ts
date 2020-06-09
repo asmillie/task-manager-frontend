@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from './user';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { passwordMatchesValidator } from './password-matches.validator';
 
 @Component({
   selector: 'app-user',
@@ -56,6 +57,42 @@ export class UserComponent implements OnInit, OnDestroy {
       }, {
         validators: [Validators.required, Validators.email]
       }],
+      password: [
+        {
+          value: '',
+          disabled: this.isLoading,
+        },
+        {
+          validators: [ Validators.required, Validators.min(7) ],
+        },
+      ],
+      password2: [
+        {
+          value: '',
+          disabled: this.isLoading,
+        },
+        {
+          validators: [ Validators.required, Validators.min(7) ],
+        },
+      ],
+    }, {
+      validators: passwordMatchesValidator
     });
+  }
+
+  get name(): AbstractControl {
+    return this.userForm.get('name');
+  }
+
+  get email(): AbstractControl {
+    return this.userForm.get('email');
+  }
+
+  get password(): AbstractControl {
+    return this.userForm.get('password');
+  }
+
+  get password2(): AbstractControl {
+    return this.userForm.get('password2');
   }
 }
