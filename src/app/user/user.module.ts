@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { UserComponent } from './user.component';
 import { SharedModule } from '../shared/shared.module';
 import { UserService } from './user.service';
+import { UserRoutingModule } from './user-routing.module';
 
 
 
@@ -10,9 +11,10 @@ import { UserService } from './user.service';
   providers: [UserService],
   imports: [
     SharedModule,
+    UserRoutingModule,
   ],
   exports: [
     UserComponent,
   ],
 })
-export class UserModule { }
+export class UserModule {}
