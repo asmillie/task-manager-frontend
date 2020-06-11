@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { User } from '../../user/user';
+import { User } from '../../user/class/user';
 import { Router } from '@angular/router';
 
 @Component({

@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { User } from './user';
+import { User } from './class/user';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { passwordMatchesValidator } from './password-matches.validator';
+import { passwordMatchesValidator } from './validator/password-matches.validator';
 
 @Component({
   selector: 'app-user',

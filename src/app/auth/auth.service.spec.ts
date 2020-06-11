@@ -4,7 +4,7 @@ import { mockHttpService } from '../../mocks/mock-http-service';
 import { mockAppRepositoryService } from '../../mocks/mock-app-repository-service';
 import { mockIUser, mockUser } from '../../mocks/mock-users';
 import { of, throwError } from 'rxjs';
-import { User } from '../user/user';
+import { User } from '../user/class/user';
 import { take, tap, switchMapTo } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 

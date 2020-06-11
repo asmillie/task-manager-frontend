@@ -6,7 +6,7 @@ import { ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { mockUserService } from '../../mocks/mock-user-service';
 import { SharedModule } from '../shared/shared.module';
 import { of, throwError, Subscription } from 'rxjs';
-import { User } from '../user/user';
+import { User } from '../user/class/user';
 
 const userStub = new User('Bob', 'bob@builder.com');
 

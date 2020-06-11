@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { User, IUser } from './user';
+import { User, IUser } from './class/user';
 import { Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { map, catchError } from 'rxjs/operators';
@@ -51,6 +51,10 @@ export class UserService {
         return emailExists;
       }),
     );
+  }
+
+  update$(): Observable<User | string> {
+    // TODO: implement
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {

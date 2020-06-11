@@ -1,7 +1,7 @@
 import { UserService } from './user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
-import { User } from './user';
+import { User } from './class/user';
 import { mockHttpService } from '../../mocks/mock-http-service';
 import { mockIUser } from '../../mocks/mock-users';
 

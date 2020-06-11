@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User } from '../user/user';
+import { User } from '../user/class/user';
 import { Observable, of } from 'rxjs';
 import { Url } from 'url';
 

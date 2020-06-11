@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AsyncValidator, AbstractControl, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
-import { UserService } from './user.service';
+import { UserService } from '../user.service';
 import { Observable, of, timer } from 'rxjs';
 import { map, catchError, switchMapTo, take, tap, debounceTime, switchMap } from 'rxjs/operators';
 

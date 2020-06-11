@@ -1,4 +1,4 @@
-import { IUser, User } from '../app/user/user';
+import { IUser, User } from '../app/user/class/user';
 
 export const mockIUser: IUser = {
     name: 'Bob',

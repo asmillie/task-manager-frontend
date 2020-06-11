@@ -2,9 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../user/user.service';
 import { Subscription } from 'rxjs';
-import { User } from '../user/user';
-import { EmailExistsValidator } from '../user/email-exists.validator';
-import { passwordMatchesValidator } from '../user/password-matches.validator';
+import { User } from '../user/class/user';
+import { EmailExistsValidator } from '../user/validator/email-exists.validator';
+import { passwordMatchesValidator } from '../user/validator/password-matches.validator';
 
 @Component({
   selector: 'app-signup',

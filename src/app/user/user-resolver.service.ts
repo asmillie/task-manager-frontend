@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Resolve, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { User } from './user';
+import { User } from './class/user';
 import { AuthService } from '../auth/auth.service';
 import { Observable, of, EMPTY } from 'rxjs';
 import { take, mergeMap } from 'rxjs/operators';

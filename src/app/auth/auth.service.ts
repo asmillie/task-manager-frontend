@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
-import { User, IUser } from '../user/user';
+import { User, IUser } from '../user/class/user';
 import { environment } from '../../environments/environment';
 import { map, catchError, tap, take } from 'rxjs/operators';
 import { AppRepositoryService } from '../data/app-repository.service';
