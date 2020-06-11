@@ -4,6 +4,7 @@ import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { User, IUser } from '../user/user';
 import { environment } from '../../environments/environment';
 import { map, catchError, tap, take } from 'rxjs/operators';
+import { AppRepositoryService } from '../data/app-repository.service';
 
 interface ILoginResponse {
   readonly auth_token: string;
@@ -21,7 +22,9 @@ export class AuthService {
 
   userSubject: BehaviorSubject<User>;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private appRepository: AppRepositoryService) {
     this.initUserSubject();
   }
 
@@ -39,6 +42,7 @@ export class AuthService {
       }),
       tap((user: User) => {
         this.userSubject.next(user);
+        this.appRepository.saveUser(user);
       }),
     );
   }
@@ -55,6 +59,18 @@ export class AuthService {
         return true;
       }),
     );
+  }
+
+  autoLogin(): void {
+    this.appRepository.getUser$().pipe(
+      take(1),
+    ).subscribe((user: User) => {
+      if (!user || !user.token) {
+        return;
+      }
+      // TODO: Token Expiry
+      this.userSubject.next(user);
+    });
   }
 
   private initUserSubject(): void {
