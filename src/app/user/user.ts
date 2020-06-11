@@ -9,7 +9,7 @@ export interface IUser {
     avatarUrl?: Url;
     token?: string;
 }
-
+// TODO: Token Expiry
 export class User {
     private _id: string;
     private _name: string;
