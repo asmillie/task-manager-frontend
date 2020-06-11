@@ -1,10 +1,9 @@
-import { TestBed } from '@angular/core/testing';
-
 import { UserService } from './user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
-import { IUser, User } from './user';
+import { User } from './user';
 import { mockHttpService } from '../../mocks/mock-http-service';
+import { mockIUser } from '../../mocks/mock-users';
 
 describe('UserService', () => {
   let service: UserService;
@@ -19,19 +18,13 @@ describe('UserService', () => {
 
   describe('signup$', () => {
     it('should return a User', (done) => {
-      const mockUser: IUser = {
-        name: 'Bob',
-        email: { address: 'bob@builder.com' },
-        _id: 'user-id',
-      };
+      mockHttpService.post.mockReturnValueOnce(of(mockIUser));
 
-      mockHttpService.post.mockReturnValueOnce(of(mockUser));
-
-      service.signup$(mockUser.name, mockUser.email.address, 'strongpass').subscribe(
+      service.signup$(mockIUser.name, mockIUser.email.address, 'strongpass').subscribe(
         (result: User) => {
           expect(result).toBeInstanceOf(User);
-          expect(result.name).toEqual(mockUser.name);
-          expect(result.email).toEqual(mockUser.email.address);
+          expect(result.name).toEqual(mockIUser.name);
+          expect(result.email).toEqual(mockIUser.email.address);
           done();
         }
       );
