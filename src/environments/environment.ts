@@ -10,7 +10,17 @@ export const environment = {
             signup: '/signup',
             emailExists: '/signup/emailExists',
             login: '/auth/login',
-            logout: '/auth/logout'
+            logout: '/auth/logout',
+            user: {
+              get: '/users/me',
+              patch: '/users/me',
+              delete: '/users/me',
+              avatar: {
+                post: '/users/me/avatar',
+                get: '/users/me/avatar.png',
+                delete: '/users/me/avatar'
+              }
+            }
       }
   }
 };
