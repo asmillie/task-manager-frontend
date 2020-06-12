@@ -4,4 +4,7 @@ import { mockUser } from './mock-users';
 
 export const mockAuthService = {
     userSubject: new BehaviorSubject<User>(mockUser),
+    login$: jest.fn(),
+    logout$: jest.fn(),
+    autoLogin: jest.fn(),
 };

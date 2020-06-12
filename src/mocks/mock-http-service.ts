@@ -1,3 +1,5 @@
 export const mockHttpService = {
-    post: jest.fn()
+    post: jest.fn(),
+    patch: jest.fn(),
+    delete: jest.fn()
 };
