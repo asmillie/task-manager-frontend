@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { passwordMatchesValidator } from './validator/password-matches.validator';
+import { UserUpdateOpts } from './class/user-update-opts';
+import { UserService } from './user.service';
 
 @Component({
   selector: 'app-user',
@@ -16,10 +18,12 @@ export class UserComponent implements OnInit, OnDestroy {
   user: User;
   userForm: FormGroup;
   isLoading = false;
+  errorMessage = '';
 
   constructor(
     private route: ActivatedRoute,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder,
+    private userService: UserService) { }
 
   ngOnInit(): void {
     this.initUser();
@@ -33,7 +37,24 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
+    this.isLoading = true;
     console.log(this.userForm);
+
+    if (this.userForm.status !== 'VALID') {
+      return;
+    }
+
+    const userUpdateOpts = this.getUserUpdateOpts();
+    if (!userUpdateOpts) {
+      return;
+    }
+
+    const userUpdate = this.userService.update$(userUpdateOpts, this.user.token).subscribe({
+      complete: () => { this.isLoading = false; },
+      error: (err) => { this.errorMessage = err; },
+    });
+
+    this.userSub.add(userUpdate);
   }
 
   private initUser(): void {
@@ -80,6 +101,31 @@ export class UserComponent implements OnInit, OnDestroy {
     });
   }
 
+  private getUserUpdateOpts(): UserUpdateOpts | null {
+    const name = this.name.dirty ? this.name.value : undefined;
+    const email = this.email.dirty ? this.email.value : undefined;
+    const password = (this.password.dirty && this.password === this.password2) ? this.password.value : undefined;
+
+    const updateOpts: UserUpdateOpts = {};
+    if (name) {
+      updateOpts.name = name;
+    }
+
+    if (email) {
+      updateOpts.email = email;
+    }
+
+    if (password) {
+      updateOpts.password = password;
+    }
+
+    if (Object.keys(updateOpts).length === 0) {
+      return null;
+    }
+
+    return updateOpts;
+  }
+
   get name(): AbstractControl {
     return this.userForm.get('name');
   }
@@ -95,4 +141,6 @@ export class UserComponent implements OnInit, OnDestroy {
   get password2(): AbstractControl {
     return this.userForm.get('password2');
   }
+
+  
 }
