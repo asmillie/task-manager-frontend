@@ -1,4 +1,8 @@
-<form class="my-2 w-75" [formGroup]="userForm" (ngOnSubmit)="onSubmit()">
+<h3>Manage Profile</h3>
+<form class="my-2 w-75" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <div class="alert alert-danger" *ngIf="errorMessage !== ''">
+        <p>{{ errorMessage }}</p>
+    </div>
     <div class="form-group">
         <label for="name">Name</label>
         <input
@@ -35,7 +39,6 @@
             class="form-control"
             id="password"
             formControlName="password"
-            required
             minlength="7"
             aria-describedby="passwordHelp"
             [class.is-valid]="password.valid && password.touched"
@@ -53,7 +56,6 @@
             class="form-control"
             id="password2"
             formControlName="password2"
-            required
             minlength="7"
             aria-describedby="passwordHelp"
             [class.is-valid]="password2.valid && password2.touched && userForm.errors?.passwordMatches !== false"
@@ -66,4 +68,6 @@
             <p>Password fields do not match</p>
         </div>
     </div>
+    <button type="submit" class="btn btn-primary" [attr.disabled]="(isLoading || userForm.status !== 'VALID') ? true : null">Submit</button>
+    <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 </form>
