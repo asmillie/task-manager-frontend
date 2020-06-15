@@ -2,10 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from './class/user';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl, Form } from '@angular/forms';
 import { passwordMatchesValidator } from './validator/password-matches.validator';
 import { UserUpdateOpts } from './class/user-update-opts';
 import { UserService } from './user.service';
+import { debounce, debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user',
@@ -28,6 +29,7 @@ export class UserComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initUser();
     this.initForm();
+    this.initConditionalValidators();
   }
 
   ngOnDestroy(): void {
@@ -40,7 +42,8 @@ export class UserComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     console.log(this.userForm);
 
-    if (this.userForm.status !== 'VALID') {
+    if (this.userForm.status !== 'VALID' || !this.userForm.dirty) {
+      this.isLoading = false;
       return;
     }
 
@@ -50,8 +53,11 @@ export class UserComponent implements OnInit, OnDestroy {
     }
 
     const userUpdate = this.userService.update$(userUpdateOpts, this.user.token).subscribe({
-      complete: () => { this.isLoading = false; },
-      error: (err) => { this.errorMessage = err; },
+      next: () => { this.isLoading = false; },
+      error: (err) => {
+        this.isLoading = false;
+        this.errorMessage = err;
+      },
     });
 
     this.userSub.add(userUpdate);
@@ -69,22 +75,17 @@ export class UserComponent implements OnInit, OnDestroy {
       name: [{
         value: this.user.name,
         disabled: this.isLoading,
-      }, {
-          validators: [Validators.required]
       }],
       email: [{
         value: this.user.email,
         disabled: this.isLoading,
       }, {
-        validators: [Validators.required, Validators.email]
+        validators: [Validators.email]
       }],
       password: [
         {
           value: '',
           disabled: this.isLoading,
-        },
-        {
-          validators: [ Validators.required, Validators.min(7) ],
         },
       ],
       password2: [
@@ -92,13 +93,32 @@ export class UserComponent implements OnInit, OnDestroy {
           value: '',
           disabled: this.isLoading,
         },
-        {
-          validators: [ Validators.required, Validators.min(7) ],
-        },
       ],
     }, {
       validators: passwordMatchesValidator
     });
+  }
+
+  private initConditionalValidators(): void {
+    const formSub = this.userForm.valueChanges.pipe(
+      debounceTime(1000)
+    ).subscribe(_ => {
+      const password = this.password;
+      const password2 = this.password2;
+
+      if (password.dirty || password2.dirty) {
+        password.setValidators([ Validators.required, Validators.min(7) ]);
+        password2.setValidators([ Validators.required, Validators.min(7) ]);
+      } else {
+        password.clearValidators();
+        password2.clearValidators();
+      }
+
+      password.updateValueAndValidity();
+      password2.updateValueAndValidity();
+    });
+
+    this.userSub.add(formSub);
   }
 
   private getUserUpdateOpts(): UserUpdateOpts | null {
