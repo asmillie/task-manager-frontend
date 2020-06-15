@@ -38,4 +38,8 @@ export class AppRepositoryService {
         userData._avatarUrl)
     );
   }
+
+  deleteUser(): void {
+    localStorage.removeItem(this.USER_KEY);
+  }
 }
