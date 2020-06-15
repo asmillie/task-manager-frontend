@@ -56,6 +56,7 @@ export class AuthService {
       catchError(this.handleError),
       map(_ => {
         this.userSubject.next(null);
+        this.appRepository.deleteUser();
         return true;
       }),
     );
