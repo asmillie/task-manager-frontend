@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AsyncValidator, AbstractControl, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
 import { UserService } from '../user.service';
-import { Observable, of, timer } from 'rxjs';
-import { map, catchError, switchMapTo, take, tap, debounceTime, switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, catchError, take, debounceTime, switchMap } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root',
@@ -12,6 +12,10 @@ export class EmailExistsValidator {
 
     validate(): AsyncValidatorFn {
         return (ctrl: AbstractControl): Observable<ValidationErrors | null> => {
+            if (!ctrl || ctrl.pristine) {
+                return of(null);
+            }
+
             return ctrl.valueChanges.pipe(
                 debounceTime(500),
                 take(1),
