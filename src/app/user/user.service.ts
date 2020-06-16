@@ -61,7 +61,7 @@ export class UserService {
   update$(userUpdateOpts: UserUpdateOpts, token: string): Observable<User | string> {
     return this.http.patch<IUser>(
       this.API_URL + this.USER_UPDATE,
-      { userUpdateOpts }
+      userUpdateOpts
     ).pipe(
       catchError(this.handleError),
       map((user: IUser) => {
@@ -84,7 +84,7 @@ export class UserService {
       err = `An error occurred: ${error.error.message}`;
     } else {
       // TODO: backend returned error
-      err = `API Error: ${error.error}, Status Code: ${error.status}`;
+      err = `API Error: ${JSON.stringify(error.error)}, Status Code: ${error.status}`;
     }
 
     return throwError(err);
