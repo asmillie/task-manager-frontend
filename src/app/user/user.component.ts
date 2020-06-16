@@ -105,9 +105,9 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   private getUserUpdateOpts(): UserUpdateOpts | null {
-    const name = this.name.dirty ? this.name.value : undefined;
-    const email = this.email.dirty ? this.email.value : undefined;
-    const password = (this.password.dirty && this.password === this.password2) ? this.password.value : undefined;
+    const name = (this.name.dirty && this.name.valid) ? this.name.value : undefined;
+    const email = (this.email.dirty && this.email.valid) ? this.email.value : undefined;
+    const password = (this.password.dirty && this.password.valid && this.password === this.password2) ? this.password.value : undefined;
 
     const updateOpts: UserUpdateOpts = {};
     if (name) {
@@ -115,7 +115,9 @@ export class UserComponent implements OnInit, OnDestroy {
     }
 
     if (email) {
-      updateOpts.email = email;
+      updateOpts.email = {
+        address: email
+      };
     }
 
     if (password) {
