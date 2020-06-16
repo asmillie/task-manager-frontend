@@ -11,9 +11,9 @@
             id="name" 
             formControlName="name"
             required
-            [class.is-valid]="name.valid && name.touched"
-            [class.is-invalid]="name.invalid && name.touched">
-        <div class="invalid-feedback" *ngIf="name.touched && name.invalid && name.errors.required">
+            [class.is-valid]="name.valid && name.dirty"
+            [class.is-invalid]="name.invalid && name.dirty">
+        <div class="invalid-feedback" *ngIf="name.dirty && name.invalid && name.errors.required">
             Name is required
         </div>
     </div>
@@ -25,9 +25,9 @@
             id="email"
             formControlName="email"
             required
-            [class.is-valid]="email.valid && email.touched"
-            [class.is-invalid]="email.invalid && email.touched">
-        <div class="invalid-feedback" *ngIf="email.touched && email.invalid && email.errors">
+            [class.is-valid]="email.valid && email.dirty"
+            [class.is-invalid]="email.invalid && email.dirty">
+        <div class="invalid-feedback" *ngIf="email.dirty && email.invalid && email.errors">
             <p *ngIf="email.errors.required">Email Address is required</p>
             <p *ngIf="email.errors.emailExists">Email Address is already in use</p>
         </div>
@@ -41,10 +41,10 @@
             formControlName="password"
             minlength="7"
             aria-describedby="passwordHelp"
-            [class.is-valid]="password.valid && password.touched"
-            [class.is-invalid]="password.invalid && password.touched">
+            [class.is-valid]="password.valid && password.dirty"
+            [class.is-invalid]="password.invalid && password.dirty">
         <small id="passwordHelp" class="form-text text-muted">Password must be at least 7 characters</small>
-        <div class="invalid-feedback" *ngIf="password.touched && password.invalid && password.errors">
+        <div class="invalid-feedback" *ngIf="password.dirty && password.invalid && password.errors">
             <p *ngIf="password.errors.required">Password is required</p>
             <p *ngIf="password.errors.minlength">Password must be at least 7 characters</p>
         </div>
@@ -58,13 +58,13 @@
             formControlName="password2"
             minlength="7"
             aria-describedby="passwordHelp"
-            [class.is-valid]="password2.valid && password2.touched && userForm.errors?.passwordMatches !== false"
-            [class.is-invalid]="password2.touched && (password2.invalid || userForm.errors?.passwordMatches === false)">
-        <div class="invalid-feedback" *ngIf="password2.touched && password2.invalid && password2.errors">
+            [class.is-valid]="password2.valid && password2.dirty && userForm.errors?.passwordMatches !== false"
+            [class.is-invalid]="password2.dirty && (password2.invalid || userForm.errors?.passwordMatches === false)">
+        <div class="invalid-feedback" *ngIf="password2.dirty && password2.invalid && password2.errors">
             <p *ngIf="password2.errors.required">Password is required</p>
             <p *ngIf="password2.errors.minlength">Password must be at least 7 characters</p>
         </div>
-        <div class="invalid-feedback" *ngIf="userForm.errors?.passwordMatches === false && password2.touched">
+        <div class="invalid-feedback" *ngIf="userForm.errors?.passwordMatches === false && password2.dirty">
             <p>Password fields do not match</p>
         </div>
     </div>

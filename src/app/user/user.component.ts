@@ -6,7 +6,8 @@ import { FormGroup, FormBuilder, Validators, AbstractControl, Form } from '@angu
 import { passwordMatchesValidator } from './validator/password-matches.validator';
 import { UserUpdateOpts } from './class/user-update-opts';
 import { UserService } from './user.service';
-import { debounce, debounceTime } from 'rxjs/operators';
+import { debounce, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { EmailExistsValidator } from './validator/email-exists.validator';
 
 @Component({
   selector: 'app-user',
@@ -24,12 +25,12 @@ export class UserComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private userService: UserService) { }
+    private userService: UserService,
+    private emailValidator: EmailExistsValidator) { }
 
   ngOnInit(): void {
     this.initUser();
     this.initForm();
-    this.initConditionalValidators();
   }
 
   ngOnDestroy(): void {
@@ -75,50 +76,32 @@ export class UserComponent implements OnInit, OnDestroy {
       name: [{
         value: this.user.name,
         disabled: this.isLoading,
+      }, {
+        validators: [Validators.required]
       }],
       email: [{
         value: this.user.email,
         disabled: this.isLoading,
       }, {
-        validators: [Validators.email]
+        validators: [Validators.required, Validators.email],
+        asyncValidators: this.emailValidator.validate(),
+        updateOn: 'blur',
       }],
-      password: [
-        {
+      password: [{
           value: '',
           disabled: this.isLoading,
-        },
-      ],
-      password2: [
-        {
+      }, {
+        validators: Validators.min(7)
+      }],
+      password2: [{
           value: '',
           disabled: this.isLoading,
-        },
-      ],
+      }, {
+        validators: Validators.min(7)
+      }],
     }, {
       validators: passwordMatchesValidator
     });
-  }
-
-  private initConditionalValidators(): void {
-    const formSub = this.userForm.valueChanges.pipe(
-      debounceTime(1000)
-    ).subscribe(_ => {
-      const password = this.password;
-      const password2 = this.password2;
-
-      if (password.dirty || password2.dirty) {
-        password.setValidators([ Validators.required, Validators.min(7) ]);
-        password2.setValidators([ Validators.required, Validators.min(7) ]);
-      } else {
-        password.clearValidators();
-        password2.clearValidators();
-      }
-
-      password.updateValueAndValidity();
-      password2.updateValueAndValidity();
-    });
-
-    this.userSub.add(formSub);
   }
 
   private getUserUpdateOpts(): UserUpdateOpts | null {
