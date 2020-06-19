@@ -39,13 +39,12 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.isLoading = true;
 
-    console.log(this.loginForm);
     const email = this.email.value;
     const password = this.password.value;
 
     this.loginSub = this.authService
       .login$(email, password)
-      .subscribe((user: User) => {
+      .subscribe(_ => {
         this.isLoading = false;
         this.router.navigate(['/user']);
       }, (err) => {

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from './class/user';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, AbstractControl, Form } from '@angular/forms';
 import { passwordMatchesValidator } from './validator/password-matches.validator';
 import { UserUpdateOpts } from './class/user-update-opts';
@@ -26,7 +26,8 @@ export class UserComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private userService: UserService,
-    private emailValidator: EmailExistsValidator) { }
+    private emailValidator: EmailExistsValidator,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.initUser();
@@ -41,7 +42,6 @@ export class UserComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     this.isLoading = true;
-    console.log(this.userForm);
 
     if (this.userForm.status !== 'VALID' || !this.userForm.dirty) {
       this.isLoading = false;
@@ -67,6 +67,9 @@ export class UserComponent implements OnInit, OnDestroy {
   private initUser(): void {
     this.userSub = this.route.data.subscribe(
       (data: { user: User }) => {
+        if (!data.user) {
+          this.router.createUrlTree(['/']);
+        }
         this.user = data.user;
       });
   }
@@ -107,7 +110,10 @@ export class UserComponent implements OnInit, OnDestroy {
   private getUserUpdateOpts(): UserUpdateOpts | null {
     const name = (this.name.dirty && this.name.valid) ? this.name.value : undefined;
     const email = (this.email.dirty && this.email.valid) ? this.email.value : undefined;
-    const password = (this.password.dirty && this.password.valid && this.password === this.password2) ? this.password.value : undefined;
+    const password = (
+      this.password.dirty &&
+      this.password.valid &&
+      this.password.value === this.password2.value) ? this.password.value : undefined;
 
     const updateOpts: UserUpdateOpts = {};
     if (name) {
