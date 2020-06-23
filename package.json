@@ -8,7 +8,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "ng lint",
-    "e2e": "ng e2e"    
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -24,6 +24,7 @@
     "@ng-bootstrap/ng-bootstrap": "^6.1.0",
     "@types/config": "0.0.36",
     "bootstrap": "^4.4.0",
+    "class-validator": "^0.12.2",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
