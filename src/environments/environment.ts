@@ -20,7 +20,8 @@ export const environment = {
                 get: '/users/me/avatar.png',
                 delete: '/users/me/avatar'
               }
-            }
+            },
+            tasks: '/tasks'
       }
   }
 };
