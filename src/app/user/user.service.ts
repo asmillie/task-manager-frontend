@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 import { map, catchError, tap, switchMap, take } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { UserUpdateOpts } from './class/user-update-opts';
+import { ErrorHandlingService } from '../error-handling.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService) {}
+    private authService: AuthService,
+    private errorHandling: ErrorHandlingService) {}
 
   signup$(name: string, email: string, password: string): Observable<User | string> {
     return this.http.post<IUser>(
@@ -33,7 +35,7 @@ export class UserService {
         password,
       }
     ).pipe(
-      catchError(this.handleError),
+      catchError(this.errorHandling.handleHttpError$),
       map((user) => {
         if (user) {
           return new User(user.name, user.email.address, user._id);
@@ -51,7 +53,7 @@ export class UserService {
         email,
       }
     ).pipe(
-      catchError(this.handleError),
+      catchError(this.errorHandling.handleHttpError$),
       map(({emailExists}) => {
         return emailExists;
       }),
@@ -63,7 +65,7 @@ export class UserService {
       this.API_URL + this.USER_UPDATE,
       userUpdateOpts
     ).pipe(
-      catchError(this.handleError),
+      catchError(this.errorHandling.handleHttpError$),
       map((user: IUser) => {
         if (!user) {
           return null;
@@ -75,18 +77,5 @@ export class UserService {
         this.authService.userSubject.next(user);
       }),
     );
-  }
-
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    let err = '';
-    if (error.error instanceof ErrorEvent) {
-      // TODO: Handle client / network error
-      err = `An error occurred: ${error.error.message}`;
-    } else {
-      // TODO: backend returned error
-      err = `API Error: ${JSON.stringify(error.error)}, Status Code: ${error.status}`;
-    }
-
-    return throwError(err);
   }
 }

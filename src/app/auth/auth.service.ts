@@ -5,6 +5,7 @@ import { User, IUser } from '../user/class/user';
 import { environment } from '../../environments/environment';
 import { map, catchError, tap, take } from 'rxjs/operators';
 import { AppRepositoryService } from '../data/app-repository.service';
+import { ErrorHandlingService } from '../error-handling.service';
 
 interface ILoginResponse {
   readonly auth_token: string;
@@ -24,7 +25,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private appRepository: AppRepositoryService) {
+    private appRepository: AppRepositoryService,
+    private errorHandling: ErrorHandlingService) {
     this.initUserSubject();
   }
 
@@ -36,7 +38,7 @@ export class AuthService {
         password,
       }
     ).pipe(
-      catchError(this.handleError),
+      catchError(this.errorHandling.handleHttpError$),
       map((res: ILoginResponse) => {
         return new User(res.updatedUser.name, res.updatedUser.email.address, res.updatedUser._id, res.auth_token);
       }),
@@ -53,7 +55,7 @@ export class AuthService {
       {}
     ).pipe(
       take(1),
-      catchError(this.handleError),
+      catchError(this.errorHandling.handleHttpError$),
       map(_ => {
         this.userSubject.next(null);
         this.appRepository.deleteUser();
@@ -76,18 +78,5 @@ export class AuthService {
 
   private initUserSubject(): void {
     this.userSubject = new BehaviorSubject<User>(null);
-  }
-
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    let err = '';
-    if (error.error instanceof ErrorEvent) {
-      // TODO: Handle client / network error
-      err = `An error occurred: ${error.error.message}`;
-    } else {
-      // TODO: backend returned error
-      err = `API Error: ${error.error.message}, Status Code: ${error.status}`;
-    }
-
-    return throwError(err);
   }
 }

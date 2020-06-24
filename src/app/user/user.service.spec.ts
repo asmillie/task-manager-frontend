@@ -7,6 +7,7 @@ import { mockIUser, mockUser } from '../../mocks/mock-users';
 import { mockAuthService } from '../../mocks/mock-auth-service';
 import { take } from 'rxjs/operators';
 import { UserUpdateOpts } from './class/user-update-opts';
+import { mockErrorHandlingService } from '../../mocks/mock-error-handling-service';
 
 const httpError = new HttpErrorResponse({ error: 'Internal Server Error', status: 500 });
 
@@ -16,7 +17,8 @@ describe('UserService', () => {
   beforeEach(() => {
     service = new UserService(
       mockHttpService as any,
-      mockAuthService as any);
+      mockAuthService as any,
+      mockErrorHandlingService as any);
   });
 
   it('should be created', () => {
@@ -37,12 +39,13 @@ describe('UserService', () => {
       );
     });
 
-    it('should handle error returned by http response', (done) => {
+    it('should return error recieved from error handling service', (done) => {
       mockHttpService.post.mockReturnValueOnce(throwError(httpError));
+      mockErrorHandlingService.handleHttpError$.mockReturnValueOnce(throwError('error'));
 
       service.signup$('name', 'email', 'password').subscribe({
         error: (err) => {
-          expect(err).toEqual(`API Error: ${httpError.error}, Status Code: ${httpError.status}`);
+          expect(err).toEqual('error');
           done();
         }
       });
@@ -68,12 +71,13 @@ describe('UserService', () => {
       });
     });
 
-    it('should handle error returned by http response', (done) => {
+    it('should return error received from error handling service', (done) => {
       mockHttpService.post.mockReturnValueOnce(throwError(httpError));
+      mockErrorHandlingService.handleHttpError$.mockReturnValueOnce(throwError('error'));
 
       service.checkEmailExists$('email').subscribe({
         error: (err) => {
-          expect(err).toEqual(`API Error: ${httpError.error}, Status Code: ${httpError.status}`);
+          expect(err).toEqual('error');
           done();
         }
       });
@@ -131,17 +135,6 @@ describe('UserService', () => {
         expect(user.name).toEqual(name);
         expect(user.email).toEqual(address);
         done();
-      });
-    });
-
-    it('should handle error returned by http response', (done) => {
-      mockHttpService.patch.mockReturnValueOnce(throwError(httpError));
-
-      service.update$({ name: 'Jane' }, 'token').subscribe({
-        error: (err) => {
-          expect(err).toEqual(`API Error: ${httpError.error}, Status Code: ${httpError.status}`);
-          done();
-        }
       });
     });
   });

@@ -7,6 +7,7 @@ import { of, throwError } from 'rxjs';
 import { User } from '../user/class/user';
 import { take, tap, switchMapTo } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
+import { mockErrorHandlingService } from '../../mocks/mock-error-handling-service';
 
 const error = { error: { message: 'Internal Server Error' }, status: 500 };
 const httpError =  new HttpErrorResponse(error);
@@ -18,6 +19,7 @@ describe('AuthService', () => {
     service = new AuthService(
       mockHttpService as any,
       mockAppRepositoryService as any,
+      mockErrorHandlingService as any,
     );
   });
 
@@ -82,13 +84,14 @@ describe('AuthService', () => {
     });
 
     describe('unsuccessful login', () => {
-      it('should handle error returned by http response', (done) => {
+      it('should return error recieved from error handling service', (done) => {
         mockHttpService.post.mockReturnValueOnce(throwError(httpError));
+        mockErrorHandlingService.handleHttpError$.mockReturnValueOnce(throwError('error'))
 
         service.login$(mockIUser.email.address, 'password')
           .subscribe({
             error: (err) => {
-              expect(err).toEqual(`API Error: ${httpError.error.message}, Status Code: ${httpError.status}`);
+              expect(err).toEqual('error');
               done();
             }
           });
@@ -109,12 +112,13 @@ describe('AuthService', () => {
       });
     });
 
-    it('should handle error returned by http response', (done) => {
+    it('should return error received from error handling service', (done) => {
       mockHttpService.post.mockReturnValueOnce(throwError(httpError));
+      mockErrorHandlingService.handleHttpError$.mockReturnValueOnce(throwError('error'))
 
       service.logout$().subscribe({
         error: (err) => {
-          expect(err).toEqual(`API Error: ${httpError.error.message}, Status Code: ${httpError.status}`);
+          expect(err).toEqual('error');
           done();
         }
       });
