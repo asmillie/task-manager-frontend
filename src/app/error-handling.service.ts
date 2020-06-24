@@ -10,14 +10,12 @@ export class ErrorHandlingService {
 
   constructor() { }
 
-  handleHttpError$(error: HttpErrorResponse): Observable<never> {
+  handleHttpError$(response: HttpErrorResponse): Observable<never> {
     let err = '';
-    if (error.error instanceof ErrorEvent) {
-      // TODO: Handle client / network error
-      err = `An error occurred: ${error.error.message}`;
+    if (response.error instanceof ErrorEvent) {
+      err = `An error occurred: ${response.error.message}`;
     } else {
-      // TODO: backend returned error
-      err = `API Error: ${error.error.message}, Status Code: ${error.status}`;
+      err = `API Error: ${response.error.message}, Status Code: ${response.status}`;
     }
 
     return throwError(err);
@@ -25,7 +23,11 @@ export class ErrorHandlingService {
 
   handleValidationError$(validationErrors: ValidationError[]): Observable<never> {
     let err = '';
-    validationErrors.forEach(({constraints}) => err += `${constraints}\n`);
+    validationErrors.forEach(({property, constraints}) => {
+      for (const [key, value] of Object.entries(constraints)) {
+        err += `${property}: ${value}\n`;
+      }
+    });
     return throwError(err);
   }
 }
