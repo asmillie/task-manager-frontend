@@ -1,19 +1,11 @@
-import { IsOptional, IsInt, IsPositive, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
-import { TaskSortOption } from './task-sort-option';
-
-export class TaskQueryOptions {
-    @IsOptional()
-    @IsInt()
-    @IsPositive()
+export interface TaskQueryOptions {
     limit?: number;
-
-    @IsOptional()
-    @IsInt()
     skip?: number;
-
-    @IsOptional()
-    @Type(() => TaskSortOption)
-    @ValidateNested()
-    sort?: TaskSortOption[];
+    sort?: {
+        field: string;
+        direction: string;
+    };
 }
+
+export const SORT_FIELDS = ['completed', 'createdAt', 'updatedAt', 'description'];
+export const SORT_DIR = ['asc', 'desc'];
