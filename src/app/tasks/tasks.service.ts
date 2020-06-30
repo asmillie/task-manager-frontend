@@ -30,7 +30,6 @@ export class TasksService {
     }
 
     return this.http.post<ITask[]>(url, tqo).pipe(
-      catchError(this.errorHandling.handleHttpError$),
       map((response: ITask[]) => {
         if (!response) {
           return null;
@@ -44,6 +43,7 @@ export class TasksService {
 
         return tasks;
       }),
+      catchError(err => this.errorHandling.handleHttpError$(err)),
     );
   }
 
