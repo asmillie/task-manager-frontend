@@ -4,7 +4,7 @@ export interface TaskQueryOptions {
     sort?: {
         field: string;
         direction: string;
-    };
+    }[];
 }
 
 export const SORT_FIELDS = ['completed', 'createdAt', 'updatedAt', 'description'];
