@@ -13,7 +13,8 @@ import { ErrorHandlingService } from '../error-handling.service';
 export class TasksService {
 
   private API_URL = environment.taskApi.url;
-  private TASKS_ENDPOINT = environment.taskApi.endpoint.tasks;
+  private GET_TASKS = environment.taskApi.endpoint.tasks.get;
+  private ADD_TASK = environment.taskApi.endpoint.tasks.add;
 
   tasksSubject: BehaviorSubject<Task>;
 
@@ -24,7 +25,7 @@ export class TasksService {
   }
 
   getAll$(completed?: boolean, tqo?: TaskQueryOptions): Observable<Task[]> {
-    let url = this.API_URL + this.TASKS_ENDPOINT;
+    let url = this.API_URL + this.GET_TASKS;
     if (completed) {
       url += `?completed=${completed}`;
     }
@@ -42,6 +43,22 @@ export class TasksService {
         });
 
         return tasks;
+      }),
+      catchError(err => this.errorHandling.handleHttpError$(err)),
+    );
+  }
+
+  add$(task: Task): Observable<Task> {
+    return this.http.post<ITask>(
+      this.API_URL + this.ADD_TASK,
+      task
+    ).pipe(
+      map((res: ITask) => {
+        if (!res) {
+          return null;
+        }
+
+        return new Task(res.owner, res.description, res.completed, res.createdAt, res.updatedAt, res._id);
       }),
       catchError(err => this.errorHandling.handleHttpError$(err)),
     );
