@@ -15,7 +15,7 @@ export class Task {
     readonly _createdAt: Date;
     readonly _updatedAt?: Date;
 
-    constructor(owner: string, description: string, completed: boolean, createdAt: Date, updatedAt?: Date, id?: string) {
+    constructor(owner: string, description: string, completed: boolean, createdAt?: Date, updatedAt?: Date, id?: string) {
         this._owner = owner;
         this._description = description;
         this._completed = completed;
