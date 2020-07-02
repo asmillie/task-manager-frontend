@@ -15,17 +15,13 @@ export class Task {
     readonly _createdAt: Date;
     readonly _updatedAt?: Date;
 
-    constructor(owner: string, description: string, completed: boolean, createdAt?: Date, updatedAt?: Date, id?: string) {
-        this._owner = owner;
+    constructor(description: string, completed: boolean, owner?: string, id?: string, createdAt?: Date, updatedAt?: Date) {
         this._description = description;
         this._completed = completed;
-        this._createdAt = createdAt;
-        if (updatedAt) {
-            this._updatedAt = updatedAt;
-        }
-        if (id) {
-            this._id = id;
-        }
+        this._owner = this.owner ? this.owner : undefined;
+        this._id = this.id ? this.id : undefined;
+        this._createdAt = this.createdAt ? this.createdAt : undefined;
+        this._updatedAt = this.updatedAt ? this.updatedAt : undefined;
     }
 
     get owner(): string  {
