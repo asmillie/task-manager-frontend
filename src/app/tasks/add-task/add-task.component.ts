@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TasksService } from '../tasks.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Task } from '../task';
@@ -16,24 +16,21 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   user: User;
   addTaskForm: FormGroup;
   isLoading: boolean;
-  subscriptions: Subscription;
+  addTaskSub: Subscription;
   errorMessage = '';
 
   constructor(
     private tasksService: TasksService,
-    private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.subscriptions = new Subscription();
-    this.initUser();
     this.initForm();
   }
 
   ngOnDestroy(): void {
-    if (this.subscriptions) {
-      this.subscriptions.unsubscribe();
+    if (this.addTaskSub) {
+      this.addTaskSub.unsubscribe();
     }
   }
 
@@ -44,9 +41,9 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       return;
     }
     console.log(this.addTaskForm);
-    // TODO: Get owner id from resolver service
-    const task = new Task(this.user.id, this.description.value, this.completed.value);
-    const addTaskSub = this.tasksService.add$(task).subscribe(newTask => {
+
+    const task = new Task(this.description.value, this.completed.value);
+    this.addTaskSub = this.tasksService.add$(task).subscribe(newTask => {
       this.isLoading = false;
       if (!newTask) {
         this.errorMessage = 'An error occurred, please try again.';
@@ -57,20 +54,6 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       this.isLoading = false;
       this.errorMessage = err;
     });
-
-    this.subscriptions.add(addTaskSub);
-  }
-
-  private initUser(): void {
-    const userSub = this.route.data.subscribe(
-      (data: { user: User }) => {
-        if (!data.user) {
-          this.router.createUrlTree(['/']);
-        }
-        this.user = data.user;
-      });
-
-    this.subscriptions.add(userSub);
   }
 
   private initForm(): void {
