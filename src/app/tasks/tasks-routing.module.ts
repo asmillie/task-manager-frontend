@@ -8,10 +8,7 @@ const routes: Routes = [
   {
     path: '',
     canActivate: [AuthGuard],
-    component: TasksComponent,
-    resolve: {
-      user: UserResolverService,
-    }
+    component: TasksComponent
   }
 ];
 
