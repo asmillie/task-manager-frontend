@@ -38,7 +38,7 @@ export class TasksService {
 
         const tasks: Task[] = [];
         response.forEach(iTask => {
-          const task = new Task(iTask.owner, iTask.description, iTask.completed, iTask.createdAt, iTask.updatedAt, iTask._id);
+          const task = new Task(iTask.description, iTask.completed, iTask.owner, iTask._id, iTask.createdAt, iTask.updatedAt);
           tasks.push(task);
         });
 
@@ -51,14 +51,17 @@ export class TasksService {
   add$(task: Task): Observable<Task> {
     return this.http.post<ITask>(
       this.API_URL + this.ADD_TASK,
-      task
+      {
+        description: task.description,
+        completed: task.completed
+      }
     ).pipe(
       map((res: ITask) => {
         if (!res) {
           return null;
         }
 
-        return new Task(res.owner, res.description, res.completed, res.createdAt, res.updatedAt, res._id);
+        return new Task(res.description, res.completed, res.owner, res._id, res.createdAt, res.updatedAt);
       }),
       catchError(err => this.errorHandling.handleHttpError$(err)),
     );
