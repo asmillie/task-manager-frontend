@@ -21,7 +21,10 @@ export const environment = {
                 delete: '/users/me/avatar'
               }
             },
-            tasks: '/tasks'
+            tasks: {
+              get: '/tasks/search',
+              add: '/tasks'
+            }
       }
   }
 };
