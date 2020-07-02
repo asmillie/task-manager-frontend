@@ -1,1 +1,29 @@
-<p>tasks works!</p>
+<div class="col">
+    <div class="row">
+        <h3>Tasks</h3>
+    </div>
+    <div class="row">
+        <app-add-task></app-add-task>
+    </div>
+    <div class="row">
+        <table>
+            <thead>
+                <th scope="col">Description</th>
+                <th scope="col">Created</th>
+                <th scope="col">Updated</th>
+                <th scope="col">Completed</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let task of tasks">
+                    <td>{{ task.description }}</td>
+                    <td>{{ task.createdAt }}</td>
+                    <td>{{ task.updatedAt }}</td>
+                    <td>{{ task.completed }}</td>
+                </tr>
+                <tr *ngIf="!tasks || tasks.length <= 0">
+                    No tasks found.
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
