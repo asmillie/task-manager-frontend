@@ -1,1 +1,31 @@
-<p>add-task works!</p>
+<form [formGroup]="addTaskForm" (ngSubmit)="onSubmit()" class="w-100">
+    <div class="form-row align-items-end">
+        <div class="col-6 my-1">
+            <input
+                type="text"
+                placeholder="Description"
+                class="form-control"
+                formControlName="description"
+                [class.is-valid]="description.touched && description.valid"
+                [class.invalid]="description.touched && description.invalid"
+                required>
+        </div>
+        <div class="col-auto my-1">
+            <div class="form-check mb-2">
+                <input
+                    type="checkbox"
+                    class="form-check-input"
+                    formControlName="completed">
+                <label class="form-check-label">Completed</label>
+            </div>            
+        </div>
+        <div class="col-auto my-1">
+            <button type="submit" class="btn btn-success" [attr.disabled]="isLoading ? true : null">Add</button>
+        </div>
+    </div>
+    <div class="row" *ngIf="addTaskForm.touched && addTaskForm.status !== 'VALID'">        
+        <div class="col">
+            <p *ngIf="description.errors.required" class="text-danger">Task description is required</p>
+        </div>
+    </div>
+</form>
