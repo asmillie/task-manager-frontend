@@ -18,10 +18,18 @@ export class Task {
     constructor(description: string, completed: boolean, owner?: string, id?: string, createdAt?: Date, updatedAt?: Date) {
         this._description = description;
         this._completed = completed;
-        this._owner = this.owner ? this.owner : undefined;
-        this._id = this.id ? this.id : undefined;
-        this._createdAt = this.createdAt ? this.createdAt : undefined;
-        this._updatedAt = this.updatedAt ? this.updatedAt : undefined;
+        if (owner) {
+            this._owner = owner;
+        }
+        if (id) {
+            this._id = id;
+        }
+        if (createdAt && createdAt instanceof Date) {
+            this._createdAt = createdAt;
+        }
+        if (updatedAt && updatedAt instanceof Date) {
+            this._updatedAt = updatedAt;
+        }
     }
 
     get owner(): string  {
