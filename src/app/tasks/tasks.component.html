@@ -6,7 +6,7 @@
         <app-add-task class="w-100"></app-add-task>
     </div>
     <div class="row">
-        <table>
+        <table class="table table-striped w-75">
             <thead>
                 <th scope="col">Description</th>
                 <th scope="col">Created</th>
@@ -18,7 +18,15 @@
                     <td>{{ task.description }}</td>
                     <td>{{ task.createdAt }}</td>
                     <td>{{ task.updatedAt }}</td>
-                    <td>{{ task.completed }}</td>
+                    <td>
+                        <svg *ngIf="task.completed" width="32px" height="32px" viewBox="0 0 16 16" class="bi bi-check2 text-success" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                        </svg>
+                        <svg *ngIf="!task.completed" width="32px" height="32px" viewBox="0 0 16 16" class="bi bi-x text-danger" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>
+                            <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>
+                        </svg>
+                    </td>
                 </tr>
                 <tr *ngIf="!tasks || tasks.length <= 0">
                     No tasks found.
