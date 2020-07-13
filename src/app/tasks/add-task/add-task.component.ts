@@ -48,8 +48,8 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       if (!newTask) {
         this.errorMessage = 'An error occurred, please try again.';
       }
-      console.log(`Task submitted`);
-      // Clear form or redirect
+
+      this.resetForm();
     }, (err) => {
       this.isLoading = false;
       this.errorMessage = err;
@@ -69,6 +69,10 @@ export class AddTaskComponent implements OnInit, OnDestroy {
         disabled: this.isLoading,
       }]
     });
+  }
+
+  private resetForm(): void {
+    this.addTaskForm.reset();
   }
 
   get description(): AbstractControl {
