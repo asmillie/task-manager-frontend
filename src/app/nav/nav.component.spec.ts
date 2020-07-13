@@ -60,21 +60,10 @@ describe('NavComponent', () => {
   });
 
   describe('logout', () => {
-    it('should subscribe to authService.logout$', () => {
-      mockAuthService.logout$.mockReturnValueOnce(of(true));
-
-      expect(mockAuthService.logout$).not.toHaveBeenCalled();
+    it('should call authService.logout', () => {
+      expect(mockAuthService.logout).not.toHaveBeenCalled();
       component.logout();
-      expect(mockAuthService.logout$).toHaveBeenCalled();
-    });
-
-    it('should add logout subscriber to user subscription', () => {
-      mockAuthService.logout$.mockReturnValueOnce(of(true));
-      component.userSub = new Subscription();
-      const subSpy = jest.spyOn(component.userSub, 'add');
-
-      component.logout();
-      expect(subSpy).toHaveBeenCalled();
+      expect(mockAuthService.logout).toHaveBeenCalled();
     });
   });
 

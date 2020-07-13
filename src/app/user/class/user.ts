@@ -8,6 +8,7 @@ export interface IUser {
     };
     avatarUrl?: Url;
     token?: string;
+    tokenExpiry?: Date;
 }
 // TODO: Token Expiry
 export class User {
@@ -16,12 +17,14 @@ export class User {
     private _email: string;
     private _avatarUrl: Url;
     private _token: string;
+    private _tokenExpiry: Date;
 
     constructor(
         name: string,
         email: string,
         id?: string,
         token?: string,
+        tokenExpiry?: Date,
         avatarUrl?: Url) {
             this._name = name;
             this._email = email;
@@ -30,6 +33,9 @@ export class User {
             }
             if (token) {
                 this._token = token;
+            }
+            if (tokenExpiry) {
+                this._tokenExpiry = tokenExpiry;
             }
             if (avatarUrl) {
                 this._avatarUrl = avatarUrl;
@@ -66,6 +72,14 @@ export class User {
 
     set token(token: string) {
         this._token = token;
+    }
+
+    get tokenExpiry(): Date {
+        return this._tokenExpiry;
+    }
+
+    set tokenExpiry(exp: Date) {
+        this._tokenExpiry = exp;
     }
 
     get avatarUrl(): Url {

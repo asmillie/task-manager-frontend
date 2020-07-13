@@ -39,9 +39,13 @@ describe('AuthService', () => {
     describe('successful login', () => {
 
       beforeEach(() => {
+        const exp = new Date();
+        exp.setDate(exp.getDate() + 1);
+
         mockHttpService.post.mockReturnValueOnce(
           of({
             auth_token: 'valid-jwt',
+            token_expiry: exp,
             updatedUser: mockIUser
           })
         );
@@ -100,27 +104,44 @@ describe('AuthService', () => {
   });
 
   describe('logout$', () => {
-    it('should set user subject to null and return true on success', (done) => {
+    it('should call api to logout and clear local user data', (done) => {
       mockHttpService.post.mockReturnValueOnce(of(true));
+      service.userSubject.next(mockUser);
 
-      service.logout$().pipe(
-        take(1),
+      service.logout$()
+      .pipe(
         switchMapTo(service.userSubject)
-      ).subscribe((result) => {
+      )
+      .subscribe(result => {
+        expect(mockHttpService.post).toHaveBeenCalled(),
+        expect(mockAppRepositoryService.deleteUser).toHaveBeenCalled();
         expect(result).toBeNull();
         done();
       });
     });
 
-    it('should return error received from error handling service', (done) => {
-      mockHttpService.post.mockReturnValueOnce(throwError(httpError));
-      mockErrorHandlingService.handleHttpError$.mockReturnValueOnce(throwError('error'))
+    it('should only clear local user data', (done) => {
+      mockHttpService.post.mockReset();
+      const expired = new Date();
+      expired.setDate(expired.getDate() - 5);
+      const mockExpiredUser = new User(
+        'username',
+        'valid.email@addr.com',
+        'id',
+        'token',
+        expired
+      );
+      service.userSubject.next(mockExpiredUser);
 
-      service.logout$().subscribe({
-        error: (err) => {
-          expect(err).toEqual('error');
-          done();
-        }
+      service.logout$()
+      .pipe(
+        switchMapTo(service.userSubject)
+      )
+      .subscribe(result => {
+        expect(mockHttpService.post).not.toHaveBeenCalled(),
+        expect(mockAppRepositoryService.deleteUser).toHaveBeenCalled();
+        expect(result).toBeNull();
+        done();
       });
     });
   });
