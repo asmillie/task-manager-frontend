@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TasksService } from './tasks.service';
 import { Task } from './task';
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tasks',
@@ -31,7 +32,14 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   private initTasks(): void {
     this.isLoading = true;
-    this.tasksSub = this.tasksService.getAll$().subscribe(tasks => {
+
+    this.tasksService.search$().pipe(
+      take(1),
+    ).subscribe({
+      error: (err) => this.errorMessage = err
+    });
+
+    this.tasksSub = this.tasksService.tasks.subscribe(tasks => {
       console.log(tasks);
       this.tasks = tasks;
       this.isLoading = false;

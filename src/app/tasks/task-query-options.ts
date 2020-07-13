@@ -7,5 +7,19 @@ export interface TaskQueryOptions {
     }[];
 }
 
-export const SORT_FIELDS = ['completed', 'createdAt', 'updatedAt', 'description'];
-export const SORT_DIR = ['asc', 'desc'];
+export interface TaskSearch {
+    completed?: boolean;
+    tqo?: TaskQueryOptions;
+}
+
+export const SORT_FIELDS = {
+    completed: 'completed',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    description: 'description'
+};
+
+export const SORT_DIR = {
+    asc: 'asc',
+    desc: 'desc',
+};

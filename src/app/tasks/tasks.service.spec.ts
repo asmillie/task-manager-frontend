@@ -7,7 +7,7 @@ import { ErrorHandlingService } from '../error-handling.service';
 import { mockErrorHandlingService } from '../../mocks/mock-error-handling-service';
 import { of, throwError } from 'rxjs';
 import { mockTasks, mockCompletedTasks } from '../../mocks/mock-tasks';
-import { TaskQueryOptions } from './task-query-options';
+import { TaskQueryOptions, TaskSearch } from './task-query-options';
 import { environment } from '../../environments/environment';
 import { Task } from './task';
 
@@ -28,14 +28,14 @@ describe('TasksService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('getAll$', () => {
+  describe('search$', () => {
     const API_URL = environment.taskApi.url;
     const GET_TASKS = environment.taskApi.endpoint.tasks.get;
 
     it('should return list of tasks', (done) => {
       mockHttpService.post.mockReturnValueOnce(of(mockTasks));
 
-      service.getAll$().subscribe(result => {
+      service.search$().subscribe(result => {
         expect(result.length).toEqual(mockTasks.length);
         result.forEach((task, index) => {
           expect(task).toEqual(mockTasks[index]);
@@ -47,27 +47,37 @@ describe('TasksService', () => {
     it('should add completed param to http request', (done) => {
       mockHttpService.post.mockReturnValueOnce(of(mockCompletedTasks));
       const url = `${API_URL}${GET_TASKS}?completed=true`;
+      const taskSearch: TaskSearch = {
+        completed: true,
+      };
 
-      service.getAll$(true).subscribe(_ => {
+      service.taskSearchOptions.next(taskSearch);
+
+      service.search$().subscribe(_ => {
         expect(mockHttpService.post).toHaveBeenCalledWith(url, undefined);
         done();
       });
     });
 
-    it('should add query options to http request', (done) => {
+    it('should add search options to http request', (done) => {
       mockHttpService.post.mockReturnValueOnce(of(mockTasks));
       const url = `${API_URL}${GET_TASKS}`;
 
-      const tqo: TaskQueryOptions = {};
-      tqo.limit = 5;
-      tqo.skip = 1;
-      tqo.sort = [
-        { field: 'completed', direction: 'asc' },
-        { field: 'createdAt', direction: 'desc' },
-      ];
+      const taskSearch: TaskSearch = {
+        tqo: {
+          limit: 5,
+          skip: 1,
+          sort: [
+            { field: 'completed', direction: 'asc' },
+            { field: 'createdAt', direction: 'desc' },
+          ],
+        }
+      };
 
-      service.getAll$(undefined, tqo).subscribe(_ => {
-        expect(mockHttpService.post).toHaveBeenCalledWith(url, tqo);
+      service.taskSearchOptions.next(taskSearch);
+
+      service.search$().subscribe(_ => {
+        expect(mockHttpService.post).toHaveBeenCalledWith(url, taskSearch.tqo);
         done();
       });
     });
@@ -77,7 +87,7 @@ describe('TasksService', () => {
       mockHttpService.post.mockReturnValueOnce(throwError(httpError));
       mockErrorHandlingService.handleHttpError$.mockReturnValueOnce(throwError('error'));
 
-      service.getAll$().subscribe({
+      service.search$().subscribe({
         error: (err) => {
           expect(err).toEqual('error');
           done();
@@ -88,7 +98,7 @@ describe('TasksService', () => {
 
   describe('add$', () => {
     it('should return task on successful post request', (done) => {
-      const mockTask = new Task('owner-id', 'description', false);
+      const mockTask = new Task('description', false);
       mockHttpService.post.mockReturnValueOnce(of(mockTask));
 
       service.add$(mockTask).subscribe(result => {
