@@ -22,6 +22,7 @@ export class AppRepositoryService {
       _name: string,
       _email: string,
       _token: string,
+      _tokenExpiry: string,
       _avatarUrl?: Url,
     } = JSON.parse(localStorage.getItem(this.USER_KEY));
 
@@ -35,6 +36,7 @@ export class AppRepositoryService {
         userData._email,
         userData._id,
         userData._token,
+        new Date(userData._tokenExpiry),
         userData._avatarUrl)
     );
   }
