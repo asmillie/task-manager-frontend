@@ -1,1 +1,41 @@
-<p>search-tasks works!</p>
+<h2>Search Tasks</h2>
+<form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="my-2 w-50">    
+    <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" class="form-control" formControlName="description">
+    </div>
+    <div class="form-group">
+        <label for="createdAt">Date Created</label>
+        <div class="row">
+            <div class="col">
+                <input type="text" class="form-control" formControlName="start_createdAt">
+            </div>
+            <div class="col-auto"> - </div>
+            <div class="col">
+                <input type="text" class="form-control" formControlName="end_createdAt">
+            </div>
+        </div>            
+    </div>
+    <div class="form-group">
+        <label for="updatedAt">Last Updated</label>
+        <div class="row">
+            <div class="col">
+                <input type="text" class="form-control" formControlName="start_updatedAt">
+            </div>
+            <div class="col-auto"> - </div>
+            <div class="col">
+                <input type="text" class="form-control" formControlName="end_updatedAt">
+            </div>
+        </div>
+        
+    </div>
+    <div class="form-group">
+        <label for="completed">Completed</label>
+        <select class="form-control" formControlName="completed">
+            <option selected>All</option>
+            <option>Completed</option>
+            <option>Incomplete</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary" [attr.disabled]="isLoading ? true : null">Search</button>
+</form>
