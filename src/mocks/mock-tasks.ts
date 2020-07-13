@@ -2,57 +2,57 @@ import { mockUser } from './mock-users';
 import { Task } from '../app/tasks/task';
 
 const mockTask1 = new Task(
-    mockUser.id,
     'Incomplete Task #1',
     false,
+    mockUser.id,
+    'task-id',
     new Date('2020-06-24T13:19:26.146Z'),
     undefined,
-    'task-id',
 );
 
 const mockTask2 = new Task(
-    mockUser.id,
     'Incomplete Task #2',
     false,
-    new Date('2020-06-22T10:19:26.146Z'),
-    undefined,
+    mockUser.id,
     'task-id',
+    new Date('2020-06-23T13:19:26.146Z'),
+    undefined,
 );
 
 const mockTask3 = new Task(
-    mockUser.id,
     'Incomplete Task #3',
     false,
-    new Date('2020-06-10T09:09:26.146Z'),
-    undefined,
+    mockUser.id,
     'task-id',
+    new Date('2020-06-22T13:19:26.146Z'),
+    undefined,
 );
 
 const mockTask4 = new Task(
-    mockUser.id,
-    'Completed Task #1',
+    'Completed Task #4',
     true,
-    new Date('2020-03-02T03:00:00.146Z'),
-    undefined,
+    mockUser.id,
     'task-id',
+    new Date('2020-05-04T13:19:26.146Z'),
+    undefined,
 );
 
 const mockTask5 = new Task(
-    mockUser.id,
-    'Completed Task #2',
+    'Completed Task #5',
     true,
-    new Date('2019-01-12T22:10:00.146Z'),
-    undefined,
+    mockUser.id,
     'task-id',
+    new Date('2019-01-01T13:19:26.146Z'),
+    undefined,
 );
 
 const mockTask6 = new Task(
-    mockUser.id,
-    'Completed Task #1',
+    'Completed Task #6',
     true,
-    new Date('2019-01-01T01:00:00.146Z'),
-    undefined,
+    mockUser.id,
     'task-id',
+    new Date('2019-01-01T03:09:00.000Z'),
+    undefined,
 );
 
 export const mockTasks = [mockTask1, mockTask2, mockTask3, mockTask4, mockTask5, mockTask6];
