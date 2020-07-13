@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of, from, defer, throwError } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Task, ITask } from './task';
-import { TaskQueryOptions, SORT_DIR, SORT_FIELDS, TaskSearch } from './task-query-options';
+import { TaskQueryOptions } from './task-query-options';
 import { map, catchError, tap, flatMap } from 'rxjs/operators';
 import { ErrorHandlingService } from '../error-handling.service';
+import { SORT_FIELDS, SORT_DIR } from '../constants';
 
 const DEFAULT_TQO: TaskQueryOptions = {
   limit: 50,
@@ -13,10 +14,6 @@ const DEFAULT_TQO: TaskQueryOptions = {
     { field: SORT_FIELDS.completed, direction: SORT_DIR.asc },
     { field: SORT_FIELDS.updatedAt, direction: SORT_DIR.desc },
   ]
-};
-
-const DEFAULT_SEARCH: TaskSearch = {
-  tqo: DEFAULT_TQO,
 };
 
 @Injectable({
@@ -29,7 +26,7 @@ export class TasksService {
   private ADD_TASK = environment.taskApi.endpoint.tasks.add;
 
   tasks: BehaviorSubject<Task[]>;
-  taskSearchOptions: BehaviorSubject<TaskSearch>;
+  taskQueryOptions: BehaviorSubject<TaskQueryOptions>;
 
   constructor(
     private http: HttpClient,
@@ -39,18 +36,18 @@ export class TasksService {
   }
 
   search$(): Observable<Task[]> {
-    return this.taskSearchOptions.pipe(
-      flatMap(taskSearchOpts => {
-        if (!taskSearchOpts) {
+    return this.taskQueryOptions.pipe(
+      flatMap(taskQueryOpts => {
+        if (!taskQueryOpts) {
           return null;
         }
 
         let url = this.API_URL + this.GET_TASKS;
-        if (taskSearchOpts.completed) {
-          url += `?completed=${taskSearchOpts.completed}`;
+        if (taskQueryOpts.completed) {
+          url += `?completed=${taskQueryOpts.completed}`;
         }
 
-        return this.http.post<ITask[]>(url, taskSearchOpts.tqo).pipe(
+        return this.http.post<ITask[]>(url, taskQueryOpts).pipe(
           map((response: ITask[]) => {
             if (!response) {
               return null;
@@ -96,11 +93,11 @@ export class TasksService {
   }
 
   resetSearchOpts(): void {
-    if (!this.taskSearchOptions) {
+    if (!this.taskQueryOptions) {
       this.initSearchOpts();
       return;
     }
-    this.taskSearchOptions.next(DEFAULT_SEARCH);
+    this.taskQueryOptions.next(DEFAULT_TQO);
   }
 
   private initTasks(): void {
@@ -108,6 +105,6 @@ export class TasksService {
   }
 
   private initSearchOpts(): void {
-    this.taskSearchOptions = new BehaviorSubject<TaskSearch>(DEFAULT_SEARCH);
+    this.taskQueryOptions = new BehaviorSubject<TaskQueryOptions>(DEFAULT_TQO);
   }
 }

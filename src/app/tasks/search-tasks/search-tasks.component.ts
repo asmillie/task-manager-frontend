@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TasksService } from '../tasks.service';
 import { FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
+import { TaskSearch, TaskQueryOptions } from '../task-query-options';
 
 @Component({
   selector: 'app-search-tasks',

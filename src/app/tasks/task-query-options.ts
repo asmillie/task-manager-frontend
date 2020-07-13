@@ -1,25 +1,12 @@
+import { TaskSortOption } from './task-sort-option';
+
 export interface TaskQueryOptions {
     limit?: number;
     skip?: number;
-    sort?: {
-        field: string;
-        direction: string;
-    }[];
-}
-
-export interface TaskSearch {
+    sort?: TaskSortOption[];
     completed?: boolean;
-    tqo?: TaskQueryOptions;
+    startCreatedAt?: Date;
+    endCreatedAt?: Date;
+    startUpdatedAt?: Date;
+    endUpdatedAt?: Date;
 }
-
-export const SORT_FIELDS = {
-    completed: 'completed',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    description: 'description'
-};
-
-export const SORT_DIR = {
-    asc: 'asc',
-    desc: 'desc',
-};
