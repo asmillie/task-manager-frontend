@@ -6,7 +6,6 @@ import { FormGroup, FormBuilder, Validators, AbstractControl, Form } from '@angu
 import { passwordMatchesValidator } from './validator/password-matches.validator';
 import { UserUpdateOpts } from './class/user-update-opts';
 import { UserService } from './user.service';
-import { debounce, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { EmailExistsValidator } from './validator/email-exists.validator';
 
 @Component({
