@@ -10,5 +10,7 @@ export const SORT_DIR = {
     desc: 'desc',
 };
 
+export const MIN_TASK_DATE = '2000-01-01';
+
 Object.freeze(SORT_FIELDS);
 Object.freeze(SORT_DIR);
