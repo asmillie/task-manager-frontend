@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { TasksService } from '../tasks.service';
 import { FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
-import { TaskSearch, TaskQueryOptions } from '../task-query-options';
+import { TaskQueryOptions } from '../task-query-options';
+import { SORT_FIELDS, SORT_DIR, MIN_TASK_DATE } from '../../constants';
+import { dateValidator } from '../../shared/date.validator';
 
 @Component({
   selector: 'app-search-tasks',
@@ -12,6 +14,7 @@ export class SearchTasksComponent implements OnInit {
 
   searchForm: FormGroup;
   isLoading = false;
+  minDate = MIN_TASK_DATE;
 
   constructor(
     private tasksService: TasksService,
@@ -28,39 +31,68 @@ export class SearchTasksComponent implements OnInit {
     }
 
     // TODO: Search query
+    const taskQueryOpts: TaskQueryOptions = {};
+    if (this.complete.value && !this.incomplete.value) {
+      taskQueryOpts.completed = true;
+    } else if (!this.complete.value && this.incomplete.value) {
+      taskQueryOpts.completed = false;
+    }
+
+    if (this.startCreatedAt.value !== '' && this.startCreatedAt.valid) {
+      taskQueryOpts.startCreatedAt = this.startCreatedAt.value;
+    }
+
+    if (this.endCreatedAt.value !== '' && this.endCreatedAt.valid) {
+      taskQueryOpts.endCreatedAt = this.endCreatedAt.value;
+    }
+
+    if (this.startUpdatedAt.value !== '' && this.startUpdatedAt.valid) {
+      taskQueryOpts.startUpdatedAt = this.startUpdatedAt.value;
+    }
+
+    if (this.endUpdatedAt.value !== '' && this.endUpdatedAt.valid) {
+      taskQueryOpts.endUpdatedAt = this.endUpdatedAt.value;
+    }
+
+    console.log(`Task Query: ${JSON.stringify(taskQueryOpts)}`);
+
   }
 
   private initForm(): void {
     this.searchForm = this.fb.group({
-      description: [{
-        value: '',
-        disabled: this.isLoading,
-      }],
       start_createdAt: [{
         value: '',
         disabled: this.isLoading,
+      }, {
+        validators: dateValidator
       }],
       end_createdAt: [{
         value: '',
         disabled: this.isLoading,
+      }, {
+        validators: dateValidator
       }],
       start_updatedAt: [{
         value: '',
         disabled: this.isLoading,
+      }, {
+        validators: dateValidator
       }],
       end_updatedAt: [{
         value: '',
         disabled: this.isLoading,
+      }, {
+        validators: dateValidator
       }],
-      completed: [{
-        value: 'all',
+      complete: [{
+        value: 'true',
         disabled: this.isLoading,
+      }],
+      incomplete: [{
+        value: 'false',
+        disabled: this.isLoading
       }]
     });
-  }
-
-  get description(): AbstractControl {
-    return this.searchForm.get('description');
   }
 
   get startCreatedAt(): AbstractControl {
@@ -79,7 +111,11 @@ export class SearchTasksComponent implements OnInit {
     return this.searchForm.get('end_updatedAt');
   }
 
-  get completed(): AbstractControl {
-    return this.searchForm.get('completed');
+  get complete(): AbstractControl {
+    return this.searchForm.get('complete');
+  }
+
+  get incomplete(): AbstractControl {
+    return this.searchForm.get('incomplete');
   }
 }

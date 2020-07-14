@@ -1,18 +1,23 @@
 <h2>Search Tasks</h2>
-<form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="my-2 w-50">    
-    <div class="form-group">
-        <label for="description">Description</label>
-        <input type="text" class="form-control" formControlName="description">
-    </div>
+<form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="my-2 w-50">
     <div class="form-group">
         <label for="createdAt">Date Created</label>
         <div class="row">
             <div class="col">
-                <input type="text" class="form-control" formControlName="start_createdAt">
+                <input
+                    type="date"
+                    class="form-control"
+                    min="{{ minDate }}"
+                    [attr.max]="endCreatedAt.value !== '' ? endCreatedAt.value : null"
+                    formControlName="start_createdAt">
             </div>
             <div class="col-auto"> - </div>
             <div class="col">
-                <input type="text" class="form-control" formControlName="end_createdAt">
+                <input
+                    type="date"
+                    class="form-control"
+                    [attr.min]="startCreatedAt.value !== '' ? startCreatedAt.value : minDate"
+                    formControlName="end_createdAt">
             </div>
         </div>            
     </div>
@@ -20,22 +25,33 @@
         <label for="updatedAt">Last Updated</label>
         <div class="row">
             <div class="col">
-                <input type="text" class="form-control" formControlName="start_updatedAt">
+                <input
+                    type="date"
+                    class="form-control"
+                    [attr.min]="startCreatedAt.value !== '' ? startCreatedAt.value : minDate"
+                    [attr.max]="endUpdatedAt.value !== '' ? endUpdatedAt.value : null"
+                    formControlName="start_updatedAt">
             </div>
             <div class="col-auto"> - </div>
             <div class="col">
-                <input type="text" class="form-control" formControlName="end_updatedAt">
+                <input
+                    type="date"
+                    class="form-control"
+                    [attr.min]="startUpdatedAt.value !== '' ? startUpdatedAt.value : minDate"
+                    formControlName="end_updatedAt">
             </div>
         </div>
         
     </div>
-    <div class="form-group">
-        <label for="completed">Completed</label>
-        <select class="form-control" formControlName="completed">
-            <option selected>All</option>
-            <option>Completed</option>
-            <option>Incomplete</option>
-        </select>
+    
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" formControlName="complete">
+        <label class="form-check-label">Complete</label>
     </div>
-    <button type="submit" class="btn btn-primary" [attr.disabled]="isLoading ? true : null">Search</button>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" formControlName="incomplete">
+        <label class="form-check-label">Incomplete</label>
+    </div>
+    <div class="clearfix"></div>
+    <button type="submit" class="btn btn-primary mt-3" [attr.disabled]="isLoading ? true : null">Search</button>
 </form>
