@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TasksService } from '../tasks.service';
 import { FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
 import { TaskQueryOptions } from '../task-query-options';
-import { SORT_FIELDS, SORT_DIR, MIN_TASK_DATE } from '../../constants';
+import { MIN_TASK_DATE } from '../../constants';
 import { dateValidator } from '../../shared/date.validator';
 
 @Component({
@@ -30,7 +30,17 @@ export class SearchTasksComponent implements OnInit {
       return;
     }
 
-    // TODO: Search query
+    const taskQueryOpts = this.getTaskQueryOpts();
+    if (taskQueryOpts) {
+      this.tasksService.taskQueryOptions.next(taskQueryOpts);
+    }
+  }
+
+  resetForm(): void {
+    this.searchForm.reset({ complete: true, incomplete: true });
+  }
+
+  private getTaskQueryOpts(): TaskQueryOptions | null {
     const taskQueryOpts: TaskQueryOptions = {};
     if (this.complete.value && !this.incomplete.value) {
       taskQueryOpts.completed = true;
@@ -54,8 +64,10 @@ export class SearchTasksComponent implements OnInit {
       taskQueryOpts.endUpdatedAt = this.endUpdatedAt.value;
     }
 
-    console.log(`Task Query: ${JSON.stringify(taskQueryOpts)}`);
-
+    if (Object.entries(taskQueryOpts).length === 0) {
+      return null;
+    }
+    return taskQueryOpts;
   }
 
   private initForm(): void {
@@ -85,11 +97,11 @@ export class SearchTasksComponent implements OnInit {
         validators: dateValidator
       }],
       complete: [{
-        value: 'true',
+        value: true,
         disabled: this.isLoading,
       }],
       incomplete: [{
-        value: 'false',
+        value: true,
         disabled: this.isLoading
       }]
     });
