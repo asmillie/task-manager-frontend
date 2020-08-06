@@ -50,12 +50,14 @@ describe('TasksService', () => {
       mockHttpService.post.mockReturnValueOnce(of(mockCompletedTasks));
       const url = `${API_URL}${GET_TASKS}?completed=true`;
       const taskQuery: TaskQueryOptions = {
-        completed: true
+        completed: true,
+        limit: 50,
       };
-      taskQuery.completed = true;
+
+      service.taskQueryOptions.next(taskQuery);
 
       service.search$().subscribe(_ => {
-        expect(mockHttpService.post).toHaveBeenCalledWith(url, undefined);
+        expect(mockHttpService.post).toHaveBeenCalledWith(url, taskQuery);
         done();
       });
     });
