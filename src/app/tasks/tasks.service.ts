@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Task, ITask } from './task';
 import { TaskQueryOptions } from './task-query-options';
-import { map, catchError, tap, flatMap } from 'rxjs/operators';
+import { map, catchError, tap, flatMap, debounceTime } from 'rxjs/operators';
 import { ErrorHandlingService } from '../error-handling.service';
 import { SORT_FIELDS, SORT_DIR } from '../constants';
 
@@ -36,12 +36,14 @@ export class TasksService {
   }
 
   search$(): Observable<Task[]> {
-    return this.taskQueryOptions.pipe(
+    return of(this.taskQueryOptions.getValue()).pipe(
+      debounceTime(500),
       flatMap(taskQueryOpts => {
         if (!taskQueryOpts) {
           return null;
         }
-
+        console.log(`TasksService.search$: \n`);
+        console.log(JSON.stringify(taskQueryOpts));
         let url = this.API_URL + this.GET_TASKS;
         if (taskQueryOpts.completed) {
           url += `?completed=${taskQueryOpts.completed}`;
