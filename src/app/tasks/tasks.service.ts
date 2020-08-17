@@ -7,14 +7,7 @@ import { TaskQueryOptions } from './task-query-options';
 import { map, catchError, tap, flatMap, debounceTime } from 'rxjs/operators';
 import { ErrorHandlingService } from '../error-handling.service';
 import { SORT_FIELDS, SORT_DIR } from '../constants';
-
-const DEFAULT_TQO: TaskQueryOptions = {
-  limit: 50,
-  sort: [
-    { field: SORT_FIELDS.completed, direction: SORT_DIR.asc },
-    { field: SORT_FIELDS.updatedAt, direction: SORT_DIR.desc },
-  ]
-};
+import { TaskQueryOptionsService } from './task-query-options.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,17 +19,16 @@ export class TasksService {
   private ADD_TASK = environment.taskApi.endpoint.tasks.add;
 
   tasks: BehaviorSubject<Task[]>;
-  taskQueryOptions: BehaviorSubject<TaskQueryOptions>;
 
   constructor(
+    private tqoService: TaskQueryOptionsService,
     private http: HttpClient,
     private errorHandling: ErrorHandlingService) {
-    this.initSearchOpts();
-    this.initTasks();
+      this.initTasks();
   }
 
   search$(): Observable<Task[]> {
-    return of(this.taskQueryOptions.getValue()).pipe(
+    return of(this.tqoService.taskQueryOptions.getValue()).pipe(
       debounceTime(500),
       flatMap(taskQueryOpts => {
         if (!taskQueryOpts) {
@@ -94,19 +86,7 @@ export class TasksService {
     );
   }
 
-  resetSearchOpts(): void {
-    if (!this.taskQueryOptions) {
-      this.initSearchOpts();
-      return;
-    }
-    this.taskQueryOptions.next(DEFAULT_TQO);
-  }
-
   private initTasks(): void {
     this.tasks = new BehaviorSubject<Task[]>(null);
-  }
-
-  private initSearchOpts(): void {
-    this.taskQueryOptions = new BehaviorSubject<TaskQueryOptions>(DEFAULT_TQO);
   }
 }
