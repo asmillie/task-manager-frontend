@@ -28,15 +28,23 @@ export class TaskQueryOptionsService {
       this.initSearchOpts();
       return;
     }
-    this.taskQueryOptions.next(DEFAULT_TQO);
-  }
 
-  setSortOptions(tso: TaskSortOption[]): void {
     const tqo: TaskQueryOptions = {
       ...this.taskQueryOptions.getValue(),
-      sort: tso
-    };
+      ...DEFAULT_TQO
+    }
 
+    this.taskQueryOptions.next(tqo);
+  }
+
+  setSortOption(tso: TaskSortOption): void {
+    const tqo: TaskQueryOptions = {
+      ...this.taskQueryOptions.getValue(),
+      sort: [
+        tso
+      ]
+    };
+    console.log(`TQO Service: Sort Opts -> ${JSON.stringify(tqo)}`);
     this.taskQueryOptions.next(tqo);
   }
 
@@ -51,7 +59,7 @@ export class TaskQueryOptionsService {
       limit,
       skip
     };
-
+    console.log(`TQO Service: Pagin Opts -> ${JSON.stringify(tqo)}`);
     this.taskQueryOptions.next(tqo);
   }
 

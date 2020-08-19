@@ -19,11 +19,13 @@ export class TasksService {
   private ADD_TASK = environment.taskApi.endpoint.tasks.add;
 
   tasks: BehaviorSubject<Task[]>;
+  tasksLoading: BehaviorSubject<boolean>;
 
   constructor(
     private tqoService: TaskQueryOptionsService,
     private http: HttpClient,
     private errorHandling: ErrorHandlingService) {
+      this.initTasksLoading();
       this.initTasks();
   }
 
@@ -36,6 +38,9 @@ export class TasksService {
         }
         console.log(`TasksService.search$: \n`);
         console.log(JSON.stringify(taskQueryOpts));
+
+        this.tasksLoading.next(true);
+
         let url = this.API_URL + this.GET_TASKS;
         if (taskQueryOpts.completed) {
           url += `?completed=${taskQueryOpts.completed}`;
@@ -60,14 +65,22 @@ export class TasksService {
 
             return tasks;
           }),
-          tap(tasks => this.tasks.next(tasks)),
-          catchError(err => this.errorHandling.handleHttpError$(err)),
+          tap(tasks => {
+            this.tasks.next(tasks);
+            this.tasksLoading.next(false);
+          }),
+          catchError(err => {
+            this.tasksLoading.next(false);
+            return this.errorHandling.handleHttpError$(err);
+          }),
         );
       }),
     );
   }
 
   add$(task: Task): Observable<Task> {
+    this.tasksLoading.next(true);
+
     return this.http.post<ITask>(
       this.API_URL + this.ADD_TASK,
       {
@@ -82,11 +95,19 @@ export class TasksService {
 
         return new Task(res.description, res.completed, res.owner, res._id, res.createdAt, res.updatedAt);
       }),
-      catchError(err => this.errorHandling.handleHttpError$(err)),
+      tap(() => this.tasksLoading.next(false)),
+      catchError(err => {
+        this.tasksLoading.next(false);
+        return this.errorHandling.handleHttpError$(err)
+      }),
     );
   }
 
   private initTasks(): void {
     this.tasks = new BehaviorSubject<Task[]>(null);
+  }
+
+  private initTasksLoading(): void {
+    this.tasksLoading = new BehaviorSubject<boolean>(false);
   }
 }

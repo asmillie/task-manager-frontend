@@ -1,10 +1,58 @@
-import { Component, OnInit, OnDestroy, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChildren, QueryList, Directive, Input,
+  Output, EventEmitter, HostListener, HostBinding, OnChanges, SimpleChanges } from '@angular/core';
 import { TasksService } from './tasks.service';
 import { Task } from './task';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { TableSortDirective } from '../shared/directives/table-sort.directive';
 import { TaskSortOption } from './task-sort-option';
+import { TaskQueryOptionsService } from './task-query-options.service';
+import { SORT_DIR } from '../constants';
+
+@Directive({
+    selector: 'th[sortable]',
+})
+export class TableSortDirective {
+
+    @Input() field: string;
+    @Input() direction = '';
+    @Output() sort = new EventEmitter<TaskSortOption | string>();
+    @HostBinding('class.desc') desc = (this.direction === 'desc');
+    @HostBinding('class.asc') asc = (this.direction === 'asc');
+
+    @HostListener('click')
+    onClick() {
+        const currentDirection = this.direction;
+        let newDirection = '';
+        this.clearDirection();
+        switch (currentDirection) {
+          case SORT_DIR.desc:
+            newDirection = SORT_DIR.asc;
+            this.asc = true;
+            break;
+          case SORT_DIR.asc:
+            newDirection = '';
+            break;
+          default:
+            newDirection = SORT_DIR.desc;
+            this.desc = true;
+            break;
+        }
+
+        const sortOption: TaskSortOption = {
+            field: this.field,
+            direction: newDirection
+        };
+
+        this.direction = newDirection;
+        this.sort.emit(sortOption);
+    }
+
+    clearDirection(): void {
+      this.desc = false;
+      this.asc = false;
+      this.direction = '';
+    }
+}
 
 @Component({
   selector: 'app-tasks',
@@ -15,12 +63,14 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   @ViewChildren(TableSortDirective) headers: QueryList<TableSortDirective>;
 
-  tasks: Task[];
+  tasks$: Observable<Task[]>;
   tasksSub: Subscription;
   isLoading: boolean;
+  tasksLoading: Observable<boolean>;
   errorMessage = '';
 
   constructor(
+    private tqoService: TaskQueryOptionsService,
     private tasksService: TasksService,
   ) { }
 
@@ -35,20 +85,34 @@ export class TasksComponent implements OnInit, OnDestroy {
   }
 
   onSort(tso: TaskSortOption): void {
-    console.log('Sort called');
     // Clear sorting on other columns
     this.headers.forEach(header => {
-      if (header.field !== tso.field) {
-        header.direction = '';
+      if (header.field !== tso.field && header.direction !== '') {
+        header.clearDirection();
       }
     });
 
-    // Sort data by selected column
-    // TODO: Sorting and pagination supported in tasks service or an intermediary service
+    if (tso.direction !== '') {
+      this.tqoService.setSortOption(tso);
+    } else {
+      this.tqoService.resetSearchOpts();
+    }
+
+    this.tasksService.search$().pipe(take(1)).subscribe({
+      error: (err) => {
+        this.errorMessage = err;
+      }
+    });
+  }
+
+  onDismissAlert(): void {
+    this.errorMessage = '';
   }
 
   private initTasks(): void {
     this.isLoading = true;
+
+    this.tasksLoading = this.tasksService.tasksLoading;
 
     this.tasksService.search$().pipe(
       take(1),
@@ -56,13 +120,7 @@ export class TasksComponent implements OnInit, OnDestroy {
       error: (err) => this.errorMessage = err
     });
 
-    this.tasksSub = this.tasksService.tasks.subscribe(tasks => {
-      this.tasks = tasks;
-      this.isLoading = false;
-    }, error => {
-      this.errorMessage = error;
-      this.isLoading = false;
-    });
+    this.tasks$ = this.tasksService.tasks;
   }
 
 }

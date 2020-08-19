@@ -8,15 +8,17 @@
     <div class="row">
         <app-search-tasks></app-search-tasks>
     </div>
+    <app-alert *ngIf="errorMessage !== ''" alertMessage="{{ errorMessage }}" (dismissEvent)="onDismissAlert($event)"></app-alert>
     <div class="row">
         <table class="table table-striped w-75">
             <thead>
-                <th scope="col">Description</th>
-                <th scope="col">Created</th>
-                <th scope="col">Updated</th>
-                <th scope="col">Completed</th>
+                <th scope="col" sortable field="description" (sort)="onSort($event)">Description</th>
+                <th scope="col" sortable field="createdAt" (sort)="onSort($event)">Created</th>
+                <th scope="col" sortable field="updatedAt" (sort)="onSort($event)">Updated</th>
+                <th scope="col" sortable field="completed" (sort)="onSort($event)">Completed</th>
             </thead>
-            <tbody>
+            <app-loading-spinner *ngIf="tasksLoading | async"></app-loading-spinner>
+            <tbody *ngIf="(tasks$ | async) as tasks; else noTasksBlock">             
                 <tr *ngFor="let task of tasks">
                     <td>{{ task.description }}</td>
                     <td>{{ task.createdAt | date:"MMM d, y, h:mm a" }}</td>
@@ -30,11 +32,11 @@
                             <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>
                         </svg>
                     </td>
-                </tr>
-                <tr *ngIf="!tasks || tasks.length <= 0">
-                    No tasks found.
-                </tr>
+                </tr>            
             </tbody>
+            <ng-template #noTasksBlock>
+                <p>No tasks found.</p>
+            </ng-template>
         </table>
     </div>
 </div>

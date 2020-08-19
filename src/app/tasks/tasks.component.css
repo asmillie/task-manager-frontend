@@ -1,0 +1,15 @@
+.asc::after {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    margin: 0 1px 0 1px;
+    content: url('../../assets/img/arrow-up.svg');
+}
+
+.desc::after {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    margin: 0 1px 0 1px;
+    content: url('../../assets/img/arrow-down.svg');
+}
