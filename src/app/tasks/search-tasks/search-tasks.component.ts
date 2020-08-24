@@ -48,15 +48,12 @@ export class SearchTasksComponent implements OnInit, OnDestroy {
     const taskQueryOpts = this.getTaskQueryOpts();
     this.tqoService.taskQueryOptions.next(taskQueryOpts);
 
-    setTimeout(() => {
-      this.searchSub = this.tasksService.search$().subscribe((tasks) => {
-        this.isLoading = false;
-      }, (err) => {
-        this.isLoading = false;
-        this.errorMessage = err;
-      });
-    }, 3000);
-    
+    this.searchSub = this.tasksService.search$().subscribe((tasks) => {
+      this.isLoading = false;
+    }, (err) => {
+      this.isLoading = false;
+      this.errorMessage = err;
+    });
   }
 
   resetForm(): void {
