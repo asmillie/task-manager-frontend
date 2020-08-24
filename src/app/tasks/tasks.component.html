@@ -8,7 +8,7 @@
     <div class="row">
         <app-search-tasks></app-search-tasks>
     </div>
-    <app-alert *ngIf="errorMessage !== ''" alertMessage="{{ errorMessage }}" (dismissEvent)="onDismissAlert($event)"></app-alert>
+    <app-alert *ngIf="errorMessage !== ''" alertMessage="{{ errorMessage }}" (dismissEvent)="onDismissAlert()"></app-alert>
     <div class="row">
         <table class="table table-striped w-75">
             <thead>
