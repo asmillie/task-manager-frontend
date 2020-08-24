@@ -3,10 +3,8 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Task, ITask } from './task';
-import { TaskQueryOptions } from './task-query-options';
 import { map, catchError, tap, flatMap, debounceTime } from 'rxjs/operators';
 import { ErrorHandlingService } from '../error-handling.service';
-import { SORT_FIELDS, SORT_DIR } from '../constants';
 import { TaskQueryOptionsService } from './task-query-options.service';
 
 @Injectable({

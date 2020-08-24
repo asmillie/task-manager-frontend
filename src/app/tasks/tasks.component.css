@@ -13,3 +13,21 @@
     margin: 0 1px 0 1px;
     content: url('../../assets/img/arrow-down.svg');
 }
+
+@keyframes spinner {
+    to {transform: rotate(360deg);}
+}
+
+.spinner:after {
+    display: inline-block;
+    box-sizing: border-box;
+    content: '';
+    width: 1em;
+    height: 1em;
+    margin-left: 1px;
+    vertical-align: text-bottom;
+    border: .125em solid grey;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spinner .75s linear infinite;
+}

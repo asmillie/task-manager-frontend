@@ -16,8 +16,7 @@
                 <th scope="col" sortable field="createdAt" (sort)="onSort($event)">Created</th>
                 <th scope="col" sortable field="updatedAt" (sort)="onSort($event)">Updated</th>
                 <th scope="col" sortable field="completed" (sort)="onSort($event)">Completed</th>
-            </thead>
-            <app-loading-spinner *ngIf="tasksLoading | async"></app-loading-spinner>
+            </thead>            
             <tbody *ngIf="(tasks$ | async) as tasks; else noTasksBlock">             
                 <tr *ngFor="let task of tasks">
                     <td>{{ task.description }}</td>
