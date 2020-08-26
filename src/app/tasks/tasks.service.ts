@@ -34,8 +34,6 @@ export class TasksService {
         if (!taskQueryOpts) {
           return null;
         }
-        console.log(`TasksService.search$: \n`);
-        console.log(JSON.stringify(taskQueryOpts));
 
         this.tasksLoading.next(true);
 
