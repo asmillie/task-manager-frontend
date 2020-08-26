@@ -1,8 +1,8 @@
 import { TaskSortOption } from './task-sort-option';
 
 export interface TaskQueryOptions {
-    limit?: number;
-    skip?: number;
+    limit: number;
+    page: number;
     sort?: TaskSortOption[];
     completed?: boolean;
     startCreatedAt?: Date;
