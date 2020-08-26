@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 
 const DEFAULT_TQO: TaskQueryOptions = {
   limit: 50,
+  page: 1,
   sort: [
     { field: SORT_FIELDS.completed, direction: SORT_DIR.asc },
     { field: SORT_FIELDS.updatedAt, direction: SORT_DIR.desc },
@@ -32,7 +33,7 @@ export class TaskQueryOptionsService {
     const tqo: TaskQueryOptions = {
       ...this.taskQueryOptions.getValue(),
       ...DEFAULT_TQO
-    }
+    };
 
     this.taskQueryOptions.next(tqo);
   }
@@ -53,11 +54,10 @@ export class TaskQueryOptionsService {
       return;
     }
 
-    const skip = (page > 1) ? page - 1 : 0;
     const tqo: TaskQueryOptions = {
       ...this.taskQueryOptions.getValue(),
       limit,
-      skip
+      page
     };
     console.log(`TQO Service: Pagin Opts -> ${JSON.stringify(tqo)}`);
     this.taskQueryOptions.next(tqo);
