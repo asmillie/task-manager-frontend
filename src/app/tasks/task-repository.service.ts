@@ -9,23 +9,31 @@ import { TaskQueryOptions } from './task-query-options';
 import { TaskSortOption } from './task-sort-option';
 import { SORT_FIELDS, SORT_DIR } from '../constants';
 
-const DEFAULT_TQO: TaskQueryOptions = {
-  limit: 100,
-  page: 1,
-  sort: [
-    { field: SORT_FIELDS.completed, direction: SORT_DIR.asc },
-    { field: SORT_FIELDS.updatedAt, direction: SORT_DIR.desc },
-    { field: SORT_FIELDS.createdAt, direction: SORT_DIR.asc },
-  ]
-};
+export interface TaskQuery extends TaskQueryOptions {
+  readonly limit: number;
+  readonly page: number;
+}
 
-interface TaskPaginationData {
+export interface TaskPaginationData {
     readonly totalResults: number;
     readonly totalPages: number;
     readonly currentPage: number;
     readonly pageSize: number;
     readonly tasks: ITask[];
 }
+
+const DEFAULT_TASK_QUERY: TaskQuery = {
+  limit: 100,
+  page: 1,
+};
+
+const DEFAULT_TQO: TaskQueryOptions = {
+  sort: [
+    { field: SORT_FIELDS.completed, direction: SORT_DIR.asc },
+    { field: SORT_FIELDS.updatedAt, direction: SORT_DIR.desc },
+    { field: SORT_FIELDS.createdAt, direction: SORT_DIR.asc },
+  ]
+};
 
 @Injectable({
   providedIn: 'root'
@@ -37,11 +45,12 @@ export class TaskRepositoryService {
   private GET_TASKS = environment.taskApi.endpoint.tasks.get;
   private ADD_TASK = environment.taskApi.endpoint.tasks.add;
 
-  private _loading$: BehaviorSubject<boolean>;
-  private _tasks$: BehaviorSubject<Task[]>;
-  private _totalResults$: BehaviorSubject<number>;
-  private _taskQueryOptions$: BehaviorSubject<TaskQueryOptions>;
+  private _loading$ = new BehaviorSubject<boolean>(false);
+  private _tasks$ = new BehaviorSubject<Task[] | null>(null);
+  private _totalResults$ = new BehaviorSubject<number>(0);
+  private _taskQueryOptions$ = new BehaviorSubject<TaskQueryOptions>(DEFAULT_TQO);
 
+  private _limit = 100;
   private _currentPage = 1;
   private _totalPages = 1;
 
@@ -52,14 +61,11 @@ export class TaskRepositoryService {
 
   constructor(
     private http: HttpClient,
-    private errorHandling: ErrorHandlingService) {
-      this.initSubjects();
-  }
+    private errorHandling: ErrorHandlingService) {}
 
   getNextPage$(): Observable<boolean> {
     this._loading$.next(true);
 
-    const currentTQO = this._taskQueryOptions$.getValue();
     const nextPage = this._currentPage + 1;
 
     if (nextPage > this._totalPages) {
@@ -67,12 +73,7 @@ export class TaskRepositoryService {
       return of(false);
     }
 
-    const tqo: TaskQueryOptions = {
-      ...currentTQO,
-      page: nextPage,
-    };
-
-    this._taskQueryOptions$.next(tqo);
+    this._currentPage = nextPage;
 
     return this.search$().pipe(
       take(1),
@@ -89,12 +90,15 @@ export class TaskRepositoryService {
 
         this._loading$.next(true);
 
-        let url = this.API_URL + this.GET_TASKS;
-        if (taskQueryOpts.completed) {
-          url += `?completed=${taskQueryOpts.completed}`;
-        }
+        const taskQuery: TaskQuery = {
+          limit: this._limit,
+          page: this._currentPage,
+          ...taskQueryOpts,
+        };
 
-        return this.http.post<TaskPaginationData>(url, taskQueryOpts).pipe(
+        const url = this.API_URL + this.GET_TASKS;
+
+        return this.http.post<TaskPaginationData>(url, taskQuery).pipe(
           map((response: TaskPaginationData) => {
             if (!response) {
               return null;
@@ -115,7 +119,6 @@ export class TaskRepositoryService {
             this._totalResults$.next(response.totalResults);
             this._totalPages = response.totalPages;
             this._currentPage = response.currentPage;
-            this._totalPages = response.totalPages;
 
             this._loading$.next(false);
 
@@ -158,7 +161,6 @@ export class TaskRepositoryService {
 
   resetSearchOpts(): void {
     const tqo: TaskQueryOptions = {
-      ...this._taskQueryOptions$.getValue(),
       ...DEFAULT_TQO
     };
 
@@ -183,12 +185,5 @@ export class TaskRepositoryService {
     };
 
     this._taskQueryOptions$.next(taskQueryOpts);
-  }
-
-  private initSubjects(): void {
-    this._tasks$ = new BehaviorSubject<Task[]>(null);
-    this._loading$ = new BehaviorSubject<boolean>(false);
-    this._totalResults$ = new BehaviorSubject<number>(0);
-    this._taskQueryOptions$ = new BehaviorSubject<TaskQueryOptions>(DEFAULT_TQO);
   }
 }
