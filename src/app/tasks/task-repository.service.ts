@@ -57,7 +57,7 @@ export class TaskRepositoryService {
   public loading$ = this._loading$.asObservable();
   public tasks$ = this._tasks$.asObservable();
   public totalResults$ = this._totalResults$.asObservable();
-  public taskQueryOptions$ = this._totalResults$.asObservable();
+  public taskQueryOptions$ = this._taskQueryOptions$.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -75,12 +75,12 @@ export class TaskRepositoryService {
 
     this._currentPage = nextPage;
 
-    return this.search$().pipe(
+    return this.search$(false).pipe(
       take(1),
     );
   }
 
-  search$(): Observable<boolean> {
+  search$(newSearch: boolean = true): Observable<boolean> {
     return of(this._taskQueryOptions$.getValue()).pipe(
       debounceTime(500),
       flatMap(taskQueryOpts => {
@@ -104,7 +104,15 @@ export class TaskRepositoryService {
               return null;
             }
 
-            const tasks: Task[] = [];
+            let tasks: Task[];
+            if (newSearch) {
+              // Replace current tasks
+              tasks = [];
+            } else {
+              // Add to current tasks
+              tasks = this._tasks$.getValue();
+            }
+
             response.tasks.forEach(iTask => {
               const createdAt = new Date(iTask.createdAt);
               let updatedAt;
