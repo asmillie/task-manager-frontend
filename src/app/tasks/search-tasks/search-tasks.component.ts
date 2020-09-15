@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { TasksService } from '../tasks.service';
 import { FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
 import { TaskQueryOptions } from '../task-query-options';
 import { MIN_TASK_DATE } from '../../constants';
 import { dateValidator } from '../../shared/date.validator';
 import { Subscription } from 'rxjs';
 import { TaskQueryOptionsService } from '../task-query-options.service';
+import { TaskRepositoryService } from '../task-repository.service';
 
 @Component({
   selector: 'app-search-tasks',
@@ -23,7 +23,7 @@ export class SearchTasksComponent implements OnInit, OnDestroy {
 
   constructor(
     private tqoService: TaskQueryOptionsService,
-    private tasksService: TasksService,
+    private taskRepo: TaskRepositoryService,
     private fb: FormBuilder) {}
 
   ngOnInit(): void {
@@ -46,9 +46,9 @@ export class SearchTasksComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     const taskQueryOpts = this.getTaskQueryOpts();
-    this.tqoService.taskQueryOptions.next(taskQueryOpts);
+    this.taskRepo.setQueryOption(taskQueryOpts);
 
-    this.searchSub = this.tasksService.search$().subscribe((tasks) => {
+    this.searchSub = this.taskRepo.search$().subscribe((tasks) => {
       this.isLoading = false;
     }, (err) => {
       this.isLoading = false;

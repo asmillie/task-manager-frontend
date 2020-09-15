@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { TasksService } from '../tasks.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Task } from '../task';
 import { User } from '../../user/class/user';
+import { TaskRepositoryService } from '../task-repository.service';
 
 @Component({
   selector: 'app-add-task',
@@ -20,7 +20,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   errorMessage = '';
 
   constructor(
-    private tasksService: TasksService,
+    private taskRepo: TaskRepositoryService,
     private router: Router,
     private fb: FormBuilder) {}
 
@@ -43,7 +43,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     console.log(this.addTaskForm);
 
     const task = new Task(this.description.value, this.completed.value);
-    this.addTaskSub = this.tasksService.add$(task).subscribe(newTask => {
+    this.addTaskSub = this.taskRepo.add$(task).subscribe(newTask => {
       this.isLoading = false;
       if (!newTask) {
         this.errorMessage = 'An error occurred, please try again.';
