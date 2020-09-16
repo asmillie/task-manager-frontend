@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Task } from '../task';
 import { User } from '../../user/class/user';
 import { TaskRepositoryService } from '../task-repository.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-task',
@@ -48,6 +49,10 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       if (!newTask) {
         this.errorMessage = 'An error occurred, please try again.';
       }
+
+      this.taskRepo.search$().pipe(take(1)).subscribe({
+        error: (err) => this.errorMessage = err
+      });
 
       this.resetForm();
     }, (err) => {
