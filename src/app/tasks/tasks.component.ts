@@ -1,13 +1,12 @@
 import { Component, OnInit, OnDestroy, ViewChildren, QueryList, Directive, Input,
   Output, EventEmitter, HostListener, HostBinding } from '@angular/core';
 import { Task } from './task';
-import { Subscription, Observable, of, BehaviorSubject } from 'rxjs';
+import { Subscription, Observable, BehaviorSubject } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 import { TaskSortOption } from './task-sort-option';
 import { TaskQueryOptionsService } from './task-query-options.service';
 import { SORT_DIR } from '../constants';
 import { TaskRepositoryService } from './task-repository.service';
-import { TaskQueryOptions } from './task-query-options';
 
 @Directive({
     selector: 'th[sortable]',
@@ -120,7 +119,6 @@ export class TasksComponent implements OnInit, OnDestroy {
   collectionSize = 0;
 
   constructor(
-    private tqoService: TaskQueryOptionsService,
     private taskRepo: TaskRepositoryService,
   ) {}
 
@@ -136,9 +134,9 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   onSort(tso: TaskSortOption): void {
     if (tso.direction !== '') {
-      this.tqoService.setSortOption(tso);
+      this.taskRepo.setSortOption(tso);
     } else {
-      this.tqoService.resetSearchOpts();
+      this.taskRepo.resetSearchOpts();
     }
 
     const headerToSort = this.headers.find(header => header.field === tso.field);
