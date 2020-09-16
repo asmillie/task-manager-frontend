@@ -4,7 +4,6 @@ import { TaskQueryOptions } from '../task-query-options';
 import { MIN_TASK_DATE } from '../../constants';
 import { dateValidator } from '../../shared/date.validator';
 import { Subscription } from 'rxjs';
-import { TaskQueryOptionsService } from '../task-query-options.service';
 import { TaskRepositoryService } from '../task-repository.service';
 
 @Component({
@@ -22,7 +21,6 @@ export class SearchTasksComponent implements OnInit, OnDestroy {
   tqo: TaskQueryOptions;
 
   constructor(
-    private tqoService: TaskQueryOptionsService,
     private taskRepo: TaskRepositoryService,
     private fb: FormBuilder) {}
 
@@ -146,7 +144,7 @@ export class SearchTasksComponent implements OnInit, OnDestroy {
   }
 
   private initTaskQueryOptions(): void {
-    const tqoSub = this.tqoService.taskQueryOptions.subscribe(tqo => {
+    const tqoSub = this.taskRepo.taskQueryOptions$.subscribe(tqo => {
       this.tqo = tqo;
     });
 
