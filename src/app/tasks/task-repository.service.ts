@@ -167,6 +167,10 @@ export class TaskRepositoryService {
     );
   }
 
+  refresh$(): void {
+    this._tasks$.next(this._tasks$.getValue());
+  }
+
   resetSearchOpts(): void {
     const tqo: TaskQueryOptions = {
       ...DEFAULT_TQO

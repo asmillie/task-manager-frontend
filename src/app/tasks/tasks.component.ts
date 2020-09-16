@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy, ViewChildren, QueryList, Directive, Input,
-  Output, EventEmitter, HostListener, HostBinding, OnChanges, SimpleChanges } from '@angular/core';
-import { TasksService } from './tasks.service';
+  Output, EventEmitter, HostListener, HostBinding } from '@angular/core';
 import { Task } from './task';
-import { Subscription, Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { Subscription, Observable, of, BehaviorSubject } from 'rxjs';
+import { take, map } from 'rxjs/operators';
 import { TaskSortOption } from './task-sort-option';
 import { TaskQueryOptionsService } from './task-query-options.service';
 import { SORT_DIR } from '../constants';
+import { TaskRepositoryService } from './task-repository.service';
+import { TaskQueryOptions } from './task-query-options';
 
 @Directive({
     selector: 'th[sortable]',
@@ -106,24 +107,30 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   @ViewChildren(TableSortDirective) headers: QueryList<TableSortDirective>;
 
-  tasks$: Observable<Task[]>;
-  tasksSub: Subscription;
+  tasks$ = new BehaviorSubject<Task[]>(null);
+
+  subscriptions: Subscription;
   isLoading: boolean;
   tasksLoading: Observable<boolean>;
   errorMessage = '';
+  page = 1;
+  pageSize = 5;
+  totalPages = 1;
+  totalTaskResults = 0;
+  collectionSize = 0;
 
   constructor(
     private tqoService: TaskQueryOptionsService,
-    private tasksService: TasksService,
-  ) { }
+    private taskRepo: TaskRepositoryService,
+  ) {}
 
   ngOnInit(): void {
-    this.initTasks();
+    this.initObservables();
   }
 
   ngOnDestroy(): void {
-    if (this.tasksSub) {
-      this.tasksSub.unsubscribe();
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
     }
   }
 
@@ -136,7 +143,7 @@ export class TasksComponent implements OnInit, OnDestroy {
 
     const headerToSort = this.headers.find(header => header.field === tso.field);
 
-    this.tasksService.search$().pipe(take(1)).subscribe({
+    this.taskRepo.search$().pipe(take(1)).subscribe({
       next: () => headerToSort.sortCompleted(),
       error: (err) => {
         headerToSort.sortFailed();
@@ -157,19 +164,58 @@ export class TasksComponent implements OnInit, OnDestroy {
     this.errorMessage = '';
   }
 
-  private initTasks(): void {
-    this.isLoading = true;
-
-    this.tasksLoading = this.tasksService.tasksLoading;
-
-    this.tasksService.search$().pipe(
-      take(1),
-    ).subscribe({
-      next: () => this.isLoading = false,
-      error: (err) => this.errorMessage = err
-    });
-
-    this.tasks$ = this.tasksService.tasks;
+  onPageChange(): void {
+    this.taskRepo.refresh$();
   }
 
+  onPageSizeChange(): void {
+    this.taskRepo.refresh$();
+  }
+
+  loadMoreResults(): void {
+    this.taskRepo.getNextPage$().pipe(
+      take(1),
+    ).subscribe({
+      next: () => {
+        this.isLoading = false;
+      },
+    });
+  }
+
+  private initObservables(): void {
+    this.tasksLoading = this.taskRepo.loading$;
+    this.subscriptions =  new Subscription();
+
+    const taskSub = this.taskRepo.tasks$.pipe(
+      map(tasks => {
+        if (!tasks) {
+          return {
+            count: 0,
+            page: [],
+          };
+        }
+
+        const pageIndex = (this.page - 1) * this.pageSize;
+        return {
+          count: tasks.length,
+          page: tasks.slice(pageIndex, pageIndex + this.pageSize)
+        };
+      }),
+    ).subscribe(tasks => {
+      this.collectionSize = tasks.count;
+      this.tasks$.next(tasks.page);
+    });
+    this.subscriptions.add(taskSub);
+
+    const resultSub = this.taskRepo.totalResults$.subscribe(total => {
+      this.totalTaskResults = total;
+    });
+    this.subscriptions.add(resultSub);
+
+    this.taskRepo.search$().pipe(
+      take(1),
+    ).subscribe({
+      error: (err) => this.errorMessage = err
+    });
+  }
 }
