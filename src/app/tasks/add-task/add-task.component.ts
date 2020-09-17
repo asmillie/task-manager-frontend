@@ -47,6 +47,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       this.isLoading = false;
       if (!newTask) {
         this.errorMessage = 'An error occurred, please try again.';
+        return;
       }
 
       this.taskRepo.search$().pipe(take(1)).subscribe({
