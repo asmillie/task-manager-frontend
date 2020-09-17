@@ -74,7 +74,6 @@ export class TaskRepositoryService {
     }
 
     this._currentPage = nextPage;
-
     return this.search$(false).pipe(
       take(1),
     );
@@ -87,7 +86,7 @@ export class TaskRepositoryService {
         if (!taskQueryOpts) {
           return null;
         }
-
+ 
         this._loading$.next(true);
 
         const taskQuery: TaskQuery = {
@@ -101,16 +100,16 @@ export class TaskRepositoryService {
         return this.http.post<TaskPaginationData>(url, taskQuery).pipe(
           map((response: TaskPaginationData) => {
             if (!response) {
-              return null;
+              return false;
             }
-
-            let tasks: Task[];
-            if (newSearch) {
-              // Replace current tasks
-              tasks = [];
-            } else {
+ 
+            let tasks: Task[] = [];
+            if (!newSearch) {
               // Add to current tasks
-              tasks = this._tasks$.getValue();
+              const currentTasks = this._tasks$.getValue();
+              if (currentTasks && currentTasks.length > 0) {
+                tasks = currentTasks;
+              }
             }
 
             response.tasks.forEach(iTask => {
@@ -129,7 +128,7 @@ export class TaskRepositoryService {
             this._currentPage = response.currentPage;
 
             this._loading$.next(false);
-
+            console.log('end of map func');
             return true;
           }),
           catchError(err => {
