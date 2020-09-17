@@ -166,7 +166,7 @@ export class TaskRepositoryService {
     );
   }
 
-  refresh$(): void {
+  refresh(): void {
     this._tasks$.next(this._tasks$.getValue());
   }
 

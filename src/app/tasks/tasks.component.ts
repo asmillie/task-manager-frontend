@@ -4,7 +4,6 @@ import { Task } from './task';
 import { Subscription, Observable, BehaviorSubject } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 import { TaskSortOption } from './task-sort-option';
-import { TaskQueryOptionsService } from './task-query-options.service';
 import { SORT_DIR } from '../constants';
 import { TaskRepositoryService } from './task-repository.service';
 
@@ -163,11 +162,11 @@ export class TasksComponent implements OnInit, OnDestroy {
   }
 
   onPageChange(): void {
-    this.taskRepo.refresh$();
+    this.taskRepo.refresh();
   }
 
   onPageSizeChange(): void {
-    this.taskRepo.refresh$();
+    this.taskRepo.refresh();
   }
 
   loadMoreResults(): void {
