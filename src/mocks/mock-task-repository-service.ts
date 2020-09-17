@@ -13,7 +13,7 @@ const default_tqo: TaskQueryOptions = {
 
 export const mockTaskRepositoryService = {
     getNextPage$: jest.fn(),
-    search$: jest.fn(),
+    search$: jest.fn().mockReturnValue(of(true)),
     add$: jest.fn(),
     refresh: jest.fn(),
     resetSearchOpts: jest.fn(),
@@ -21,4 +21,5 @@ export const mockTaskRepositoryService = {
     setQueryOption: jest.fn(),
     taskQueryOptions$: of(default_tqo),
     tasks$: of(mockTasks),
+    totalResults$: of(80),
 };
