@@ -1,6 +1,7 @@
 import { of } from 'rxjs';
 import { SORT_DIR, SORT_FIELDS } from '../app/constants';
 import { TaskQueryOptions } from '../app/tasks/task-query-options';
+import { mockTasks } from './mock-tasks';
 
 const default_tqo: TaskQueryOptions = {
     sort: [
@@ -19,4 +20,5 @@ export const mockTaskRepositoryService = {
     setSortOption: jest.fn(),
     setQueryOption: jest.fn(),
     taskQueryOptions$: of(default_tqo),
+    tasks$: of(mockTasks),
 };
