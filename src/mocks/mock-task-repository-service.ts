@@ -18,5 +18,5 @@ export const mockTaskRepositoryService = {
     resetSearchOpts: jest.fn(),
     setSortOption: jest.fn(),
     setQueryOption: jest.fn(),
-    taskQueryOptions$: jest.fn().mockReturnValue(of(default_tqo)),
+    taskQueryOptions$: of(default_tqo),
 };
