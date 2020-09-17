@@ -128,7 +128,7 @@ export class TaskRepositoryService {
             this._currentPage = response.currentPage;
 
             this._loading$.next(false);
-            console.log('end of map func');
+
             return true;
           }),
           catchError(err => {
