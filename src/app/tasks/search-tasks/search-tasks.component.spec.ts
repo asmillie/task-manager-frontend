@@ -3,10 +3,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SearchTasksComponent } from './search-tasks.component';
 import { ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
-import { TasksService } from '../tasks.service';
-import { mockTasksService } from '../../../mocks/mock-tasks-service';
 import { Subscription, of } from 'rxjs';
 import { mockTasks } from '../../../mocks/mock-tasks';
+import { mockTaskRepositoryService } from '../../../mocks/mock-task-repository-service';
+import { TaskRepositoryService } from '../task-repository.service';
 
 describe('SearchTasksComponent', () => {
   let component: SearchTasksComponent;
@@ -20,7 +20,7 @@ describe('SearchTasksComponent', () => {
         SharedModule,
       ],
       providers: [
-        { provide: TasksService, useValue: mockTasksService as any },
+        { provide: TaskRepositoryService, useValue: mockTaskRepositoryService as any },
       ]
     })
     .compileComponents();
@@ -62,28 +62,27 @@ describe('SearchTasksComponent', () => {
 
       expect(component.searchForm.status).not.toEqual('VALID');
       component.onSubmit();
-      expect(mockTasksService.search$).not.toHaveBeenCalled();
+      expect(mockTaskRepositoryService.search$).not.toHaveBeenCalled();
     });
 
-    it('should set task query options', () => {
-      const tqoSpy = jest.spyOn(mockTasksService.taskQueryOptions, 'next');
-      mockTasksService.search$.mockReturnValue(of('valid data'));
+    it('should pass query options to task repository setQueryOption method', () => {
+      mockTaskRepositoryService.search$.mockReturnValue(of('valid data'));
       (component as any).initForm();
       component.searchForm.get('complete').setValue(false);
 
-      expect(tqoSpy).not.toHaveBeenCalled();
+      expect(mockTaskRepositoryService.setQueryOption).not.toHaveBeenCalled();
       component.onSubmit();
-      expect(tqoSpy).toHaveBeenCalled();
+      expect(mockTaskRepositoryService.setQueryOption).toHaveBeenCalled();
     });
 
     it('should subscribe to tasksService.search', () => {
-      mockTasksService.search$.mockClear();
-      mockTasksService.search$.mockReturnValueOnce(of(mockTasks));
+      mockTaskRepositoryService.search$.mockClear();
+      mockTaskRepositoryService.search$.mockReturnValueOnce(of(mockTasks));
       component.searchForm.get('incomplete').setValue(false);
 
-      expect(mockTasksService.search$).not.toHaveBeenCalled();
+      expect(mockTaskRepositoryService.search$).not.toHaveBeenCalled();
       component.onSubmit();
-      expect(mockTasksService.search$).toHaveBeenCalledTimes(1);
+      expect(mockTaskRepositoryService.search$).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -95,6 +94,10 @@ describe('SearchTasksComponent', () => {
       expect(resetSpy).toHaveBeenCalledWith({
         complete: true,
         incomplete: true,
+        start_createdAt: '',
+        end_createdAt: '',
+        start_updatedAt: '',
+        end_updatedAt: '',
       });
     });
   });
