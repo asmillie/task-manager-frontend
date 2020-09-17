@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, tick } from '@angular/core/testing';
 
 import { TaskRepositoryService, TaskPaginationData, TaskQuery } from './task-repository.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -6,13 +6,12 @@ import { mockHttpService } from '../../mocks/mock-http-service';
 import { ErrorHandlingService } from '../error-handling.service';
 import { mockErrorHandlingService } from '../../mocks/mock-error-handling-service';
 import { of, throwError } from 'rxjs';
-import { mockTasks, mockCompletedTasks } from '../../mocks/mock-tasks';
+import { mockTasks } from '../../mocks/mock-tasks';
 import { TaskQueryOptions } from './task-query-options';
 import { environment } from '../../environments/environment';
 import { Task } from './task';
 import { TaskSortOption } from './task-sort-option';
 import { SORT_FIELDS, SORT_DIR } from '../constants';
-import { take } from 'rxjs/operators';
 
 const mockTaskPaginationData: TaskPaginationData = {
   totalResults: mockTasks.length,
@@ -133,6 +132,18 @@ describe('TaskRepositoryService', () => {
           done();
         }
       });
+    });
+  });
+
+  describe('refresh', () => {
+    it('should refresh tasks subject with current tasks value', () => {
+      const tasksSubject = (service as any)._tasks$;
+      tasksSubject.next(mockTasks);
+      const tasksSpy = jest.spyOn(tasksSubject, 'next');
+
+      expect(tasksSpy).not.toHaveBeenCalled();
+      service.refresh();
+      expect(tasksSpy).toHaveBeenCalledWith(mockTasks);
     });
   });
 
