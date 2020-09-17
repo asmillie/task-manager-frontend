@@ -41,7 +41,6 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       this.isLoading = false;
       return;
     }
-    console.log(this.addTaskForm);
 
     const task = new Task(this.description.value, this.completed.value);
     this.addTaskSub = this.taskRepo.add$(task).subscribe(newTask => {
