@@ -22,4 +22,5 @@ export const mockTaskRepositoryService = {
     taskQueryOptions$: of(default_tqo),
     tasks$: of(mockTasks),
     totalResults$: of(80),
+    loading$: of(true),
 };
