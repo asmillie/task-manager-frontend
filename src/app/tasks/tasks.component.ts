@@ -147,12 +147,7 @@ export class TasksComponent implements OnInit, OnDestroy {
         this.errorMessage = err;
       },
       complete: () => {
-        // Clear sorting on other columns
-        this.headers.forEach(header => {
-          if (header.field !== tso.field && header.direction !== '') {
-            header.reset();
-          }
-        });
+        this.clearUnselectedHeaders(tso);
       }
     });
   }
@@ -170,12 +165,13 @@ export class TasksComponent implements OnInit, OnDestroy {
   }
 
   loadMoreResults(): void {
+    // Any error will be returned by tasks observable
     this.taskRepo.getNextPage$().pipe(
       take(1),
     ).subscribe({
-      next: () => {
+      complete: () => {
         this.isLoading = false;
-      },
+      }
     });
   }
 
@@ -213,6 +209,18 @@ export class TasksComponent implements OnInit, OnDestroy {
       take(1),
     ).subscribe({
       error: (err) => this.errorMessage = err
+    });
+  }
+
+  private clearUnselectedHeaders(tso: TaskSortOption): void {
+    if (!tso) {
+      return;
+    }
+
+    this.headers.forEach(header => {
+      if (header.field !== tso.field && header.direction !== '') {
+        header.reset();
+      }
     });
   }
 }
