@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SearchTasksComponent } from './search-tasks.component';
 import { ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
-import { Subscription, of } from 'rxjs';
+import { Subscription, of, throwError } from 'rxjs';
 import { mockTasks } from '../../../mocks/mock-tasks';
 import { mockTaskRepositoryService } from '../../../mocks/mock-task-repository-service';
 import { TaskRepositoryService } from '../task-repository.service';
@@ -83,6 +83,18 @@ describe('SearchTasksComponent', () => {
       expect(mockTaskRepositoryService.search$).not.toHaveBeenCalled();
       component.onSubmit();
       expect(mockTaskRepositoryService.search$).toHaveBeenCalledTimes(1);
+    });
+
+    it('should assign error message', () => {
+      mockTaskRepositoryService.search$.mockClear();
+      mockTaskRepositoryService.search$.mockReturnValueOnce(throwError('error'));
+      component.searchForm.get('incomplete').setValue(false);
+
+      expect(mockTaskRepositoryService.search$).not.toHaveBeenCalled();
+      expect(component.errorMessage).toEqual('');
+      component.onSubmit();
+      expect(mockTaskRepositoryService.search$).toHaveBeenCalledTimes(1);
+      expect(component.errorMessage).toEqual('error');
     });
   });
 
