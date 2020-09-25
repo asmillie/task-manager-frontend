@@ -10,7 +10,7 @@ import { take } from 'rxjs/operators';
 @Component({
   selector: 'app-add-task',
   templateUrl: './add-task.component.html',
-  styleUrls: ['./add-task.component.css']
+  styleUrls: ['./add-task.component.scss']
 })
 export class AddTaskComponent implements OnInit, OnDestroy {
 
