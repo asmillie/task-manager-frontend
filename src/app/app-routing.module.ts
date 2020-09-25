@@ -3,17 +3,12 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { SignupComponent } from './signup/signup.component';
 import { HomeComponent } from './home/home.component';
 
-
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'signup', component: SignupComponent },
   {
-    path: 'user',
-    loadChildren: () => import('./user/user.module').then(m => m.UserModule),
-  },
-  {
-    path: 'tasks',
-    loadChildren: () => import('./tasks/tasks.module').then(m => m.TasksModule),
+    path: 'task-manager',
+    loadChildren: () => import('./task-manager/task-manager.module').then(m => m.TaskManagerModule),
   }
 ];
 
