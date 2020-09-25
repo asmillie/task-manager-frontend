@@ -1,31 +1,25 @@
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div class="form-row">
-        <app-alert *ngIf="errMessage !== ''" [alertMessage]="errMessage" (dismissEvent)="dismissAlert()"></app-alert>
-        <div class="col">
-            <input
-                type="text"
-                class="form-control"
-                placeholder="Email"
-                formControlName="email"
-                email
-                required
-                [class.is-valid]="email.valid && email.touched"
-                [class.is-invalid]="email.invalid && email.touched">
-        </div>
-        <div class="col">
-            <input
-                type="password"
-                class="form-control"
-                placeholder="Password"
-                formControlName="password"
-                required
-                minlength="7"
-                [class.is-valid]="password.valid && password.touched"
-                [class.is-invalid]="password.invalid && password.touched">
-        </div>
-        <button class="btn btn-primary" type="submit" *ngIf="!isLoading">Login</button>
-        <div class="col" *ngIf="isLoading">
-            <app-loading-spinner></app-loading-spinner>
-        </div>
+    <app-alert *ngIf="errMessage !== ''" [alertMessage]="errMessage" (dismissEvent)="dismissAlert()"></app-alert>
+    <input
+        type="text"
+        class="form-control my-2"
+        placeholder="Email"
+        formControlName="email"
+        email
+        required
+        [class.is-valid]="email.valid && email.touched"
+        [class.is-invalid]="email.invalid && email.touched">
+    <input
+        type="password"
+        class="form-control my-2"
+        placeholder="Password"
+        formControlName="password"
+        required
+        minlength="7"
+        [class.is-valid]="password.valid && password.touched"
+        [class.is-invalid]="password.invalid && password.touched">
+    <button class="btn btn-primary float-right" type="submit" *ngIf="!isLoading">Login</button>
+    <div *ngIf="isLoading">
+        <app-loading-spinner></app-loading-spinner>
     </div>
 </form>
