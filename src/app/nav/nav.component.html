@@ -13,8 +13,6 @@
         <a class="nav-link" routerLink="/task-manager/tasks">Tasks</a>
       </li>
     </ul>
-    <app-login *ngIf="!isLoggedIn"></app-login>
     <button class="btn btn-secondary" *ngIf="isLoggedIn" (click)="logout()">Logout</button>
-    <button class="btn btn-light ml-2" *ngIf="!isLoggedIn" routerLink="/signup">Signup</button>
   </div>
 </nav>

@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       .login$(email, password)
       .subscribe(_ => {
         this.isLoading = false;
-        this.router.navigate(['/task-manager']);
+        this.router.navigate(['/task-manager/tasks']);
       }, (err) => {
         this.isLoading = false;
         this.errMessage = err;
