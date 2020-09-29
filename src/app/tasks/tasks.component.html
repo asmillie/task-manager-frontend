@@ -1,16 +1,40 @@
-<div class="col">
-    <div class="row">
-        <h3>Tasks</h3>
-    </div>
-    <div class="row">
-        <app-add-task class="w-100"></app-add-task>    
-    </div>
-    <div class="row">
-        <app-search-tasks></app-search-tasks>
-    </div>
+<div class="d-flex flex-column justify-content-center">
     <app-alert *ngIf="errorMessage !== ''" alertMessage="{{ errorMessage }}" (dismissEvent)="onDismissAlert()"></app-alert>
-    <div class="row">
-        <table class="table table-striped w-75">
+    <div class="d-flex justify-content-start align-items-center mb-2 px-2">
+        <span class="mr-1">Showing</span>
+        <select
+            class="form-control selectPageSize"
+            style="width:auto"
+            [(ngModel)]="pageSize"
+            (ngModelChange)="onPageSizeChange()">
+            <option [ngValue]="5">5 items per page</option>
+            <option [ngValue]="10">10 items per page</option>
+            <option [ngValue]="15">15 items per page</option>
+            <option [ngValue]="20">20 items per page</option>
+        </select>
+        <button class="btn btn-info ml-auto" (click)="toggleSearch()">
+            Search
+            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+                <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+            </svg>
+        </button>
+        <button class="btn btn-success ml-2" (click)="openAddTaskModal()">
+            New
+            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+            </svg>
+        </button>
+    </div>
+    <div class="flex-fill px-2" [ngbCollapse]="collapseSearch">
+        <div class="card mx-auto my-2 text-white bg-dark">
+            <div class="card-body">
+                <app-search-tasks></app-search-tasks>
+            </div>
+        </div>
+    </div>
+    <div class="flex-fill">
+        <table class="table table-striped">
             <thead>
                 <th scope="col" sortable field="description" (sort)="onSort($event)">Description</th>
                 <th scope="col" sortable field="createdAt" (sort)="onSort($event)">Created</th>
@@ -38,7 +62,7 @@
             </ng-template>
         </table>
     </div>
-    <div class="row">
+    <div class="align-self-center">
         <div class="d-flex justify-content-between p-2">
            <ngb-pagination
                 [collectionSize]="collectionSize"
@@ -46,16 +70,7 @@
                 [pageSize]="pageSize"
                 (pageChange)="onPageChange()">
             </ngb-pagination>
-            <select
-                class="form-control selectPageSize"
-                style="width:auto"
-                [(ngModel)]="pageSize"
-                (ngModelChange)="onPageSizeChange()">
-                <option [ngValue]="5">5 items per page</option>
-                <option [ngValue]="10">10 items per page</option>
-                <option [ngValue]="15">15 items per page</option>
-                <option [ngValue]="20">20 items per page</option>
-            </select> 
+             
         </div>        
     </div>
 </div>

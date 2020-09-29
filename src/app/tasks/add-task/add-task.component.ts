@@ -6,6 +6,7 @@ import { Task } from '../task';
 import { User } from '../../user/class/user';
 import { TaskRepositoryService } from '../task-repository.service';
 import { take } from 'rxjs/operators';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-add-task',
@@ -23,7 +24,8 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   constructor(
     private taskRepo: TaskRepositoryService,
     private router: Router,
-    private fb: FormBuilder) {}
+    private fb: FormBuilder,
+    private activeModal: NgbActiveModal) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -55,6 +57,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       });
 
       this.resetForm();
+      this.activeModal.close();
     }, (err) => {
       this.isLoading = false;
       this.errorMessage = err;

@@ -6,6 +6,8 @@ import { NavComponent } from '../nav/nav.component';
 import { UserModule } from '../user/user.module';
 import { TasksModule } from '../tasks/tasks.module';
 import { AuthModule } from '../auth/auth.module';
+import { NgbCollapseModule, NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { AddTaskComponent } from '../tasks/add-task/add-task.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,11 @@ import { AuthModule } from '../auth/auth.module';
     AuthModule,
     UserModule,
     TasksModule,
-  ]
+    NgbDropdownModule,
+    NgbModalModule,
+  ],
+  entryComponents: [
+    AddTaskComponent,
+  ],
 })
 export class TaskManagerModule { }

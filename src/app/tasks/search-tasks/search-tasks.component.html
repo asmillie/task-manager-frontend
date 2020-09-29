@@ -1,73 +1,99 @@
-<h2>Search Tasks</h2>
-<form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="my-2 w-70">
-    <div class="form-group">
-        <label for="createdAt">Date Created</label>
-        <div class="row">
-            <div class="col">
-                <input
-                    type="date"
-                    class="form-control"
-                    min="{{ minDate }}"
-                    [attr.max]="endCreatedAt.value !== '' ? endCreatedAt.value : null"
-                    formControlName="start_createdAt">
+<div class="mx-4 my-1">
+    <h4>Search Tasks</h4>
+    <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="my-2">
+        <div class="row justify-content-start align-items-end">
+            <div class="col-xs-12 col-md-4">
+                <div class="form-row">
+                    <label for="createdAt">Date Created</label>
+                </div>
+                <div class="form-row align-items-center">
+                    <div class="col-xs-12 col-md-auto">From</div>
+                    <div class="col-xs-12 col-md-auto">
+                        <input
+                            type="date"
+                            class="form-control"
+                            min="{{ minDate }}"
+                            [attr.max]="endCreatedAt.value !== '' ? endCreatedAt.value : null"
+                            formControlName="start_createdAt">
+                    </div>
+                    <div class="col-xs-12 col-md-auto">To</div>
+                    <div class="col-xs-12 col-md-auto">
+                        <input
+                            type="date"
+                            class="form-control"
+                            [attr.min]="startCreatedAt.value !== '' ? startCreatedAt.value : minDate"
+                            formControlName="end_createdAt">
+                    </div>
+                </div>
             </div>
-            <div class="col-auto"> - </div>
-            <div class="col">
-                <input
-                    type="date"
-                    class="form-control"
-                    [attr.min]="startCreatedAt.value !== '' ? startCreatedAt.value : minDate"
-                    formControlName="end_createdAt">
+
+            <div class="col-xs-12 col-md-4">
+                <div class="form-row">
+                    <label for="updatedAt">Last Updated</label>
+                </div>
+                <div class="form-row align-items-center">
+                    <div class="col-xs-12 col-md-auto">From</div>
+                    <div class="col-xs-12 col-md-auto">
+                        <input
+                            type="date"
+                            class="form-control"
+                            [attr.min]="startCreatedAt.value !== '' ? startCreatedAt.value : minDate"
+                            [attr.max]="endUpdatedAt.value !== '' ? endUpdatedAt.value : null"
+                            formControlName="start_updatedAt">
+                    </div>
+                    <div class="col-xs-12 col-md-auto">To</div>
+                    <div class="col-xs-12 col-md-auto">
+                        <input
+                            type="date"
+                            class="form-control"
+                            [attr.min]="startUpdatedAt.value !== '' ? startUpdatedAt.value : minDate"
+                            formControlName="end_updatedAt">
+                    </div>
+                </div>
             </div>
-        </div>            
-    </div>
-    <div class="form-group">
-        <label for="updatedAt">Last Updated</label>
-        <div class="row">
-            <div class="col">
-                <input
-                    type="date"
-                    class="form-control"
-                    [attr.min]="startCreatedAt.value !== '' ? startCreatedAt.value : minDate"
-                    [attr.max]="endUpdatedAt.value !== '' ? endUpdatedAt.value : null"
-                    formControlName="start_updatedAt">
+
+            <div class="col-xs-12 col-md-4 col-lg-2">
+                <div class="form-row">
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" formControlName="complete">
+                            <label class="form-check-label">Complete</label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" formControlName="incomplete">
+                            <label class="form-check-label">Incomplete</label>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-auto"> - </div>
-            <div class="col">
-                <input
-                    type="date"
-                    class="form-control"
-                    [attr.min]="startUpdatedAt.value !== '' ? startUpdatedAt.value : minDate"
-                    formControlName="end_updatedAt">
+
+            <div class="col-xs-12 col-md-4 col-lg-2">
+                <div class="form-row">
+                    <div class="col-xs-12 col-md-6">
+                        <button type="button" class="btn btn-secondary" (click)="resetForm()">
+                            Clear
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <button type="submit" class="btn btn-primary ml-md-1" [attr.disabled]="isLoading ? true : null">
+                            <span *ngIf="!isLoading">
+                                Search
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+                                    <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+                                </svg>
+                            </span>
+                            <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
-        
-    </div>
-    
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" formControlName="complete">
-        <label class="form-check-label">Complete</label>
-    </div>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" formControlName="incomplete">
-        <label class="form-check-label">Incomplete</label>
-    </div>
-    <div class="clearfix"></div>
-    <button type="button" class="btn btn-secondary mt-3 mr-3" (click)="resetForm()">
-        Clear
-        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-        </svg>
-    </button>
-    <button type="submit" class="btn btn-primary mt-3" [attr.disabled]="isLoading ? true : null">
-        <span *ngIf="!isLoading">
-            Search
-            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
-                <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
-            </svg>
-        </span>
-        <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-    </button>
-</form>
+        </div>        
+    </form>   
+</div>

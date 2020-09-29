@@ -5,6 +5,7 @@ import { MIN_TASK_DATE } from '../../constants';
 import { dateValidator } from '../../shared/date.validator';
 import { Subscription } from 'rxjs';
 import { TaskRepositoryService } from '../task-repository.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-search-tasks',

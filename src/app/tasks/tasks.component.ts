@@ -6,6 +6,9 @@ import { take, map } from 'rxjs/operators';
 import { TaskSortOption } from './task-sort-option';
 import { SORT_DIR } from '../constants';
 import { TaskRepositoryService } from './task-repository.service';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AddTaskComponent } from './add-task/add-task.component';
+import { SearchTasksComponent } from './search-tasks/search-tasks.component';
 
 @Directive({
     selector: 'th[sortable]',
@@ -116,9 +119,11 @@ export class TasksComponent implements OnInit, OnDestroy {
   totalPages = 1;
   totalTaskResults = 0;
   collectionSize = 0;
+  collapseSearch = true;
 
   constructor(
     private taskRepo: TaskRepositoryService,
+    public modalService: NgbModal,
   ) {}
 
   ngOnInit(): void {
@@ -173,6 +178,14 @@ export class TasksComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       }
     });
+  }
+
+  openAddTaskModal(): void {
+    const modalRef = this.modalService.open(AddTaskComponent);
+  }
+
+  toggleSearch(): void {
+    this.collapseSearch = !this.collapseSearch;
   }
 
   private initObservables(): void {
