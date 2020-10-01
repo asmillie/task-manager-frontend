@@ -4,7 +4,7 @@ import { SignupComponent } from './signup/signup.component';
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent, data: { animation: 'HomePage' } },
   { path: 'signup', component: SignupComponent },
   {
     path: 'task-manager',

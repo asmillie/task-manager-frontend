@@ -1,2 +1,4 @@
 <app-nav></app-nav>
-<router-outlet></router-outlet>
+<div [@fadeInAnimation]="prepareTaskOutlet(taskOutlet)">
+    <router-outlet #taskOutlet="outlet"></router-outlet>
+</div>
