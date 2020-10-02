@@ -115,7 +115,7 @@ export class TasksComponent implements OnInit, OnDestroy {
   tasksLoading: Observable<boolean>;
   errorMessage = '';
   page = 1;
-  pageSize = 5;
+  pageSize = 10;
   totalPages = 1;
   totalTaskResults = 0;
   collectionSize = 0;
