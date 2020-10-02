@@ -1,6 +1,8 @@
-// App Fonts
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
-// App Variables
-@import "./variables";
+
+@import "abstracts/variables";
+
 // Bootstrap
 @import "~bootstrap/scss/bootstrap.scss";
+
+@import "themes/dark";
