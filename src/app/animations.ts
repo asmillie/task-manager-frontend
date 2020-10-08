@@ -1,4 +1,4 @@
-import { trigger, transition, animate, style, query, group, animateChild, stagger, sequence } from '@angular/animations';
+import { trigger, transition, animate, style, query, group, animateChild, stagger, sequence, state } from '@angular/animations';
 
 const resetRoute = [
     style({ position: 'relative' }),
@@ -56,3 +56,26 @@ export const tableRowAnimation =
         ]),
     ]);
 
+export const collapseExpandAnimation =
+    trigger('collapseExpandAnim', [
+        // Expanded
+        state('false', style({
+            opacity: 1,
+            height: '*',
+            transform: 'none'
+        })),
+        // Collapsed
+        state('true', style({
+            opacity: 0,
+            height: 0,
+            transform: 'scaleY(0)'
+        })),
+        // Expand
+        transition('true => false', [
+            animate('200ms'),
+        ]),
+        // Collapse
+        transition('false => true', [
+            animate('200ms')
+        ]),
+    ]);

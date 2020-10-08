@@ -8,7 +8,7 @@ import { SORT_DIR } from '../constants';
 import { TaskRepositoryService } from './task-repository.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddTaskComponent } from './add-task/add-task.component';
-import { tableRowAnimation } from '../animations';
+import { collapseExpandAnimation, tableRowAnimation } from '../animations';
 
 @Directive({
     selector: 'th[sortable]',
@@ -105,6 +105,7 @@ export class TableSortDirective {
   styleUrls: ['./tasks.component.scss'],
   animations: [
     tableRowAnimation,
+    collapseExpandAnimation,
   ]
 })
 export class TasksComponent implements OnInit, OnDestroy {
