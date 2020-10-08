@@ -6,9 +6,9 @@ import { take, map } from 'rxjs/operators';
 import { TaskSortOption } from './task-sort-option';
 import { SORT_DIR } from '../constants';
 import { TaskRepositoryService } from './task-repository.service';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddTaskComponent } from './add-task/add-task.component';
-import { SearchTasksComponent } from './search-tasks/search-tasks.component';
+import { tableRowAnimation } from '../animations';
 
 @Directive({
     selector: 'th[sortable]',
@@ -102,7 +102,10 @@ export class TableSortDirective {
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.component.html',
-  styleUrls: ['./tasks.component.scss']
+  styleUrls: ['./tasks.component.scss'],
+  animations: [
+    tableRowAnimation,
+  ]
 })
 export class TasksComponent implements OnInit, OnDestroy {
 
@@ -120,6 +123,7 @@ export class TasksComponent implements OnInit, OnDestroy {
   totalTaskResults = 0;
   collectionSize = 0;
   collapseSearch = true;
+  animateRows = 0;
 
   constructor(
     private taskRepo: TaskRepositoryService,
@@ -167,6 +171,7 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   onPageSizeChange(): void {
     this.taskRepo.refresh();
+    this.animateRows++;
   }
 
   loadMoreResults(): void {
@@ -210,6 +215,7 @@ export class TasksComponent implements OnInit, OnDestroy {
     ).subscribe(tasks => {
       this.collectionSize = tasks.count;
       this.tasks$.next(tasks.page);
+      this.animateRows++;
     });
     this.subscriptions.add(taskSub);
 

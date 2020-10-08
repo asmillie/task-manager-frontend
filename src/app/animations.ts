@@ -1,4 +1,4 @@
-import { trigger, transition, animate, style, query, group, animateChild } from '@angular/animations';
+import { trigger, transition, animate, style, query, group, animateChild, stagger, sequence } from '@angular/animations';
 
 const resetRoute = [
     style({ position: 'relative' }),
@@ -16,7 +16,7 @@ const resetRoute = [
         { optional: true }
     ),
 ];
-
+// Route Transition
 export const fadeInAnimation =
     trigger('fadeInAnimation', [
         transition('* => HomePage, * => TaskManagerPage, * => UserEditPage, * => TasksPage', [
@@ -41,3 +41,18 @@ export const fadeInAnimation =
             query(':enter', animateChild(), { optional: true })
         ]),
     ]);
+// TODO: Need animation to occur when page size or page changes
+// in addition to rows entering view
+// Table Row
+export const tableRowAnimation =
+    trigger('tableRowAnimation', [
+        transition(':increment', [
+            query(':enter', [
+                style({ opacity: 0, transform: 'translateY(-10px)' }),
+                stagger('30ms', [
+                    animate('300ms', style({ opacity: 1, transform: 'none' })),
+                ])
+            ], { optional: true }),
+        ]),
+    ]);
+
