@@ -40,6 +40,7 @@
                 <th scope="col" sortable field="createdAt" (sort)="onSort($event)">Created</th>
                 <th scope="col" sortable field="updatedAt" (sort)="onSort($event)">Updated</th>
                 <th scope="col" sortable field="completed" (sort)="onSort($event)">Completed</th>
+                <th scope="col">Action</th>
             </thead>            
             <tbody *ngIf="(tasks$ | async) as tasks; else noTasksBlock" [@tableRowAnimation]="animateRows">             
                 <tr *ngFor="let task of tasks">
@@ -54,6 +55,9 @@
                             <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>
                             <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>
                         </svg>
+                    </td>
+                    <td>
+                        Edit | Delete
                     </td>
                 </tr>            
             </tbody>

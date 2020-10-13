@@ -41,9 +41,9 @@ export const fadeInAnimation =
             query(':enter', animateChild(), { optional: true })
         ]),
     ]);
-// TODO: Need animation to occur when page size or page changes
-// in addition to rows entering view
+
 // Table Row
+
 export const tableRowAnimation =
     trigger('tableRowAnimation', [
         transition(':increment', [
@@ -72,10 +72,12 @@ export const collapseExpandAnimation =
         })),
         // Expand
         transition('true => false', [
-            animate('200ms'),
+            animate('400ms'),
         ]),
         // Collapse
         transition('false => true', [
-            animate('200ms')
+            animate('400ms')
         ]),
     ]);
+
+
