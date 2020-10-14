@@ -176,16 +176,16 @@ export class TasksComponent implements OnInit, OnDestroy {
     this.taskRepo.refresh();
   }
 
-  loadMoreResults(): void {
-    // Any error will be returned by tasks observable
-    this.taskRepo.getNextPage$().pipe(
-      take(1),
-    ).subscribe({
-      complete: () => {
-        this.isLoading = false;
-      }
-    });
-  }
+  // loadMoreResults(): void {
+  //   // Any error will be returned by tasks observable
+  //   this.taskRepo.getNextPage$().pipe(
+  //     take(1),
+  //   ).subscribe({
+  //     complete: () => {
+  //       this.isLoading = false;
+  //     }
+  //   });
+  // }
 
   openAddTaskModal(): void {
     const modalRef = this.modalService.open(AddTaskComponent);
