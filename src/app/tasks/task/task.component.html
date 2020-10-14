@@ -1,5 +1,5 @@
 <div class="m-4">
-    <h3>Add Task</h3>
+    <h3>{{ mode | titlecase }} Task</h3>
     <form [formGroup]="addTaskForm" (ngSubmit)="onSubmit()" class="w-100">
         <div class="form-group">
             <label for="description">Description</label>

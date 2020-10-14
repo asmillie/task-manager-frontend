@@ -1,18 +1,15 @@
-import { QueryList } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription, throwError } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { mockRouter } from '../../mocks/mock-router';
 import { mockTaskRepositoryService } from '../../mocks/mock-task-repository-service';
-import { mockTasks } from '../../mocks/mock-tasks';
 import { TableSortDirectiveStub } from '../../mocks/stubs/table-sort-directive.stub';
 import { SORT_DIR, SORT_FIELDS } from '../constants';
 import { SharedModule } from '../shared/shared.module';
-import { AddTaskComponent } from './add-task/add-task.component';
+import { TaskComponent } from './add-task/task.component';
 import { SearchTasksComponent } from './search-tasks/search-tasks.component';
 import { TaskRepositoryService } from './task-repository.service';
 import { TaskSortOption } from './task-sort-option';
@@ -32,7 +29,7 @@ describe('TasksComponent', () => {
       ],
       declarations: [
         TasksComponent,
-        AddTaskComponent,
+        TaskComponent,
         TableSortDirective,
         SearchTasksComponent,
       ],

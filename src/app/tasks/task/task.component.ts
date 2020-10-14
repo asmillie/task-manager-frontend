@@ -1,39 +1,44 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Task } from '../task';
 import { User } from '../../user/class/user';
 import { TaskRepositoryService } from '../task-repository.service';
 import { take } from 'rxjs/operators';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-add-task',
-  templateUrl: './add-task.component.html',
-  styleUrls: ['./add-task.component.scss']
+  selector: 'app-task',
+  templateUrl: './task.component.html',
+  styleUrls: ['./task.component.scss']
 })
-export class AddTaskComponent implements OnInit, OnDestroy {
+export class TaskComponent implements OnInit, OnDestroy {
 
+  private ADD_MODE = 'ADD';
+  private EDIT_MODE = 'EDIT';
+
+  mode = this.ADD_MODE;
   user: User;
   addTaskForm: FormGroup;
   isLoading: boolean;
-  addTaskSub: Subscription;
+  subscriptions: Subscription;
   errorMessage = '';
+  task: Task;
 
   constructor(
+    private activatedRoute: ActivatedRoute,
     private taskRepo: TaskRepositoryService,
     private router: Router,
-    private fb: FormBuilder,
-    private activeModal: NgbActiveModal) {}
+    private fb: FormBuilder) {}
 
   ngOnInit(): void {
+    this.initTask();
     this.initForm();
   }
 
   ngOnDestroy(): void {
-    if (this.addTaskSub) {
-      this.addTaskSub.unsubscribe();
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
     }
   }
 
@@ -45,7 +50,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     }
 
     const task = new Task(this.description.value, this.completed.value);
-    this.addTaskSub = this.taskRepo.add$(task).subscribe(newTask => {
+    const addTaskSub = this.taskRepo.add$(task).subscribe(newTask => {
       this.isLoading = false;
       if (!newTask) {
         this.errorMessage = 'An error occurred, please try again.';
@@ -57,11 +62,12 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       });
 
       this.resetForm();
-      this.activeModal.close();
     }, (err) => {
       this.isLoading = false;
       this.errorMessage = err;
     });
+
+    this.subscriptions.add(addTaskSub);
   }
 
   private initForm(): void {
@@ -77,6 +83,18 @@ export class AddTaskComponent implements OnInit, OnDestroy {
         disabled: this.isLoading,
       }]
     });
+  }
+
+  private initTask(): void {
+    this.subscriptions = this.activatedRoute.data
+      .subscribe((data: { task: Task }) => {
+        if (!data.task) {
+          this.mode = this.ADD_MODE;
+        } else {
+          this.mode = this.EDIT_MODE;
+          this.task = data.task;
+        }
+      });
   }
 
   private resetForm(): void {

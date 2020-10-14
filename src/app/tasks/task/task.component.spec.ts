@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { of, Subscription, throwError } from 'rxjs';
-import { mockAppRepositoryService } from '../../../mocks/mock-app-repository-service';
 import { mockRouter } from '../../../mocks/mock-router';
 import { mockTaskRepositoryService } from '../../../mocks/mock-task-repository-service';
 import { mockTasks } from '../../../mocks/mock-tasks';
@@ -10,11 +9,11 @@ import { SharedModule } from '../../shared/shared.module';
 import { Task } from '../task';
 import { TaskRepositoryService } from '../task-repository.service';
 
-import { AddTaskComponent } from './add-task.component';
+import { TaskComponent } from './task.component';
 
-describe('AddTaskComponent', () => {
-  let component: AddTaskComponent;
-  let fixture: ComponentFixture<AddTaskComponent>;
+describe('TaskComponent', () => {
+  let component: TaskComponent;
+  let fixture: ComponentFixture<TaskComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -22,7 +21,7 @@ describe('AddTaskComponent', () => {
         ReactiveFormsModule,
         SharedModule,
       ],
-      declarations: [ AddTaskComponent ],
+      declarations: [ TaskComponent ],
       providers: [
         { provide: TaskRepositoryService, useValue: mockTaskRepositoryService as any },
         { provide: Router, useValue: mockRouter as any },
@@ -32,7 +31,7 @@ describe('AddTaskComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddTaskComponent);
+    fixture = TestBed.createComponent(TaskComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -53,8 +52,8 @@ describe('AddTaskComponent', () => {
 
   describe('ngOnDestroy', () => {
     it('should call unsubscribe on subscription', () => {
-      component.addTaskSub = new Subscription();
-      const unsubSpy = jest.spyOn(component.addTaskSub, 'unsubscribe');
+      component.subscriptions = new Subscription();
+      const unsubSpy = jest.spyOn(component.subscriptions, 'unsubscribe');
 
 
       expect(unsubSpy).not.toHaveBeenCalled();

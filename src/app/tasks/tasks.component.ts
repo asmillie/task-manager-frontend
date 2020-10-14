@@ -7,7 +7,7 @@ import { TaskSortOption } from './task-sort-option';
 import { SORT_DIR } from '../constants';
 import { TaskRepositoryService } from './task-repository.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AddTaskComponent } from './add-task/add-task.component';
+import { TaskComponent } from './task/task.component';
 import { collapseExpandAnimation, tableRowAnimation } from '../animations';
 
 @Directive({
@@ -186,10 +186,6 @@ export class TasksComponent implements OnInit, OnDestroy {
   //     }
   //   });
   // }
-
-  openAddTaskModal(): void {
-    const modalRef = this.modalService.open(AddTaskComponent);
-  }
 
   toggleSearch(): void {
     this.collapseSearch = !this.collapseSearch;

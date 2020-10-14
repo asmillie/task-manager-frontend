@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../auth/auth.guard';
-import { AddTaskComponent } from '../tasks/add-task/add-task.component';
+import { TaskComponent } from '../tasks/task/task.component';
 import { SearchTasksComponent } from '../tasks/search-tasks/search-tasks.component';
 import { TaskResolverService } from '../tasks/task-resolver.service';
 import { TasksComponent } from '../tasks/tasks.component';
@@ -38,12 +38,12 @@ const routes: Routes = [
             },
             {
                 path: 'add',
-                component: AddTaskComponent,
+                component: TaskComponent,
                 data: { animation: 'AddTaskPage' },
             },
             {
                 path: 'edit/:id',
-                component: AddTaskComponent,
+                component: TaskComponent,
                 data: { animation: 'EditTaskPage' },
                 resolve: {
                     TaskResolverService
