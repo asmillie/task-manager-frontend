@@ -23,7 +23,9 @@ export const environment = {
             },
             tasks: {
               get: '/tasks/search',
-              add: '/tasks'
+              add: '/tasks',
+              patch: '/tasks',
+              delete: '/tasks'
             }
       }
   }
