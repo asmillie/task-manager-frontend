@@ -44,6 +44,8 @@ export class TaskRepositoryService {
   private API_URL = environment.taskApi.url;
   private GET_TASKS = environment.taskApi.endpoint.tasks.get;
   private ADD_TASK = environment.taskApi.endpoint.tasks.add;
+  private EDIT_TASK = environment.taskApi.endpoint.tasks.patch;
+  private DELETE_TASK = environment.taskApi.endpoint.tasks.delete;
 
   private _loading$ = new BehaviorSubject<boolean>(false);
   private _tasks$ = new BehaviorSubject<Task[] | null>(null);
@@ -155,13 +157,82 @@ export class TaskRepositoryService {
           return null;
         }
 
+        const newTask = new Task(res.description, res.completed, res.owner, res._id, res.createdAt, res.updatedAt);
+        const tasks = this._tasks$.getValue();
+        tasks.push(newTask);
+        this._tasks$.next(tasks);
+
         this._loading$.next(false);
 
-        return new Task(res.description, res.completed, res.owner, res._id, res.createdAt, res.updatedAt);
+        return newTask;
       }),
       catchError(err => {
         this._loading$.next(false);
-        return this.errorHandling.handleHttpError$(err)
+        return this.errorHandling.handleHttpError$(err);
+      }),
+    );
+  }
+
+  edit$(task: Task): Observable<Task> {
+    this._loading$.next(true);
+
+    return this.http.patch<ITask>(
+      `${this.API_URL}${this.EDIT_TASK}/${task.id}`,
+      task
+    ).pipe(
+      map((res: ITask) => {
+        if (!res) {
+          return null;
+        }
+
+        const newTask = new Task(res.description, res.completed, res.owner, res._id, res.createdAt, res.updatedAt);
+        const tasks = this._tasks$.getValue();
+
+        const taskIndex = tasks.findIndex(t => t.id === task.id);
+        if (taskIndex === -1) {
+          tasks.push(newTask);
+        } else {
+          tasks.splice(taskIndex, 1, newTask);
+        }
+
+        this._tasks$.next(tasks);
+        this._loading$.next(false);
+
+        return newTask;
+      }),
+      catchError(err => {
+        this._loading$.next(false);
+        return this.errorHandling.handleHttpError$(err);
+      }),
+    );
+  }
+
+  delete$(task: Task): Observable<boolean> {
+    this._loading$.next(true);
+
+    return this.http.delete<ITask>(
+      `${this.API_URL}${this.DELETE_TASK}/${task.id}`
+    ).pipe(
+      map((res: ITask) => {
+        if (!res) {
+          return false;
+        }
+
+        const tasks = this._tasks$.getValue();
+
+        const taskIndex = tasks.findIndex(t => t.id === task.id);
+        if (taskIndex !== -1) {
+          tasks.splice(taskIndex, 1);
+        }
+
+        this._tasks$.next(tasks);
+        this._loading$.next(false);
+
+        return true;
+      }),
+      catchError(err => {
+        this._loading$.next(false);
+        return this.errorHandling.handleHttpError$(err);
       }),
     );
   }
