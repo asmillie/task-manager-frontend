@@ -30,10 +30,9 @@ export class NavComponent implements OnInit, OnDestroy {
   logout(): void {
     const logoutSub = this.authService.logout$().subscribe(() => {
       this.isLoggedIn = false;
+      this.router.navigate(['']);
     });
     this.userSub.add(logoutSub);
-
-    this.router.navigate(['']);
   }
 
   private initAuth(): void {
