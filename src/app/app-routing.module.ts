@@ -4,12 +4,13 @@ import { SignupComponent } from './signup/signup.component';
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent, data: { animation: 'HomePage' } },
+  { path: 'login', component: HomeComponent, data: { animation: 'HomePage' } },
   { path: 'signup', component: SignupComponent },
   {
-    path: 'task-manager',
+    path: 'tasks',
     loadChildren: () => import('./task-manager/task-manager.module').then(m => m.TaskManagerModule),
-  }
+  },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 
 @NgModule({
