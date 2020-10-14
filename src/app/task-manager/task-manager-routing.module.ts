@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../auth/auth.guard';
 import { SearchTasksComponent } from '../tasks/search-tasks/search-tasks.component';
+import { TaskResolverService } from '../tasks/task-resolver.service';
 import { TasksComponent } from '../tasks/tasks.component';
 import { UserResolverService } from '../user/user-resolver.service';
 import { UserComponent } from '../user/user.component';
@@ -27,6 +28,9 @@ const routes: Routes = [
                 path: 'tasks',
                 component: TasksComponent,
                 data: { animation: 'TasksPage' },
+                resolve: {
+                    task: TaskResolverService,
+                },
                 children: [
                     {
                         path: 'search',
