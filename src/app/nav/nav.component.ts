@@ -12,6 +12,7 @@ export class NavComponent implements OnInit, OnDestroy {
 
   isLoggedIn: boolean;
   userSub: Subscription;
+  name: string;
 
   constructor(
     private authService: AuthService,
@@ -38,6 +39,7 @@ export class NavComponent implements OnInit, OnDestroy {
   private initAuth(): void {
     this.userSub = this.authService.userSubject.subscribe(user => {
       if (user && user.token) {
+        this.name = user.name;
         return this.isLoggedIn = true;
       }
 
