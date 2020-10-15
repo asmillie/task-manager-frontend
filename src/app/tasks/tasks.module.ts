@@ -5,6 +5,7 @@ import { TasksComponent, TableSortDirective } from './tasks.component';
 import { SharedModule } from '../shared/shared.module';
 import { TaskComponent } from './task/task.component';
 import { SearchTasksComponent } from './search-tasks/search-tasks.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -20,6 +21,7 @@ import { SearchTasksComponent } from './search-tasks/search-tasks.component';
     NgbPaginationModule,
     FormsModule,
     NgbCollapseModule,
+    RouterModule,
   ],
 })
 export class TasksModule { }
