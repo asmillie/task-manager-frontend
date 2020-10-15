@@ -158,8 +158,9 @@ export class TaskRepositoryService {
         }
 
         const newTask = new Task(res.description, res.completed, res.owner, res._id, res.createdAt, res.updatedAt);
-        const tasks = this._tasks$.getValue();
+        const tasks: Task[] = this._tasks$.getValue() ? this._tasks$.getValue() : [];
         tasks.push(newTask);
+
         this._tasks$.next(tasks);
 
         this._loading$.next(false);
@@ -186,7 +187,7 @@ export class TaskRepositoryService {
         }
 
         const newTask = new Task(res.description, res.completed, res.owner, res._id, res.createdAt, res.updatedAt);
-        const tasks = this._tasks$.getValue();
+        const tasks: Task[] = this._tasks$.getValue() ? this._tasks$.getValue() : [];
 
         const taskIndex = tasks.findIndex(t => t.id === task.id);
         if (taskIndex === -1) {
@@ -218,7 +219,7 @@ export class TaskRepositoryService {
           return false;
         }
 
-        const tasks = this._tasks$.getValue();
+        const tasks: Task[] = this._tasks$.getValue() ? this._tasks$.getValue() : [];
 
         const taskIndex = tasks.findIndex(t => t.id === task.id);
         if (taskIndex !== -1) {
