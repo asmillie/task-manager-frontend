@@ -179,7 +179,10 @@ export class TaskRepositoryService {
 
     return this.http.patch<ITask>(
       `${this.API_URL}${this.EDIT_TASK}/${task.id}`,
-      task
+      {
+        description: task.description,
+        completed: task.completed
+      }
     ).pipe(
       map((res: ITask) => {
         if (!res) {

@@ -46,7 +46,7 @@ const routes: Routes = [
                 component: TaskComponent,
                 data: { animation: 'EditTaskPage' },
                 resolve: {
-                    TaskResolverService
+                    task: TaskResolverService
                 }
             }
         ]

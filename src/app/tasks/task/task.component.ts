@@ -27,8 +27,8 @@ export class TaskComponent implements OnInit, OnDestroy {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private taskRepo: TaskRepositoryService,
     private router: Router,
+    private taskRepo: TaskRepositoryService,
     private fb: FormBuilder) {}
 
   ngOnInit(): void {
@@ -49,37 +49,53 @@ export class TaskComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const task = new Task(this.description.value, this.completed.value);
-    const addTaskSub = this.taskRepo.add$(task).subscribe(newTask => {
-      this.isLoading = false;
-      if (!newTask) {
-        this.errorMessage = 'An error occurred, please try again.';
-        return;
-      }
+    if (this.mode === this.EDIT_MODE) {
+      this.task.description = this.description.value;
+      this.task.completed = this.completed.value;
 
-      this.taskRepo.search$().pipe(take(1)).subscribe({
-        error: (err) => this.errorMessage = err
+      this.taskRepo.edit$(this.task).pipe(take(1)).subscribe(editTask => {
+        this.isLoading = false;
+        if (!editTask) {
+          this.errorMessage = 'An error occurred, please try again.';
+          return;
+        }
+
+        this.resetForm();
+        this.router.navigateByUrl('/tasks');
+      }, (err) => {
+        this.isLoading = false;
+        this.errorMessage = 'Error communicating with the server, please try again.';
       });
 
-      this.resetForm();
-    }, (err) => {
-      this.isLoading = false;
-      this.errorMessage = err;
-    });
+    } else {
+      const task = new Task(this.description.value, this.completed.value);
 
-    this.subscriptions.add(addTaskSub);
+      this.taskRepo.add$(task).pipe(take(1)).subscribe(newTask => {
+        this.isLoading = false;
+        if (!newTask) {
+          this.errorMessage = 'An error occurred, please try again.';
+          return;
+        }
+
+        this.resetForm();
+        this.router.navigateByUrl('/tasks');
+      }, (err) => {
+        this.isLoading = false;
+        this.errorMessage = err;
+      });
+    }
   }
 
   private initForm(): void {
     this.addTaskForm = this.fb.group({
       description: [{
-        value: '',
+        value: (this.mode === this.EDIT_MODE) ? this.task.description : '' ,
         disabled: this.isLoading,
       }, {
         validators: [Validators.required]
       }],
       completed: [{
-        value: false,
+        value: (this.mode === this.EDIT_MODE) ? this.task.completed : false,
         disabled: this.isLoading,
       }]
     });
