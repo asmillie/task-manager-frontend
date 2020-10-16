@@ -19,13 +19,11 @@ const resetRoute = [
 // Route Transition
 export const fadeInAnimation =
     trigger('fadeInAnimation', [
-        transition('* => HomePage, * => TaskManagerPage, * => UserEditPage, * => TasksPage', [
+        transition('* <=> *', [
             ...resetRoute,
-            query(':leave', animateChild(), { optional: true }),
             query(':enter', [style({ opacity: 0 })], {
                 optional: true,
             }),
-            query(':leave', animateChild(), { optional: true }),
             group([
                 query(
                     ':leave',

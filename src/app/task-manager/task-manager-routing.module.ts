@@ -13,14 +13,12 @@ const routes: Routes = [
     {
         path: '',
         component: TaskManagerComponent,
-        data: { animation: 'TaskManagerPage' },
         canActivate: [AuthGuard],
         canActivateChild: [AuthGuard],
         children: [
             {
                 path: 'user',
                 component: UserComponent,
-                data: { animation: 'UserEditPage' },
                 resolve: {
                     user: UserResolverService,
                 }
@@ -28,7 +26,6 @@ const routes: Routes = [
             {
                 path: '',
                 component: TasksComponent,
-                data: { animation: 'TasksPage' },
                 children: [
                     {
                         path: 'search',
@@ -39,12 +36,10 @@ const routes: Routes = [
             {
                 path: 'add',
                 component: TaskComponent,
-                data: { animation: 'AddTaskPage' },
             },
             {
                 path: 'edit/:id',
                 component: TaskComponent,
-                data: { animation: 'EditTaskPage' },
                 resolve: {
                     task: TaskResolverService
                 }
