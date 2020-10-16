@@ -52,18 +52,18 @@
     <div class="flex-fill">
         <table class="table table-dark table-striped table-borderless">
             <thead>
-                <th scope="col" sortable field="description" (sort)="onSort($event)">Description</th>
-                <th scope="col" sortable field="createdAt" (sort)="onSort($event)">Created</th>
-                <th scope="col" sortable field="updatedAt" (sort)="onSort($event)">Updated</th>
-                <th scope="col" sortable field="completed" (sort)="onSort($event)">Completed</th>
+                <th scope="col" sortable field="description" (sort)="onSort($event)" class="position-relative">Description</th>
+                <th scope="col" sortable field="createdAt" (sort)="onSort($event)" class="position-relative">Created</th>
+                <th scope="col" sortable field="updatedAt" (sort)="onSort($event)" class="position-relative">Updated</th>
+                <th scope="col" sortable field="completed" (sort)="onSort($event)" class="position-relative">Completed</th>
                 <th scope="col">Action</th>
             </thead>            
             <tbody *ngIf="(tasks$ | async) as tasks; else noTasksBlock" [@tableRowAnimation]="animateRows">             
                 <tr *ngFor="let task of tasks">
                     <td>{{ task.description }}</td>
-                    <td>{{ task.createdAt | date:"MMM d, y, h:mm a" }}</td>
-                    <td>{{ task.updatedAt | date:"MMM d, y, h:mm a" }}</td>
-                    <td>
+                    <td class="fitWidth">{{ task.createdAt | date:"MMM d, y, h:mm a" }}</td>
+                    <td class="fitWidth">{{ task.updatedAt | date:"MMM d, y, h:mm a" }}</td>
+                    <td class="fitWidth">
                         <svg *ngIf="task.completed" width="32px" height="32px" viewBox="0 0 16 16" class="bi bi-check2 text-success" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
                         </svg>
@@ -72,7 +72,7 @@
                             <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>
                         </svg>
                     </td>
-                    <td>
+                    <td class="fitWidth">
                         <a class="btn btn-secondary mr-2" routerLink="/tasks/edit/{{task.id}}">Edit</a>
                         <button class="btn btn-danger" (click)="onDelete(deleteModalContent, task)">Delete</button>
                     </td>

@@ -1,16 +1,22 @@
 .asc::after {
     display: inline-block;
-    width: 1em;
-    height: 1em;
-    margin: 0 1px 0 1px;
+    width: 1.25em;
+    height: 1.25em;
+    margin: auto 1px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     content: url('../../assets/img/arrow-up.svg');
 }
 
 .desc::after {
     display: inline-block;
-    width: 1em;
-    height: 1em;
-    margin: 0 1px 0 1px;
+    width: 1.25em;
+    height: 1.25em;
+    margin: auto 1px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     content: url('../../assets/img/arrow-down.svg');
 }
 
@@ -30,4 +36,9 @@
     border-right-color: transparent;
     border-radius: 50%;
     animation: spinner .75s linear infinite;
+}
+
+td.fitWidth {
+    width: 1px;
+    white-space: nowrap;
 }
