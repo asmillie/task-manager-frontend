@@ -6,7 +6,7 @@ import { take, map, first } from 'rxjs/operators';
 import { TaskSortOption } from './task-sort-option';
 import { SORT_DIR } from '../constants';
 import { TaskRepositoryService } from './task-repository.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TaskComponent } from './task/task.component';
 import { collapseExpandAnimation, tableRowAnimation } from '../animations';
 
@@ -127,9 +127,13 @@ export class TasksComponent implements OnInit, OnDestroy {
   animateRows = 0;
   firstLoad = true;
 
+  modalRef: NgbModalRef;
+  taskToDelete: Task = null;
+  deleteError = '';
+
   constructor(
     private taskRepo: TaskRepositoryService,
-    public modalService: NgbModal,
+    private modalService: NgbModal,
   ) {}
 
   ngOnInit(): void {
@@ -174,6 +178,27 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   onPageSizeChange(): void {
     this.taskRepo.refresh();
+  }
+
+  onDelete(deleteModalContent, task: Task): void {
+    this.taskToDelete = task;
+    this.deleteError = '';
+    this.modalRef = this.modalService.open(deleteModalContent);
+  }
+
+  deleteTask(): void {
+    if (!this.taskToDelete) {
+      return;
+    }
+
+    this.taskRepo.delete$(this.taskToDelete).pipe(take(1))
+      .subscribe(success => {
+        this.taskToDelete = null;
+        this.deleteError = '';
+        this.modalRef.close();
+      }, (err) => {
+        this.deleteError = 'An error occurred, please try again.';
+      });
   }
 
   // loadMoreResults(): void {

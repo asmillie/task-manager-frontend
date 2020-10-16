@@ -1,3 +1,19 @@
+<ng-template #deleteModalContent let-modal>
+    <div class="modal-header bg-dark text-white">
+        <h4 class="modal-title">Confirm Deletion</h4>
+        <button type="button" class="btn btn-sm bg-white close" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>Delete the following task?</p>
+        <p><span class="small-text text-secondary">"{{ taskToDelete.description }}"</span></p>
+        <p *ngIf="deleteError" class="text-danger">{{ deleteError }}</p>
+    </div>
+    <div class="modal-footer bg-dark text-white">
+        <button type="button" class="btn btn-danger mx-auto" (click)="deleteTask()">Delete</button>
+    </div>
+</ng-template>
 <div class="d-flex flex-column justify-content-center">
     <app-alert *ngIf="errorMessage !== ''" alertMessage="{{ errorMessage }}" (dismissEvent)="onDismissAlert()"></app-alert>
     <div class="d-flex justify-content-start align-items-center mb-2 px-2">
@@ -19,12 +35,12 @@
                 <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
             </svg>
         </button>
-        <button class="btn btn-success ml-2">
+        <a class="btn btn-success ml-2" routerLink="/tasks/add">
             New
             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
             </svg>
-        </button>
+        </a>
     </div>
     <div class="flex-fill px-2" [@collapseExpandAnim]="collapseSearch">
         <div class="card mx-auto my-2 text-white bg-dark">
@@ -58,7 +74,7 @@
                     </td>
                     <td>
                         <a class="btn btn-secondary mr-2" routerLink="/tasks/edit/{{task.id}}">Edit</a>
-                        <button class="btn btn-danger">Delete</button>
+                        <button class="btn btn-danger" (click)="onDelete(deleteModalContent, task)">Delete</button>
                     </td>
                 </tr>            
             </tbody>
