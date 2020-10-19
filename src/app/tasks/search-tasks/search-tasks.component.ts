@@ -6,6 +6,7 @@ import { dateValidator } from '../../shared/date.validator';
 import { Subscription } from 'rxjs';
 import { TaskRepositoryService } from '../task-repository.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import * as dayjs from 'dayjs';
 
 @Component({
   selector: 'app-search-tasks',
@@ -108,37 +109,42 @@ export class SearchTasksComponent implements OnInit, OnDestroy {
   }
 
   private initForm(): void {
+    const sca = (this.tqo.startCreatedAt) ? this.getFormattedDateString(this.tqo.startCreatedAt) : '';
+    const eca = (this.tqo.endCreatedAt) ? this.getFormattedDateString(this.tqo.endCreatedAt) : '';
+    const sua = (this.tqo.startUpdatedAt) ? this.getFormattedDateString(this.tqo.startUpdatedAt) : '';
+    const eua = (this.tqo.endUpdatedAt) ? this.getFormattedDateString(this.tqo.endUpdatedAt) : '';
+
     this.searchForm = this.fb.group({
         start_createdAt: [{
-          value: '',
+          value: sca,
           disabled: this.isLoading,
         }, {
           validators: dateValidator
         }],
         end_createdAt: [{
-          value: '',
+          value: eca,
           disabled: this.isLoading,
         }, {
           validators: dateValidator
         }],
         start_updatedAt: [{
-          value: '',
+          value: sua,
           disabled: this.isLoading,
         }, {
           validators: dateValidator
         }],
         end_updatedAt: [{
-          value: '',
+          value: eua,
           disabled: this.isLoading,
         }, {
           validators: dateValidator
         }],
         complete: [{
-          value: true,
+          value: (this.tqo.completed !== undefined) ? this.tqo.completed : true,
           disabled: this.isLoading,
         }],
         incomplete: [{
-          value: true,
+          value: (this.tqo.completed !== undefined) ? !this.tqo.completed : true,
           disabled: this.isLoading
         }]
      });
@@ -154,6 +160,14 @@ export class SearchTasksComponent implements OnInit, OnDestroy {
     } else {
       this.searchSub = tqoSub;
     }
+  }
+
+  private getFormattedDateString(date: Date): string | null {
+    if (!date) {
+      return;
+    }
+    const d = dayjs(date);
+    return d.format('YYYY-MM-DD');
   }
 
   get startCreatedAt(): AbstractControl {
