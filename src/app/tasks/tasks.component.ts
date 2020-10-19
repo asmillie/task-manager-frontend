@@ -123,7 +123,7 @@ export class TasksComponent implements OnInit, OnDestroy {
   totalPages = 1;
   totalTaskResults = 0;
   collectionSize = 0;
-  collapseSearch = true;
+  collapseSearch = true; // TODO: Set to false if search settings exist (TQO)
   animateRows = 0;
   firstLoad = true;
 
@@ -246,6 +246,12 @@ export class TasksComponent implements OnInit, OnDestroy {
       this.totalTaskResults = total;
     });
     this.subscriptions.add(resultSub);
+
+    this.taskRepo.taskQueryOptions$.pipe(take(1)).subscribe(tqo => {
+      if (tqo.startCreatedAt || tqo.startUpdatedAt || tqo.endCreatedAt || tqo.endUpdatedAt || tqo.completed !== undefined) {
+        this.toggleSearch();
+      }
+    });
 
     this.taskRepo.search$().pipe(
       take(1),

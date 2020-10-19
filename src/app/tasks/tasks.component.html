@@ -28,21 +28,21 @@
             <option [ngValue]="15">15 items per page</option>
             <option [ngValue]="20">20 items per page</option>
         </select>
-        <button class="btn btn-info ml-auto" (click)="toggleSearch()">
+        <button class="btn btn-info ml-auto shadow-lg" (click)="toggleSearch()">
             Search
             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
                 <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
             </svg>
         </button>
-        <a class="btn btn-success ml-2" routerLink="/tasks/add">
+        <a class="btn btn-success ml-2 shadow-lg" routerLink="/tasks/add">
             New
             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
             </svg>
         </a>
     </div>
-    <div class="flex-fill px-2" [@collapseExpandAnim]="collapseSearch">
+    <div class="flex-fill px-2 shadow" [@collapseExpandAnim]="collapseSearch">
         <div class="card mx-auto my-2 text-white bg-dark">
             <div class="card-body">
                 <app-search-tasks></app-search-tasks>
@@ -53,16 +53,16 @@
         <table class="table table-dark table-striped table-borderless">
             <thead>
                 <th scope="col" sortable field="description" (sort)="onSort($event)" class="position-relative">Description</th>
-                <th scope="col" sortable field="createdAt" (sort)="onSort($event)" class="position-relative">Created</th>
-                <th scope="col" sortable field="updatedAt" (sort)="onSort($event)" class="position-relative">Updated</th>
+                <th scope="col" sortable field="createdAt" (sort)="onSort($event)" class="position-relative d-none d-md-table-cell">Created</th>
+                <th scope="col" sortable field="updatedAt" (sort)="onSort($event)" class="position-relative d-none d-md-table-cell">Updated</th>
                 <th scope="col" sortable field="completed" (sort)="onSort($event)" class="position-relative">Completed</th>
                 <th scope="col">Action</th>
             </thead>            
             <tbody *ngIf="(tasks$ | async) as tasks; else noTasksBlock" [@tableRowAnimation]="animateRows">             
                 <tr *ngFor="let task of tasks">
                     <td>{{ task.description }}</td>
-                    <td class="fitWidth">{{ task.createdAt | date:"MMM d, y, h:mm a" }}</td>
-                    <td class="fitWidth">{{ task.updatedAt | date:"MMM d, y, h:mm a" }}</td>
+                    <td class="fitWidth d-none d-md-table-cell">{{ task.createdAt | date:"MMM d, y, h:mm a" }}</td>
+                    <td class="fitWidth d-none d-md-table-cell">{{ task.updatedAt | date:"MMM d, y, h:mm a" }}</td>
                     <td class="fitWidth">
                         <svg *ngIf="task.completed" width="32px" height="32px" viewBox="0 0 16 16" class="bi bi-check2 text-success" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>

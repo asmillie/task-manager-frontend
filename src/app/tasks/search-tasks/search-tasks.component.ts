@@ -73,7 +73,7 @@ export class SearchTasksComponent implements OnInit, OnDestroy {
       taskQueryOpts.completed = true;
     } else if (!this.complete.value && this.incomplete.value) {
       taskQueryOpts.completed = false;
-    } else if (taskQueryOpts.completed) {
+    } else if (taskQueryOpts.completed !== undefined) {
       delete taskQueryOpts.completed;
     }
 
