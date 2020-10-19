@@ -7,8 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
+  loginMode = true;
+
   constructor() { }
 
   ngOnInit(): void {}
+
+  toggleMode(): void {
+    this.loginMode = !this.loginMode;
+  }
+
+  onSignupCompleted(): void {
+    this.toggleMode();
+  }
 
 }

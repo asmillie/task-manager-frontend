@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../user/user.service';
 import { Subscription } from 'rxjs';
@@ -13,17 +13,18 @@ import { passwordMatchesValidator } from '../user/validator/password-matches.val
 })
 export class SignupComponent implements OnInit, OnDestroy {
 
+  @Output() signupCompleted = new EventEmitter<boolean>();
+
   signupForm;
   isLoading = false;
   signupSub: Subscription;
-  signupSuccess = false;
   errorMessage = '';
+  signupSuccess = false;
 
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private emailValidator: EmailExistsValidator,
-  ) { }
+    private emailValidator: EmailExistsValidator) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -51,11 +52,18 @@ export class SignupComponent implements OnInit, OnDestroy {
       .subscribe((user: User) => {
         this.isLoading = false;
         this.signupSuccess = true;
+        setTimeout(() => {
+          this.signupCompleted.emit(true);
+        }, 2000);
       }, (err) => {
         this.isLoading = false;
         this.signupSuccess = false;
         this.errorMessage = err;
       });
+  }
+
+  dismissAlert(): void {
+    this.errorMessage = '';
   }
 
   private initForm() {

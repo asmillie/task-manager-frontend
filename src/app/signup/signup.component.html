@@ -1,10 +1,11 @@
-<form class="my-2 w-75" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+<form class="my-2" [formGroup]="signupForm" (ngSubmit)="onSubmit()" *ngIf="!signupSuccess">
+    <app-alert *ngIf="errorMessage !== ''" [alertMessage]="errorMessage" (dismissEvent)="dismissAlert()"></app-alert>
     <div class="form-group">
-        <label for="name">Name</label>
         <input
             type="text"
             class="form-control"
-            id="name" 
+            id="name"
+            placeholder="Name"
             formControlName="name"
             required
             [class.is-valid]="name.valid && name.touched"
@@ -14,11 +15,11 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="email">Email Address</label>
         <input
             type="email"
             class="form-control"
             id="email"
+            placeholder="Email Address"
             formControlName="email"
             required
             [class.is-valid]="email.valid && email.touched"
@@ -29,11 +30,11 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="password">Password</label>
         <input
             type="password"
             class="form-control"
             id="password"
+            placeholder="Password"
             formControlName="password"
             required
             minlength="7"
@@ -47,11 +48,11 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="password2">Re-enter Password</label>
         <input
             type="password"
             class="form-control"
             id="password2"
+            placeholder="Re-enter Password"
             formControlName="password2"
             required
             minlength="7"
@@ -66,6 +67,9 @@
             <p>Password fields do not match</p>
         </div>
     </div>
-    <button class="btn btn-primary" type="submit" [attr.disabled]="signupForm.status === 'INVALID' ? 'disabled' : null">Signup</button>
+    <button class="btn btn-lg btn-primary float-right" type="submit" [attr.disabled]="(signupForm.status === 'INVALID' || isLoading) ? 'disabled' : null">Signup</button>
     <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 </form>
+<div class="alert-success my-2 p-2 d-flex justify-content-center" *ngIf="signupSuccess">
+    <p>Signup completed successfully, redirecting to login...</p>
+</div>
