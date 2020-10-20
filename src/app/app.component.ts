@@ -1,4 +1,3 @@
-import { transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { fadeInAnimation } from './animations';
@@ -22,6 +21,9 @@ export class AppComponent implements OnInit {
   }
 
   prepareOutlet(outlet: RouterOutlet) {
+    if (!outlet || !outlet.isActivated) {
+      return false;
+    }
     return outlet && outlet.activatedRoute && outlet.activatedRoute.snapshot.url.toString();
   }
 }

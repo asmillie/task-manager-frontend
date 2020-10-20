@@ -18,6 +18,9 @@ export class TaskManagerComponent implements OnInit {
   }
 
   prepareTaskOutlet(outlet: RouterOutlet) {
+    if (!outlet || !outlet.isActivated) {
+      return false;
+    }
     return outlet && outlet.activatedRoute && outlet.activatedRoute.snapshot.url.toString();
   }
 
