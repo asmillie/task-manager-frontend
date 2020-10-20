@@ -41,7 +41,6 @@ export const fadeInAnimation =
     ]);
 
 // Table Row
-
 export const tableRowAnimation =
     trigger('tableRowAnimation', [
         transition(':increment', [
@@ -54,6 +53,7 @@ export const tableRowAnimation =
         ]),
     ]);
 
+// Task Search
 export const collapseExpandAnimation =
     trigger('collapseExpandAnim', [
         // Expanded
@@ -77,5 +77,3 @@ export const collapseExpandAnimation =
             animate('400ms')
         ]),
     ]);
-
-

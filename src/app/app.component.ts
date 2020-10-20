@@ -22,6 +22,6 @@ export class AppComponent implements OnInit {
   }
 
   prepareOutlet(outlet: RouterOutlet) {
-    return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation;
+    return outlet && outlet.activatedRoute && outlet.activatedRoute.snapshot.url.toString();
   }
 }

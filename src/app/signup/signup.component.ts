@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { User } from '../user/class/user';
 import { EmailExistsValidator } from '../user/validator/email-exists.validator';
 import { passwordMatchesValidator } from '../user/validator/password-matches.validator';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -24,7 +25,8 @@ export class SignupComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private emailValidator: EmailExistsValidator) { }
+    private emailValidator: EmailExistsValidator,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -53,7 +55,7 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         this.signupSuccess = true;
         setTimeout(() => {
-          this.signupCompleted.emit(true);
+          this.router.navigateByUrl('/login');
         }, 2000);
       }, (err) => {
         this.isLoading = false;
