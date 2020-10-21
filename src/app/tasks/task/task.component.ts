@@ -19,7 +19,7 @@ export class TaskComponent implements OnInit, OnDestroy {
 
   mode = this.ADD_MODE;
   user: User;
-  addTaskForm: FormGroup;
+  taskForm: FormGroup;
   isLoading: boolean;
   subscriptions: Subscription;
   errorMessage = '';
@@ -44,7 +44,7 @@ export class TaskComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     this.isLoading = true;
-    if (this.addTaskForm.status !== 'VALID') {
+    if (this.taskForm.status !== 'VALID') {
       this.isLoading = false;
       return;
     }
@@ -87,7 +87,7 @@ export class TaskComponent implements OnInit, OnDestroy {
   }
 
   private initForm(): void {
-    this.addTaskForm = this.fb.group({
+    this.taskForm = this.fb.group({
       description: [{
         value: (this.mode === this.EDIT_MODE) ? this.task.description : '' ,
         disabled: this.isLoading,
@@ -114,15 +114,15 @@ export class TaskComponent implements OnInit, OnDestroy {
   }
 
   private resetForm(): void {
-    this.addTaskForm.reset();
+    this.taskForm.reset();
   }
 
   get description(): AbstractControl {
-    return this.addTaskForm.get('description');
+    return this.taskForm.get('description');
   }
 
   get completed(): AbstractControl {
-    return this.addTaskForm.get('completed');
+    return this.taskForm.get('completed');
   }
 
 }
