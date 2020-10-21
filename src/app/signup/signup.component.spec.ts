@@ -7,6 +7,7 @@ import { mockUserService } from '../../mocks/mock-user-service';
 import { SharedModule } from '../shared/shared.module';
 import { of, throwError, Subscription } from 'rxjs';
 import { User } from '../user/class/user';
+import { RouterTestingModule } from '@angular/router/testing';
 
 const userStub = new User('Bob', 'bob@builder.com');
 
@@ -18,6 +19,7 @@ describe('SignupComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ SignupComponent ],
       imports: [
+        RouterTestingModule,
         ReactiveFormsModule,
         SharedModule,
       ],

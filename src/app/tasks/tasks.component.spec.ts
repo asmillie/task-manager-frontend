@@ -9,12 +9,14 @@ import { mockTaskRepositoryService } from '../../mocks/mock-task-repository-serv
 import { TableSortDirectiveStub } from '../../mocks/stubs/table-sort-directive.stub';
 import { SORT_DIR, SORT_FIELDS } from '../constants';
 import { SharedModule } from '../shared/shared.module';
-import { TaskComponent } from './add-task/task.component';
+import { TaskComponent } from './task/task.component';
 import { SearchTasksComponent } from './search-tasks/search-tasks.component';
 import { TaskRepositoryService } from './task-repository.service';
 import { TaskSortOption } from './task-sort-option';
 
 import { TableSortDirective, TasksComponent } from './tasks.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('TasksComponent', () => {
   let component: TasksComponent;
@@ -23,6 +25,8 @@ describe('TasksComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        NoopAnimationsModule,
+        RouterTestingModule,
         FormsModule,
         SharedModule,
         NgbPaginationModule,
@@ -35,7 +39,6 @@ describe('TasksComponent', () => {
       ],
       providers: [
         { provide: TaskRepositoryService, useValue: mockTaskRepositoryService as any },
-        { provide: Router, useValue: mockRouter as any },
       ]
     })
     .overrideDirective(
@@ -157,14 +160,14 @@ describe('TasksComponent', () => {
     });
   });
 
-  describe('loadMoreResults', () => {
-    it('should call task repository getNextPage method', () => {
-      mockTaskRepositoryService.getNextPage$.mockReturnValue(of(true));
+  // describe('loadMoreResults', () => {
+  //   it('should call task repository getNextPage method', () => {
+  //     mockTaskRepositoryService.getNextPage$.mockReturnValue(of(true));
 
-      component.loadMoreResults();
-      expect(mockTaskRepositoryService.getNextPage$).toHaveBeenCalledTimes(1);
-    });
-  });
+  //     component.loadMoreResults();
+  //     expect(mockTaskRepositoryService.getNextPage$).toHaveBeenCalledTimes(1);
+  //   });
+  // });
 
   describe('initObservables', () => {
     it('should assign tasksLoading', (done) => {
