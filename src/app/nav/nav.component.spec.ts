@@ -7,6 +7,8 @@ import { LoginComponent } from '../auth/login/login.component';
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Subscription, of } from 'rxjs';
+import { Router } from '@angular/router';
+import { mockRouter } from '../../mocks/mock-router';
 
 describe('NavComponent', () => {
   let component: NavComponent;
@@ -23,7 +25,8 @@ describe('NavComponent', () => {
         LoginComponent,
       ],
       providers: [
-        { provide: AuthService, useValue: mockAuthService as any }
+        { provide: AuthService, useValue: mockAuthService as any },
+        { provide: Router, useValue: mockRouter as any },
       ]
     })
     .compileComponents();
