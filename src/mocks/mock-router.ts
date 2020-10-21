@@ -1,3 +1,4 @@
 export const mockRouter = {
-    navigate: jest.fn()
+    navigate: jest.fn(),
+    navigateByUrl: jest.fn(),
 };
