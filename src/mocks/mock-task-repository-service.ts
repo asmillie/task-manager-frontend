@@ -15,6 +15,7 @@ export const mockTaskRepositoryService = {
     getNextPage$: jest.fn(),
     search$: jest.fn().mockReturnValue(of(true)),
     add$: jest.fn(),
+    edit$: jest.fn(),
     refresh: jest.fn(),
     resetSearchOpts: jest.fn(),
     setSortOption: jest.fn(),
