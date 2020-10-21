@@ -82,12 +82,12 @@ describe('LoginComponent', () => {
         expect(component.isLoading).toEqual(false);
       });
 
-      it('should redirect to user feature', () => {
+      it('should redirect to tasks feature', () => {
         mockAuthService.login$.mockReturnValueOnce(of(mockUser));
 
         component.onSubmit();
         expect(component.isLoading).toEqual(false);
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/user']);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/tasks']);
       });
 
       it('should set error message', () => {
