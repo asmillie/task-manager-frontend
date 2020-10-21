@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChildren, QueryList, Directive, Input,
-  Output, EventEmitter, HostListener, HostBinding, AfterViewInit } from '@angular/core';
+  Output, EventEmitter, HostListener, HostBinding } from '@angular/core';
 import { Task } from './task';
 import { Subscription, Observable, BehaviorSubject } from 'rxjs';
 import { take, map, first } from 'rxjs/operators';
@@ -7,7 +7,6 @@ import { TaskSortOption } from './task-sort-option';
 import { SORT_DIR } from '../constants';
 import { TaskRepositoryService } from './task-repository.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { TaskComponent } from './task/task.component';
 import { collapseExpandAnimation, tableRowAnimation } from '../animations';
 
 @Directive({
@@ -123,7 +122,7 @@ export class TasksComponent implements OnInit, OnDestroy {
   totalPages = 1;
   totalTaskResults = 0;
   collectionSize = 0;
-  collapseSearch = true; // TODO: Set to false if search settings exist (TQO)
+  collapseSearch = true;
   animateRows = 0;
   firstLoad = true;
 
