@@ -9,7 +9,7 @@ const default_tqo: TaskQueryOptions = {
         { field: SORT_FIELDS.updatedAt, direction: SORT_DIR.desc },
         { field: SORT_FIELDS.createdAt, direction: SORT_DIR.asc },
       ]
-}
+};
 
 export const mockTaskRepositoryService = {
     getNextPage$: jest.fn(),
