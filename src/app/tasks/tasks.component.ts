@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChildren, QueryList, Directive, Input
   Output, EventEmitter, HostListener, HostBinding } from '@angular/core';
 import { Task } from './task';
 import { Subscription, Observable, BehaviorSubject } from 'rxjs';
-import { take, map, first } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 import { TaskSortOption } from './task-sort-option';
 import { SORT_DIR } from '../constants';
 import { TaskRepositoryService } from './task-repository.service';

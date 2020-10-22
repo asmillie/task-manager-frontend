@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgbCollapseModule, NgbModalModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapseModule, NgbDropdownModule, NgbModalModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { TasksComponent, TableSortDirective } from './tasks.component';
 import { SharedModule } from '../shared/shared.module';
 import { TaskComponent } from './task/task.component';
@@ -22,6 +22,7 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     NgbCollapseModule,
     NgbModalModule,
+    NgbDropdownModule,
     RouterModule,
   ],
 })

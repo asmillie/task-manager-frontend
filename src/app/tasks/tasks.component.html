@@ -17,9 +17,9 @@
 <div class="d-flex flex-column justify-content-center">
     <app-alert *ngIf="errorMessage !== ''" alertMessage="{{ errorMessage }}" (dismissEvent)="onDismissAlert()"></app-alert>
     <div class="d-flex justify-content-start align-items-center mb-2 px-2">
-        <span class="mr-1">Showing</span>
+        <span class="mr-1">Show</span>
         <select
-            class="form-control selectPageSize"
+            class="form-control selectPageSize mr-1"
             style="width:auto"
             [(ngModel)]="pageSize"
             (ngModelChange)="onPageSizeChange()">
@@ -30,14 +30,14 @@
         </select>
         <button class="btn btn-info ml-auto shadow-lg" (click)="toggleSearch()">
             Search
-            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search d-none d-md-inline-block" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
                 <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
             </svg>
         </button>
         <a class="btn btn-success ml-2 shadow-lg" routerLink="/tasks/add">
             New
-            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus d-none d-md-inline-block" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
             </svg>
         </a>
@@ -56,7 +56,7 @@
                 <th scope="col" sortable field="createdAt" (sort)="onSort($event)" class="position-relative d-none d-md-table-cell">Created</th>
                 <th scope="col" sortable field="updatedAt" (sort)="onSort($event)" class="position-relative d-none d-md-table-cell">Updated</th>
                 <th scope="col" sortable field="completed" (sort)="onSort($event)" class="position-relative">Completed</th>
-                <th scope="col">Action</th>
+                <th scope="col"><span class="d-none d-md-inline">Action</span></th>
             </thead>            
             <tbody *ngIf="(tasks$ | async) as tasks; else noTasksBlock" [@tableRowAnimation]="animateRows">             
                 <tr *ngFor="let task of tasks">
@@ -73,8 +73,15 @@
                         </svg>
                     </td>
                     <td class="fitWidth">
-                        <a class="btn btn-secondary mr-2" routerLink="/tasks/edit/{{task.id}}">Edit</a>
-                        <button class="btn btn-danger" (click)="onDelete(deleteModalContent, task)">Delete</button>
+                        <a class="btn btn-secondary mr-2 d-none d-md-inline-block" routerLink="/tasks/edit/{{task.id}}">Edit</a>
+                        <button class="btn btn-danger d-none d-md-inline-block" (click)="onDelete(deleteModalContent, task)">Delete</button>
+                        <div ngbDropdown container="body" class="d-md-none">
+                            <button class="btn btn-secondary" ngbDropdownToggle id="actions">Actions</button>
+                            <div ngbDropdownMenu aria-labelledby="actions">
+                                <a ngbDropdownItem routerLink="/tasks/edit/{{task.id}}">Edit</a>
+                                <button ngbDropdownItem (click)="onDelete(deleteModalContent, task)">Delete</button>
+                            </div>
+                        </div>
                     </td>
                 </tr>            
             </tbody>
