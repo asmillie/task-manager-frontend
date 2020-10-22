@@ -10,11 +10,13 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SignupComponent,
+    BreadcrumbComponent,
   ],
   imports: [
     BrowserModule,
