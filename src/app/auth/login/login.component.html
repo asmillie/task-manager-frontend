@@ -1,10 +1,9 @@
 <div class="container">
     <div class="jumbotron mt-5 d-flex flex-column align-items-center shadow">
         <h1 class="display-4">Task Manager</h1>
-        <p class="lead">A minimalist approach to task management</p>
         <hr class="my-4 w-100">
 
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="w-50">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="col-xs-12 col-md-6">
             <app-alert *ngIf="errMessage !== ''" [alertMessage]="errMessage" (dismissEvent)="dismissAlert()"></app-alert>
             <input
                 type="text"
@@ -36,7 +35,7 @@
             </div>
         </form>
 
-        <p class="mt-3">
+        <p class="mt-3 col-xs-12 col-md-6">
             Don't have an account? 
             <a routerLink="/signup">Signup</a>  
             or try out a 

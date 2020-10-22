@@ -1,10 +1,9 @@
 <div class="container">
     <div class="jumbotron mt-5 d-flex flex-column align-items-center shadow">
         <h1 class="display-4">Task Manager</h1>
-        <p class="lead">A minimalist approach to task management</p>
         <hr class="my-4 w-100">
         
-        <form class="my-2 w-50" [formGroup]="signupForm" (ngSubmit)="onSubmit()" *ngIf="!signupSuccess">
+        <form class="my-2 col-xs-12 col-md-6" [formGroup]="signupForm" (ngSubmit)="onSubmit()" *ngIf="!signupSuccess">
             <app-alert *ngIf="errorMessage !== ''" [alertMessage]="errorMessage" (dismissEvent)="dismissAlert()"></app-alert>
             <div class="form-group">
                 <input
@@ -80,7 +79,7 @@
             <p>Signup completed successfully, redirecting to login...</p>
         </div>
         
-        <p class="mt-3">
+        <p class="mt-3 col-xs-12 col-md-6">
             Already have an account? 
             <a routerLink="/login">Return to Login</a> 
             or try out a 
