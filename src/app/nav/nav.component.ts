@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class NavComponent implements OnInit, OnDestroy {
 
+  navbarCollapsed = true;
   isLoggedIn: boolean;
   userSub: Subscription;
   name: string;
@@ -26,6 +27,10 @@ export class NavComponent implements OnInit, OnDestroy {
     if (this.userSub) {
       this.userSub.unsubscribe();
     }
+  }
+
+  toggleNavbar(): void {
+    this.navbarCollapsed = !this.navbarCollapsed;
   }
 
   logout(): void {
