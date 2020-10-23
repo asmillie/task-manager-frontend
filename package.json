@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:prod": "node server.js",
     "build": "ng build",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -26,12 +27,13 @@
     "@types/config": "0.0.36",
     "bootstrap": "^4.4.0",
     "dayjs": "^1.9.1",
+    "express": "^4.17.1",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.901.7",
+    "@angular-devkit/build-angular": "^0.1002.0",
     "@angular/cli": "^9.1.12",
     "@angular/compiler-cli": "~9.1.7",
     "@types/jasminewd2": "~2.0.3",
