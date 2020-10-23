@@ -6,6 +6,7 @@
     "start": "ng serve",
     "start:prod": "node server.js",
     "build": "ng build",
+    "build:prod": "ng build --prod",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage=true",
@@ -61,5 +62,8 @@
     "setupFilesAfterEnv": [
       "<rootDir>/src/setupJest.ts"
     ]
+  },
+  "engines": {
+    "node": "12.18.3"
   }
 }
