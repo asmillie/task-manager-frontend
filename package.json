@@ -11,8 +11,7 @@
     "test:coverage": "jest --coverage=true",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "ngcc",
-    "heroku-postinstall": "ng build --prod"
+    "postinstall": "ngcc ng build --prod"
   },
   "private": true,
   "dependencies": {
