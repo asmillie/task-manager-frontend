@@ -86,6 +86,10 @@ export class TaskComponent implements OnInit, OnDestroy {
     }
   }
 
+  onBack(): void {
+    this.router.navigateByUrl('/tasks');
+  }
+
   private initForm(): void {
     this.taskForm = this.fb.group({
       description: [{
