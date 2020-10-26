@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { DemoComponent } from './demo.component';
-
+import { SharedModule } from '../shared/shared.module';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
   declarations: [DemoComponent],
   imports: [
-    CommonModule
+    SharedModule,
+    RouterModule,
   ]
 })
 export class DemoModule { }

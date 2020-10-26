@@ -10,6 +10,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { DemoModule } from './demo/demo.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
     ReactiveFormsModule,
     SharedModule,
     AuthModule,
+    DemoModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true },
