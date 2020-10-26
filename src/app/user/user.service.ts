@@ -8,6 +8,15 @@ import { map, catchError, tap, switchMap, take } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { UserUpdateOpts } from './class/user-update-opts';
 import { ErrorHandlingService } from '../error-handling.service';
+import { ITask } from '../tasks/task';
+import { AppRepositoryService } from '../data/app-repository.service';
+
+export interface DemoResponse {
+  auth_token: string;
+  token_expiry: Date;
+  user: IUser;
+  tasks: ITask[];
+}
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +27,12 @@ export class UserService {
   private USER_SIGNUP = environment.taskApi.endpoint.signup;
   private USER_UPDATE = environment.taskApi.endpoint.user.patch;
   private EMAIL_EXISTS = environment.taskApi.endpoint.emailExists;
+  private DEMO_SIGNUP = environment.taskApi.endpoint.signupDemo;
 
   constructor(
     private http: HttpClient,
     private authService: AuthService,
+    private appRepository: AppRepositoryService,
     private errorHandling: ErrorHandlingService) {}
 
   signup$(name: string, email: string, password: string): Observable<User | string> {
@@ -42,6 +53,25 @@ export class UserService {
         }
 
         return null;
+      })
+    );
+  }
+
+  signupDemo$(): Observable<boolean | string> {
+    return this.http.get<DemoResponse>(
+      this.API_URL + this.DEMO_SIGNUP
+    ).pipe(
+      catchError(this.errorHandling.handleHttpError$),
+      map((res) => {
+        if (!res.auth_token || !res.token_expiry) {
+          throw new Error('Invalid token returned by server, please try again');
+        }
+        const tokenExpiry = new Date(res.token_expiry);
+        const user = new User(res.user.name, res.user.email.address, res.user._id, res.auth_token, tokenExpiry);
+        this.authService.userSubject.next(user);
+        this.appRepository.saveUser(user);
+
+        return true;
       })
     );
   }
