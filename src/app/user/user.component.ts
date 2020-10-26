@@ -15,6 +15,7 @@ import { EmailExistsValidator } from './validator/email-exists.validator';
 })
 export class UserComponent implements OnInit, OnDestroy {
 
+  isDemoAccount = false;
   userSub: Subscription;
   user: User;
   userForm: FormGroup;
@@ -70,7 +71,14 @@ export class UserComponent implements OnInit, OnDestroy {
           this.router.createUrlTree(['/']);
         }
         this.user = data.user;
+        this.checkDemoUser(data.user.name);
       });
+  }
+
+  private checkDemoUser(name: string): void {
+    if (name.toLowerCase().match(/^demo/g)) {
+      this.isDemoAccount = true;
+    }
   }
 
   private initForm(): void {
