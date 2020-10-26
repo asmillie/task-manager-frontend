@@ -4,6 +4,7 @@ export const environment = {
     url: 'https://as-task-manager-api.herokuapp.com',
     endpoint: {
           signup: '/signup',
+          signupDemo: '/signup/demo',
           emailExists: '/signup/emailExists',
           login: '/auth/login',
           logout: '/auth/logout',

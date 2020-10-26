@@ -8,6 +8,7 @@ export const environment = {
       url: 'http://localhost:3000',
       endpoint: {
             signup: '/signup',
+            signupDemo: '/signup/demo',
             emailExists: '/signup/emailExists',
             login: '/auth/login',
             logout: '/auth/logout',
