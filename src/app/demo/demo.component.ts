@@ -3,6 +3,7 @@ import { UserService } from '../user/user.service';
 import { Subscription } from 'rxjs';
 import { debounceTime, take } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-demo',
@@ -11,12 +12,14 @@ import { Router } from '@angular/router';
 })
 export class DemoComponent implements OnInit, OnDestroy {
 
+  recaptchaResolved = false;
   isLoading = false;
   isComplete = false;
   subscriptions: Subscription;
   errorMessage  = '';
 
   constructor(
+    private authService: AuthService,
     private userService: UserService,
     private router: Router,
   ) { }
@@ -31,7 +34,20 @@ export class DemoComponent implements OnInit, OnDestroy {
   }
 
   onCreateDemo(): void {
+    if (!this.recaptchaResolved) {
+      this.errorMessage = 'Recaptcha has not been resolved.';
+      return;
+    }
+
     this.createDemoAccount();
+  }
+
+  onRecaptchaResolved(response: string): void {
+    this.authService.verifyRecaptcha$(response)
+      .pipe(take(1))
+      .subscribe(res => {
+        this.recaptchaResolved = true;
+      });
   }
 
   private createDemoAccount(): void {

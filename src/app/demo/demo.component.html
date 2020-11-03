@@ -4,7 +4,14 @@
         <hr class="my-4 w-100">
         
         <div class="d-flex flex-column justify-content-center" *ngIf="!isComplete && errorMessage == ''">
-            <button class="btn btn-lg btn-primary" (click)="onCreateDemo()" [attr.disabled]="isLoading ? true : null">Create Demo Account</button> 
+            <div class="my-2" id="recaptcha-container">
+                <re-captcha
+                    formControlName="recaptcha"
+                    (resolved)="onRecaptchaResolved($event)"
+                    required>
+                </re-captcha>
+            </div>
+            <button class="btn btn-lg btn-primary" (click)="onCreateDemo()" [attr.disabled]="(!recaptchaResolved || isLoading) ? true : null">Create Demo Account</button> 
             <div class="spinner-grow text-secondary" role="status" *ngIf="isLoading && !isComplete">
                 <div class="sr-only">Loading...</div>
             </div>
@@ -18,6 +25,7 @@
 
         <div class="alert alert-danger d-flex justify-content-between" *ngIf="!isLoading && !isComplete && errorMessage !== ''">
             <p class="align-self-start">{{ errorMessage }}</p>
+            <div class="clearfix"></div>
             <button class="btn btn-primary" (click)="onRetry()">Retry</button>
         </div>
 
