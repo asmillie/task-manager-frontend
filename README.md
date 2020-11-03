@@ -1,6 +1,6 @@
-# TaskManager
+# Task Manager
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.6.
+View a live demo running on [Heroku](https://asmillie-task-manager.herokuapp.com/)
 
 ## Development server
 
