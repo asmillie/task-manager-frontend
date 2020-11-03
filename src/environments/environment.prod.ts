@@ -26,8 +26,8 @@ export const environment = {
             delete: '/tasks'
           }
     },
-    reCaptcha: {
-      public_key: '6Lcj4NwZAAAAAPBOABiTalzK3fohYEHhZ1wrDOcu',
-    }
-}
+  },
+  reCaptcha: {
+    public_key: '6Lcj4NwZAAAAAPBOABiTalzK3fohYEHhZ1wrDOcu',
+  }
 };
