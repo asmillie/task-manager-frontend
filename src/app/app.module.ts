@@ -11,6 +11,7 @@ import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { DemoModule } from './demo/demo.module';
+import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,8 @@ import { DemoModule } from './demo/demo.module';
     SharedModule,
     AuthModule,
     DemoModule,
+    RecaptchaModule,
+    RecaptchaFormsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true },

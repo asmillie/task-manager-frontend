@@ -6,6 +6,8 @@ import { User } from '../user/class/user';
 import { EmailExistsValidator } from '../user/validator/email-exists.validator';
 import { passwordMatchesValidator } from '../user/validator/password-matches.validator';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-signup',
@@ -23,6 +25,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   signupSuccess = false;
 
   constructor(
+    private authService: AuthService,
     private fb: FormBuilder,
     private userService: UserService,
     private emailValidator: EmailExistsValidator,
@@ -68,6 +71,14 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.errorMessage = '';
   }
 
+  onRecaptchaResolved(response: string): void {
+    this.authService.verifyRecaptcha$(response)
+      .pipe(take(1))
+      .subscribe(res => {
+        // Handle response
+      });
+  }
+
   private initForm() {
     this.signupForm = this.fb.group({
       name: [
@@ -108,6 +119,7 @@ export class SignupComponent implements OnInit, OnDestroy {
           validators: [ Validators.required, Validators.min(7) ],
         },
       ],
+      recaptcha: [null, Validators.required]
     }, {
       validators: passwordMatchesValidator
     });

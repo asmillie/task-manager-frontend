@@ -72,7 +72,14 @@
                     <p>Password fields do not match</p>
                 </div>
             </div>
-            <button class="btn btn-lg btn-primary float-right" type="submit" [attr.disabled]="(signupForm.status === 'INVALID' || isLoading) ? 'disabled' : null">Signup</button>
+            <div class="my-2" id="recaptcha-container">
+                <re-captcha
+                    formControlName="recaptcha"
+                    (resolved)="onRecaptchaResolved($event)"
+                    required>
+                </re-captcha>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" [attr.disabled]="(signupForm.status !== 'VALID' || isLoading) ? 'disabled' : null">Signup</button>
             <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
         </form>
         <div class="alert-success my-2 p-2 d-flex justify-content-center" *ngIf="signupSuccess">
