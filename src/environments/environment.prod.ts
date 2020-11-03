@@ -6,6 +6,7 @@ export const environment = {
           signup: '/signup',
           signupDemo: '/signup/demo',
           emailExists: '/signup/emailExists',
+          verifyRecaptcha: '/auth/verifyRecaptcha',
           login: '/auth/login',
           logout: '/auth/logout',
           user: {
@@ -24,6 +25,9 @@ export const environment = {
             patch: '/tasks',
             delete: '/tasks'
           }
+    },
+    reCaptcha: {
+      public_key: '',
     }
 }
 };

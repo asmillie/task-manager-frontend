@@ -13,14 +13,22 @@ interface ILoginResponse {
   readonly updatedUser: IUser;
 }
 
+interface IRecaptchaResponse {
+  readonly success: boolean;
+  readonly challege_ts: string;
+  readonly hostname: string;
+  readonly errorCodes?: [{ code: string, description: string }];
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private API_URL = environment.taskApi.url;
-  private LOGIN = environment.taskApi.endpoint.login;
-  private LOGOUT = environment.taskApi.endpoint.logout;
+  private readonly API_URL = environment.taskApi.url;
+  private readonly LOGIN = environment.taskApi.endpoint.login;
+  private readonly LOGOUT = environment.taskApi.endpoint.logout;
+  private readonly VERIFY_RECAPTCHA = environment.taskApi.endpoint.verifyRecaptcha;
 
   userSubject: BehaviorSubject<User>;
 
@@ -104,6 +112,20 @@ export class AuthService {
         this.userSubject.next(user);
       }
     });
+  }
+
+  verifyRecaptcha$(token: string): Observable<boolean> {
+    return this.http.post<IRecaptchaResponse>(
+      this.API_URL + this.VERIFY_RECAPTCHA,
+      { token },
+    )
+    .pipe(
+      take(1),
+      map(res => {
+        console.log(res);
+        return true;
+      }),
+    );
   }
 
   private initUserSubject(): void {

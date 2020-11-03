@@ -9,6 +9,7 @@ export const environment = {
       endpoint: {
             signup: '/signup',
             signupDemo: '/signup/demo',
+            verifyRecaptcha: '/auth/verifyRecaptcha',
             emailExists: '/signup/emailExists',
             login: '/auth/login',
             logout: '/auth/logout',
@@ -29,6 +30,9 @@ export const environment = {
               delete: '/tasks'
             }
       }
+  },
+  reCaptcha: {
+    public_key: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI', // Google Test Key - Always returns valid
   }
 };
 

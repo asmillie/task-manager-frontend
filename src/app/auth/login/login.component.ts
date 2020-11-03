@@ -2,8 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { User } from '../../user/class/user';
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-login',
@@ -53,6 +54,14 @@ export class LoginComponent implements OnInit, OnDestroy {
       });
   }
 
+  onRecaptchaResolved(response: string): void {
+    this.authService.verifyRecaptcha$(response)
+      .pipe(take(1))
+      .subscribe(res => {
+        // Handle response
+      });
+  }
+
   dismissAlert(): void {
     this.errMessage = '';
   }
@@ -70,7 +79,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         disabled: this.isLoading,
       }, {
         validators: [Validators.required, Validators.minLength(7)]
-      }]
+      }],
+      recaptcha: [null, Validators.required]
     });
   }
 
