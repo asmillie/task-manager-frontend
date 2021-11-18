@@ -4,6 +4,10 @@
 
 export const environment = {
   production: false,
+  auth0: {
+    domain: 'dev-x4xgby3m.us.auth0.com',
+    clientId: 'BAJyPhJIv9IPoE96qI3qWrDQQFq65rtH'
+  },
   taskApi: {
       url: 'http://localhost:3000',
       endpoint: {
