@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -14,9 +13,6 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.authService.user$.subscribe(user => {
-      console.log(`Change to user: ${JSON.stringify(user)}`);
-    });
   }
 
 }
