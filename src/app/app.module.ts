@@ -27,7 +27,8 @@ import { HomeComponent } from './home/home.component';
     SharedModule,
     AuthModule.forRoot({
       domain: environment.auth0.domain,
-      clientId: environment.auth0.clientId
+      clientId: environment.auth0.clientId,
+      redirectUri: environment.auth0.redirectUri
     }),
   ],
   providers: [

@@ -2,7 +2,8 @@ export const environment = {
   production: true,
   auth0: {
     domain: 'dev-x4xgby3m.us.auth0.com',
-    clientId: 'BAJyPhJIv9IPoE96qI3qWrDQQFq65rtH'
+    clientId: 'BAJyPhJIv9IPoE96qI3qWrDQQFq65rtH',
+    redirectUri: 'http://localhost:4200/tasks'
   },
   taskApi: {
     url: 'https://as-task-manager-api.herokuapp.com',
