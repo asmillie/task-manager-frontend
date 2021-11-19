@@ -12,6 +12,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // TODO: Redirect logged-in users to /tasks
   userSub: Subscription;
+  isLoading: Boolean;
+  isLoggedIn: Boolean;
 
   constructor(
     public authService: AuthService,
@@ -19,6 +21,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.isLoading = false;
+    this.isLoggedIn = false;
     this.initUserSub();    
   }
 
@@ -26,13 +30,22 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.userSub.unsubscribe();
   }
 
+  public login(): void {
+    this.isLoading = true;
+    this.authService.loginWithRedirect();
+  }
+
   private initUserSub() {
     this.userSub = this.authService.user$.subscribe(user => {
+      this.isLoading = false;
       if (user && user.email) {
+        this.isLoggedIn = true;
         // User is Authenticated, redirect to tasks
-        this.router.createUrlTree(['/tasks']);
+        return this.router.navigateByUrl('/tasks');
       }
-    })
+
+      this.isLoggedIn = false;
+    });
   }
 
 }

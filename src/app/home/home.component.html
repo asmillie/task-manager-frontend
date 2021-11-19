@@ -3,8 +3,12 @@
         <h1 class="display-4">Task Manager</h1>
         <hr class="my-4 w-100">
 
-        
-        <button class="btn btn-lg btn-primary" (click)="authService.loginWithRedirect()">Login</button>
+        <div *ngIf="!isLoggedIn">
+            <button class="btn btn-lg btn-primary" (click)="login()" [disabled]="isLoading">
+                <span class="spinner-grow" role="status" *ngIf="isLoading"></span>
+                Login
+            </button>
+        </div>
         
     </div>
 </div>
