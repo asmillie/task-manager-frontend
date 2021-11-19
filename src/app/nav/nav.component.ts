@@ -34,6 +34,7 @@ export class NavComponent implements OnInit, OnDestroy {
   }
 
   logout(): void {
+    this.authService.logout({ returnTo: window.location.origin });
     // const logoutSub = this.authService.logout$().subscribe(() => {
     //   this.isLoggedIn = false;
     //   this.router.navigate(['']);
@@ -42,14 +43,14 @@ export class NavComponent implements OnInit, OnDestroy {
   }
 
   private initAuth(): void {
-    // this.userSub = this.authService.userSubject.subscribe(user => {
-    //   if (user && user.token) {
-    //     this.name = user.name;
-    //     return this.isLoggedIn = true;
-    //   }
+    this.userSub = this.authService.user$.subscribe(user => {
+      if (user) {
+        this.name = user.name;
+        return this.isLoggedIn = true;
+      }
 
-    //   this.isLoggedIn = false;
-    // });
+      this.isLoggedIn = false;
+    });
   }
 
 }

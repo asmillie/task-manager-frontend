@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '@auth0/auth0-angular';
 import { TaskComponent } from '../tasks/task/task.component';
 import { SearchTasksComponent } from '../tasks/search-tasks/search-tasks.component';
 import { TaskResolverService } from '../tasks/task-resolver.service';
 import { TasksComponent } from '../tasks/tasks.component';
-import { UserResolverService } from '../user/user-resolver.service';
-import { UserComponent } from '../user/user.component';
 import { TaskManagerComponent } from './task-manager.component';
 
 const routes: Routes = [
@@ -16,13 +14,6 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         canActivateChild: [AuthGuard],
         children: [
-            {
-                path: 'user',
-                component: UserComponent,
-                resolve: {
-                    user: UserResolverService,
-                }
-            },
             {
                 path: '',
                 component: TasksComponent,

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { fadeInAnimation } from './animations';
-import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -14,10 +13,9 @@ import { AuthService } from './auth/auth.service';
 export class AppComponent implements OnInit {
   title = 'task-manager';
 
-  constructor(private authService: AuthService) {}
+  constructor() {}
 
   ngOnInit(): void {
-    this.authService.autoLogin();
   }
 
   prepareOutlet(outlet: RouterOutlet) {

@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Task } from '../task';
-import { User } from '../../user/class/user';
 import { TaskRepositoryService } from '../task-repository.service';
 import { take } from 'rxjs/operators';
 
@@ -18,7 +17,6 @@ export class TaskComponent implements OnInit, OnDestroy {
   private EDIT_MODE = 'EDIT';
 
   mode = this.ADD_MODE;
-  user: User;
   taskForm: FormGroup;
   isLoading: boolean;
   subscriptions: Subscription;
