@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AuthService } from '../auth.service';
+import { AuthService } from '@auth0/auth0-angular';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
@@ -24,7 +24,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.initForm();
+    // this.initForm();
+    this.authService.loginWithRedirect();
   }
 
   ngOnDestroy(): void {

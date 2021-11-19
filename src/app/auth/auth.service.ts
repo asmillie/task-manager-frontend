@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError, BehaviorSubject, iif, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import { User, IUser } from '../user/class/user';
 import { environment } from '../../environments/environment';
-import { map, catchError, tap, take, filter, switchMapTo, flatMap } from 'rxjs/operators';
+import { map, catchError, tap, take, flatMap } from 'rxjs/operators';
 import { AppRepositoryService } from '../data/app-repository.service';
 import { ErrorHandlingService } from '../error-handling.service';
 

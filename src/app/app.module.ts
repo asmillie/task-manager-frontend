@@ -8,15 +8,19 @@ import { SignupComponent } from './signup/signup.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from '@auth0/auth0-angular';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { DemoModule } from './demo/demo.module';
 import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
+
+import { environment } from '../environments/environment';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SignupComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -25,7 +29,10 @@ import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
     HttpClientModule,
     ReactiveFormsModule,
     SharedModule,
-    AuthModule,
+    AuthModule.forRoot({
+      domain: environment.auth0.domain,
+      clientId: environment.auth0.clientId
+    }),
     DemoModule,
     RecaptchaModule,
     RecaptchaFormsModule,
