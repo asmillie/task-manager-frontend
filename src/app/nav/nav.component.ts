@@ -45,6 +45,7 @@ export class NavComponent implements OnInit, OnDestroy {
   private initAuth(): void {
     this.userSub = this.authService.user$.subscribe(user => {
       if (user) {
+        console.log(JSON.stringify(user));
         this.name = user.name;
         return this.isLoggedIn = true;
       }
