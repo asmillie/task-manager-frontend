@@ -28,7 +28,12 @@ import { HomeComponent } from './home/home.component';
     AuthModule.forRoot({
       domain: environment.auth0.domain,
       clientId: environment.auth0.clientId,
-      redirectUri: environment.auth0.redirectUri
+      redirectUri: environment.auth0.redirectUri,
+      httpInterceptor: {
+        allowedList: [
+          `${environment.taskApi.url}*`
+        ]
+      }
     }),
   ],
   providers: [
