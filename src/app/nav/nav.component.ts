@@ -15,9 +15,7 @@ export class NavComponent implements OnInit, OnDestroy {
   userSub: Subscription;
   name: string;
 
-  constructor(
-    public authService: AuthService,
-    private router: Router) { }
+  constructor(public authService: AuthService) { }
 
   ngOnInit(): void {
     this.initAuth();
@@ -35,11 +33,6 @@ export class NavComponent implements OnInit, OnDestroy {
 
   logout(): void {
     this.authService.logout({ returnTo: window.location.origin });
-    // const logoutSub = this.authService.logout$().subscribe(() => {
-    //   this.isLoggedIn = false;
-    //   this.router.navigate(['']);
-    // });
-    // this.userSub.add(logoutSub);
   }
 
   private initAuth(): void {
