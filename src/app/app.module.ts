@@ -30,9 +30,16 @@ import { httpInterceptorProviders } from './interceptors';
       domain: environment.auth0.domain,
       clientId: environment.auth0.clientId,
       redirectUri: environment.auth0.redirectUri,
+      audience: 'task-manager',
+      useRefreshTokens: true,
       httpInterceptor: {
         allowedList: [
-          `${environment.taskApi.url}*`
+          {
+            uri: `${environment.taskApi.url}*`,
+            tokenOptions: {
+              audience: 'task-manager'
+            }
+          }
         ]
       }
     }),
