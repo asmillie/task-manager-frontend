@@ -105,24 +105,7 @@ export class TaskRepositoryService {
               return false;
             }
  
-            let tasks: Task[] = [];
-            if (!newSearch) {
-              // Add to current tasks
-              const currentTasks = this._tasks$.getValue();
-              if (currentTasks && currentTasks.length > 0) {
-                tasks = currentTasks;
-              }
-            }
-
-            response.tasks.forEach(iTask => {
-              const createdAt = new Date(iTask.createdAt);
-              let updatedAt;
-              if (iTask.updatedAt) {
-                updatedAt = new Date(iTask.updatedAt);
-              }
-              const task = new Task(iTask.description, iTask.completed, iTask.owner, iTask._id, createdAt, updatedAt);
-              tasks.push(task);
-            });
+            const tasks: Task[] = this.parseSearchResults(newSearch, response);
 
             this._tasks$.next(tasks);
             this._totalResults$.next(response.totalResults);
@@ -140,6 +123,28 @@ export class TaskRepositoryService {
         );
       }),
     );
+  }
+
+  private parseSearchResults(newSearch: boolean, response: TaskPaginationData) {
+    let tasks: Task[] = [];
+    if (!newSearch) {
+      // Add to current tasks
+      const currentTasks = this._tasks$.getValue();
+      if (currentTasks && currentTasks.length > 0) {
+        tasks = currentTasks;
+      }
+    }
+
+    response.tasks.forEach(iTask => {
+      const createdAt = new Date(iTask.createdAt);
+      let updatedAt;
+      if (iTask.updatedAt) {
+        updatedAt = new Date(iTask.updatedAt);
+      }
+      const task = new Task(iTask.description, iTask.completed, iTask.owner, iTask._id, createdAt, updatedAt);
+      tasks.push(task);
+    });
+    return tasks;
   }
 
   add$(task: Task): Observable<Task> {
