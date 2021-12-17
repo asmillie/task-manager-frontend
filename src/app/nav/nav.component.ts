@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -38,7 +37,6 @@ export class NavComponent implements OnInit, OnDestroy {
   private initAuth(): void {
     this.userSub = this.authService.user$.subscribe(user => {
       if (user) {
-        console.log(JSON.stringify(user));
         this.name = user.name;
         return this.isLoggedIn = true;
       }

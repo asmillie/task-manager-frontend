@@ -9,7 +9,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from '@auth0/auth0-angular';
 
-
 import { environment } from '../environments/environment';
 import { HomeComponent } from './home/home.component';
 import { httpInterceptorProviders } from './interceptors';

@@ -1,10 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
-import { of, Subscription, throwError } from 'rxjs';
+import { Subscription, throwError } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { mockRouter } from '../../mocks/mock-router';
 import { mockTaskRepositoryService } from '../../mocks/mock-task-repository-service';
 import { TableSortDirectiveStub } from '../../mocks/stubs/table-sort-directive.stub';
 import { SORT_DIR, SORT_FIELDS } from '../constants';
@@ -22,7 +20,7 @@ describe('TasksComponent', () => {
   let component: TasksComponent;
   let fixture: ComponentFixture<TasksComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         NoopAnimationsModule,

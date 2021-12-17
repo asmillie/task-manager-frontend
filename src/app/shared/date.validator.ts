@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { MIN_TASK_DATE } from '../constants';
 

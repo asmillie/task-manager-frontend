@@ -6,7 +6,7 @@ import { dateValidator } from '../../shared/date.validator';
 import { Subscription } from 'rxjs';
 import { TaskRepositoryService } from '../task-repository.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 
 @Component({
   selector: 'app-search-tasks',

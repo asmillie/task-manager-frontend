@@ -14,7 +14,7 @@ import { fadeInAnimation } from './animations';
   ]
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'task-manager';
+  title = 'Task Manager';
   errorSub: Subscription;
 
   constructor(private authService: AuthService) {}
@@ -36,8 +36,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private initErrorObs() {
     this.errorSub = this.authService.error$.pipe(
-      tap(e => console.log(e.message.toLowerCase())),
-      filter((e) => e.message.toLowerCase() === 'login required'),
+      filter((e) => e && e.message && e.message.toLowerCase() === 'login required'),
       mergeMap(() => this.authService.getAccessTokenSilently())
     ).subscribe();
   }

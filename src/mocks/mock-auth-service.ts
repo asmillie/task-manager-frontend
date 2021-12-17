@@ -1,10 +1,14 @@
-import { BehaviorSubject } from 'rxjs';
-import { User } from '../app/user/class/user';
-import { mockUser } from './mock-users';
+import { User } from '@auth0/auth0-spa-js';
+import { ReplaySubject, BehaviorSubject } from 'rxjs';
+import { mockUser } from './mock-user';
 
-export const mockAuthService = {
-    userSubject: new BehaviorSubject<User>(mockUser),
-    login$: jest.fn(),
-    logout$: jest.fn(),
-    autoLogin: jest.fn(),
+export class MockAuthService {
+    _error$ = new ReplaySubject<Error>(1);
+    _user$ = new BehaviorSubject<User>(mockUser);
+
+    readonly error$ = this._error$.asObservable();
+    readonly user$ = this._user$.asObservable();
+    logout = jest.fn();
+
+    getAccessTokenSilently = jest.fn();
 };

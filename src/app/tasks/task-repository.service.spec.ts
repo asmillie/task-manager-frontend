@@ -135,6 +135,57 @@ describe('TaskRepositoryService', () => {
     });
   });
 
+  describe('edit$', () => {
+    it('should return task on successful patch request', (done) => {
+      const mockTask = new Task('updated task', true);
+      mockHttpService.patch.mockReturnValue(of(mockTask));
+
+      service.edit$(mockTask).subscribe(result => {
+        expect(result).toBeInstanceOf(Task);
+        expect(result).toEqual(mockTask);
+        done();
+      });
+    });
+
+    it('should return error message', (done) => {
+      const httpError = new HttpErrorResponse({ error: 'Internal Server Error', status: 500 });
+      mockHttpService.patch.mockReturnValueOnce(throwError(httpError));
+      mockErrorHandlingService.handleHttpError$.mockReturnValueOnce(throwError('error'));
+
+      service.edit$(mockTasks[0]).subscribe({
+        error: (err) => {
+          expect(err).toEqual('error');
+          done();
+        }
+      });
+    });
+  });
+
+  describe('delete$', () => {
+    it('should return true on successful delete request', (done) => {
+      const mockTask = new Task('Task to delete', true);
+      mockHttpService.delete.mockReturnValueOnce(of(true));
+
+      service.delete$(mockTask).subscribe(result => {
+        expect(result).toBeTruthy();
+        done();
+      });
+    });
+
+    it('should return error message', (done) => {
+      const httpError = new HttpErrorResponse({ error: 'Internal Server Error', status: 500 });
+      mockHttpService.delete.mockReturnValueOnce(throwError(httpError));
+      mockErrorHandlingService.handleHttpError$.mockReturnValueOnce(throwError('error'));
+
+      service.delete$(mockTasks[0]).subscribe({
+        error: (err) => {
+          expect(err).toEqual('error');
+          done();
+        }
+      });
+    });
+  });
+
   describe('refresh', () => {
     it('should refresh tasks subject with current tasks value', () => {
       const tasksSubject = (service as any)._tasks$;

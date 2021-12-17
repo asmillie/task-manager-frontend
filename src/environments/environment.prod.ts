@@ -3,10 +3,10 @@ export const environment = {
   auth0: {
     domain: 'dev-x4xgby3m.us.auth0.com',
     clientId: 'BAJyPhJIv9IPoE96qI3qWrDQQFq65rtH',
-    redirectUri: 'http://localhost:4200/tasks'
+    redirectUri: 'http://localhost:8080/tasks'
   },
   taskApi: {
-    url: 'https://as-task-manager-api.herokuapp.com',
+    url: 'http://localhost:3000',
     endpoint: {
           signup: '/signup',
           signupDemo: '/signup/demo',

@@ -10,7 +10,6 @@ import { Subscription } from 'rxjs';
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
-  // TODO: Redirect logged-in users to /tasks
   userSub: Subscription;
   isLoading: Boolean;
   isLoggedIn: Boolean;

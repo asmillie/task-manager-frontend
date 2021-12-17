@@ -1,32 +1,32 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { AuthService } from '@auth0/auth0-angular';
 import { NavComponent } from './nav.component';
-import { AuthService } from '../auth/auth.service';
-import { mockAuthService } from '../../mocks/mock-auth-service';
-import { LoginComponent } from '../auth/login/login.component';
+import { MockAuthService } from '../../mocks/mock-auth-service';
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Subscription, of } from 'rxjs';
-import { Router } from '@angular/router';
-import { mockRouter } from '../../mocks/mock-router';
+import { Subscription } from 'rxjs';
+import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('NavComponent', () => {
   let component: NavComponent;
   let fixture: ComponentFixture<NavComponent>;
+  const mockAuthService = new MockAuthService();
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         SharedModule,
         ReactiveFormsModule,
+        NgbDropdownModule,
+        NgbCollapseModule,
+        RouterTestingModule
       ],
       declarations: [
         NavComponent,
-        LoginComponent,
       ],
       providers: [
         { provide: AuthService, useValue: mockAuthService as any },
-        { provide: Router, useValue: mockRouter as any },
       ]
     })
     .compileComponents();
@@ -63,21 +63,21 @@ describe('NavComponent', () => {
   });
 
   describe('logout', () => {
-    it('should subscribe to authService.logout$', () => {
-      mockAuthService.logout$.mockReturnValue(of(true));
-      const spy = jest.spyOn(mockAuthService.logout$(), 'subscribe');
+    it('should call logout method on AuthService', () => {    
 
       component.logout();
-      expect(spy).toHaveBeenCalled();
+      expect(mockAuthService.logout).toHaveBeenCalledWith({
+        returnTo: window.location.origin
+      });
     });
   });
 
   describe('initAuth', () => {
-    it('should subscribe to authService user subject', () => {
-      const subSpy = jest.spyOn(mockAuthService.userSubject, 'subscribe');
+    it('should subscribe to user from AuthService', () => {
+      const spy = jest.spyOn(mockAuthService.user$, 'subscribe');
 
       (component as any).initAuth();
-      expect(subSpy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalled();
       expect(component.isLoggedIn).toEqual(true);
     });
   });
