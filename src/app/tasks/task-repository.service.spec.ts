@@ -247,4 +247,5 @@ describe('TaskRepositoryService', () => {
       expect(result.completed).toEqual(completed);
     });
   });
+  
 });
