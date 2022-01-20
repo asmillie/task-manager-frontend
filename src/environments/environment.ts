@@ -35,9 +35,6 @@ export const environment = {
               delete: '/tasks'
             }
       }
-  },
-  reCaptcha: {
-    public_key: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI', // Google Test Key - Always returns valid
   }
 };
 

@@ -3,10 +3,10 @@ export const environment = {
   auth0: {
     domain: 'dev-x4xgby3m.us.auth0.com',
     clientId: 'BAJyPhJIv9IPoE96qI3qWrDQQFq65rtH',
-    redirectUri: 'http://localhost:8080/tasks'
+    redirectUri: 'http://localhost:4200/tasks'
   },
   taskApi: {
-    url: 'http://localhost:3000',
+    url: 'http://host.docker.internal:3000',
     endpoint: {
           signup: '/signup',
           signupDemo: '/signup/demo',
@@ -31,8 +31,5 @@ export const environment = {
             delete: '/tasks'
           }
     },
-  },
-  reCaptcha: {
-    public_key: '6Lcj4NwZAAAAAPBOABiTalzK3fohYEHhZ1wrDOcu',
   }
 };
