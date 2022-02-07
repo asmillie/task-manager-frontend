@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = parseInt(process.env.PORT, 10) || 8080
+const port = parseInt(process.env.PORT, 10) || 4200
 
 app.use(express.static('task-manager'));
 
