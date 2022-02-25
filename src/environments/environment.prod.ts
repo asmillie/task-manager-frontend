@@ -6,7 +6,7 @@ export const environment = {
     redirectUri: 'http://localhost:8080/tasks'
   },
   taskApi: {
-    url: 'https://task-manager-dev.azurewebsites.net:3000',
+    url: 'https://task-manager-dev.azurewebsites.net',
     endpoint: {
           signup: '/signup',
           signupDemo: '/signup/demo',
