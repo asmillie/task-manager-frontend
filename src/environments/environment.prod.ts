@@ -3,7 +3,7 @@ export const environment = {
   auth0: {
     domain: 'dev-x4xgby3m.us.auth0.com',
     clientId: 'BAJyPhJIv9IPoE96qI3qWrDQQFq65rtH',
-    redirectUri: 'http://localhost:8080/tasks'
+    redirectUri: 'http://localhost:4200/tasks'
   },
   taskApi: {
     url: 'https://task-manager-dev.azurewebsites.net',
