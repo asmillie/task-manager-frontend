@@ -1,1 +1,1 @@
-docker run -e PORT -p 4200:4200 --name "task_manager-frontend" -d task-manager-frontend:latest
+docker run -e PORT -p PORT:80 --name "task_manager-frontend" -d task-manager-frontend:latest
