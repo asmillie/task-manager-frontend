@@ -5,7 +5,7 @@ const port = process.env.PORT || 80
 app.use(express.static('task-manager'));
 
 app.get('/health', (req, res) => {
-  res.send(200);
+  res.sendStatus(200);
 });
 
 app.get('/*', (req, res) => {
