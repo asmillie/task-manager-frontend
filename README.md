@@ -28,11 +28,15 @@ You will also need an [Auth0](https://auth0.com/) account as the app uses [Auth0
 
 *Please see the **Auth0 Setup**, **Configuration** and **Run the Project** sections below for detailed instructions on setup and deployment.*
 
+<br>
+
 ## Installation
 
 ```bash
 git clone https://github.com/asmillie/task-manager-frontend.git
 ```
+
+<br>
 
 ## Auth0 Setup
 
@@ -125,9 +129,14 @@ export const environment = {
 
 ### **Docker**
 
-- build project
-- build docker image
-- docker run cmd
+```bash
+# Build Angular App
+ng build --prod
+# Build Docker Image
+docker build -t task-manager-frontend:latest .
+# Run in Docker Container on Port 80
+docker run -p 80:80 --name "task_manager-frontend" -d task-manager-frontend:latest
+```
 
 ### **Development**
 
