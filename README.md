@@ -82,7 +82,9 @@ In the **Basic Information** section of the settings tab are the **Domain** and 
 
 ## Configuration
 
-To set the required environment variables locate the files in `~/src/app/environments/`. There are two files, `environment.ts` for development and `environment.prod.ts` for production. If intending to build and run the app through Docker the production environment will be used.
+To set the required environment variables locate the `environments` folder under `~/src/app/`. Create two files, `environment.ts` for development and `environment.prod.ts` for production. If intending to build and run the app through Docker the production environment will be used. 
+
+Here are the contents of each file to start with:
 
 `environment.ts`
 ```bash
@@ -114,11 +116,13 @@ export const environment = {
 };
 ```
 
-`domain` and `clientId` are found in the Auth0 Dashboard under the settings for the Application created during **Auth0 Setup** (See Step 2).
+With the files created as shown above it just remains to set the variables that will point the app to your Auth0 account as set during **Auth0 Setup** and to the **Task Manager Backend**.
 
-`redirectUri` must be in the list of Allowed Callback URLs as mentioned during step 1 of the **Auth0 Setup**.
+- `domain` and `clientId` are found in the Auth0 Dashboard under the settings for the Application created during **Auth0 Setup** (See Step 2).
 
-`taskApi.url` is the URL that the Task Manager Backend is running on.
+- `redirectUri` must be in the list of Allowed Callback URLs as mentioned during step 1 of the **Auth0 Setup**.
+
+- `taskApi.url` is the URL that the Task Manager Backend is running on. If running with the default setup then it should be running on localhost on port 3000.
 
 <br>
 
