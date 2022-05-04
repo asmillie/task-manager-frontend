@@ -40,9 +40,6 @@ git clone https://github.com/asmillie/task-manager-frontend.git
 
 ## Auth0 Setup
 
-- create SPA application in auth0 dashboard
-- domain, client id, client secret
-
 As stated in the requirements an [Auth0](https://auth0.com/) account is required to run the project. The basic free account should be enough for testing or development purposes. For official documentation please see [https://auth0.com/docs](https://auth0.com/docs).
 
 The following section will outline the steps to complete setup within the Auth0 dashboard before running the project:
