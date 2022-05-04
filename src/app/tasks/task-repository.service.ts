@@ -8,6 +8,7 @@ import { ErrorHandlingService } from '../error-handling.service';
 import { TaskQueryOptions } from './task-query-options';
 import { TaskSortOption } from './task-sort-option';
 import { SORT_FIELDS, SORT_DIR } from '../constants';
+import { taskApi } from '../api/task-api';
 
 export interface TaskQuery extends TaskQueryOptions {
   readonly limit: number;
@@ -42,10 +43,10 @@ export class TaskRepositoryService {
 
   // API ENDPOINTS
   private API_URL = environment.taskApi.url;
-  private GET_TASKS = environment.taskApi.endpoint.tasks.get;
-  private ADD_TASK = environment.taskApi.endpoint.tasks.add;
-  private EDIT_TASK = environment.taskApi.endpoint.tasks.patch;
-  private DELETE_TASK = environment.taskApi.endpoint.tasks.delete;
+  private GET_TASKS = taskApi.endpoint.tasks.get;
+  private ADD_TASK = taskApi.endpoint.tasks.add;
+  private EDIT_TASK = taskApi.endpoint.tasks.patch;
+  private DELETE_TASK = taskApi.endpoint.tasks.delete;
 
   private _loading$ = new BehaviorSubject<boolean>(false);
   private _tasks$ = new BehaviorSubject<Task[] | null>(null);
