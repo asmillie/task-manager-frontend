@@ -8,7 +8,6 @@ This repository contains the frontend for the app which is built on Angular. Aut
 
 To view the backend repository you can follow this [link](https://github.com/asmillie/task-manager-backend).
 
-<br>
 
 ## Live Demo
 
@@ -16,7 +15,6 @@ View a live demo running @ [https://task-manager-frontend-dev.azurewebsites.net/
 
 _Please note the app is currently deployed on the Azure free tier and may take a moment for the app to 'warm up'. Free tier services are 'parked' when not in continuous use to save on resources._
 
-<br>
 
 ## Requirements
 
@@ -28,7 +26,6 @@ You will also need an [Auth0](https://auth0.com/) account as the app uses [Auth0
 
 *Please see the **Auth0 Setup**, **Configuration** and **Run the Project** sections below for detailed instructions on setup and deployment.*
 
-<br>
 
 ## Installation
 
@@ -36,7 +33,6 @@ You will also need an [Auth0](https://auth0.com/) account as the app uses [Auth0
 git clone https://github.com/asmillie/task-manager-frontend.git
 ```
 
-<br>
 
 ## Auth0 Setup
 
@@ -78,7 +74,6 @@ With this done scroll back up to the top of the page to the **Basic Information*
 
 In the **Basic Information** section of the settings tab are the **Domain** and **Client ID** which will be needed for configuring the app.
 
-<br>
 
 ## Configuration
 
@@ -124,7 +119,6 @@ With the files created as shown above it just remains to set the variables that 
 
 - `taskApi.url` is the URL that the Task Manager Backend is running on. If running with the default setup then it should be running on localhost on port 3000.
 
-<br>
 
 ## Run the Project
 
