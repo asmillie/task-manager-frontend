@@ -9,13 +9,6 @@ This repository contains the frontend for the app which is built on Angular. Aut
 To view the backend repository you can follow this [link](https://github.com/asmillie/task-manager-backend).
 
 
-## Live Demo
-
-View a live demo running @ [https://task-manager-frontend-dev.azurewebsites.net/](https://task-manager-frontend-dev.azurewebsites.net/)
-
-_Please note the app is currently deployed on the Azure free tier and may take a moment for the app to 'warm up'. Free tier services are 'parked' when not in continuous use to save on resources._
-
-
 ## Requirements
 
 The backend for the Task Manager is required to connect to and can be found at [this repository](https://github.com/asmillie/task-manager-backend). The included readme file contains everything necessary to get the backend up and running.
